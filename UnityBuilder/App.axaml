@@ -25,6 +25,5 @@
             </FluentTheme.Palettes>
         </FluentTheme>
         <StyleInclude Source="/Resources/Styles/ScrollViewerStyles.axaml" />
-        <StyleInclude Source="/Resources/Styles/ControlStyles.axaml" />
     </Application.Styles>
 </Application>
