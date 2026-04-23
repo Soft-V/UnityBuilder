@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Models;
 
@@ -7,7 +8,7 @@ namespace UnityBuilder.Commands
 {
     public class WindowsCommand : IPlatformCommand
     {
-        async public Task<int> Build(BuildParameters parameters)
+        async public Task<int> Build(BuildParameters parameters, CancellationToken cancellationToken)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {
@@ -42,12 +43,12 @@ namespace UnityBuilder.Commands
             return proc.ExitCode;
         }
 
-        async public Task<int> ComputeHash(HashParameters parameters)
+        async public Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            return await CommandHelper.ComputeHash(parameters, cancellationToken);
         }
 
-        async public Task<int> UploadFtp(FtpParameters parameters)
+        async public Task<int> UploadFtp(FtpParameters parameters, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

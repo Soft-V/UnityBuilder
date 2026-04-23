@@ -20,6 +20,7 @@
 		<PackageVersion Include="Hypocrite.Container" Version="1.2.5" />
 		<PackageVersion Include="Material.Icons" Version="2.4.1" />
 		<PackageVersion Include="Material.Icons.Avalonia" Version="2.4.1" />
+		<PackageVersion Include="SSH.NET" Version="2025.1.0" />
 
 	</ItemGroup>
 </Project>
