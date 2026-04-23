@@ -32,14 +32,30 @@ namespace UnityBuilder.ConsoleTest
                 {
                     Id = "build-win",
                     Type = NodeType.Build,
-                    Action = token => winBuild.Build(buildParameters, token)
+                    Parameters = new BuildParameters()
+                    {
+                        BuildVersion = "1.0.0",
+                        OutputPath = "C:\\RobocadBuild",
+                        ProjectPath = "C:\\Scripts\\robocadV-dev",
+                        TargetPlatform = TargetPlatforms.Windows64,
+                        UnityPath = "C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.45f2\\Editor\\Unity.exe",
+                    },
+                    Action = winBuild.Build,
                 },
                 new Node
                 {
-                    Id = "build-win2",
+                    Id = "build-linux",
                     Type = NodeType.Build,
+                    Parameters = new BuildParameters()
+                    {
+                        BuildVersion = "1.0.0",
+                        OutputPath = "C:\\RobocadBuild",
+                        ProjectPath = "C:\\Scripts\\robocadV-dev",
+                        TargetPlatform = TargetPlatforms.Windows64,
+                        UnityPath = "C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.45f2\\Editor\\Unity.exe",
+                    },
                     DependsOn = new List<string> { "build-win" },
-                    Action = token => winBuild.Build(buildParameters, token)
+                    Action = winBuild.Build,
                 }
             };
 

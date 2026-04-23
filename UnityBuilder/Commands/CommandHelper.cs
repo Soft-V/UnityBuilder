@@ -1,18 +1,20 @@
 ﻿using HashComputer.Backend;
+using HashComputer.Backend.Entities;
 using HashComputer.Backend.Services;
-using Newtonsoft.Json.Linq;
 using Renci.SshNet;
-using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityBuilder.Extensions;
 using UnityBuilder.Models;
-using UnityBuilder.Models.Enums;
 
 namespace UnityBuilder.Commands
 {
     public static class CommandHelper
     {
-        async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken)
+        async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged = null)
         {
             ComputerService computerService = new ComputerService();
             var result = await computerService.ComputeHash(
@@ -24,27 +26,49 @@ namespace UnityBuilder.Commands
                     HashFileName = "computed_hash",
                     StableFilesPath = "computed_stables",
                 },
-                null,
+                progressChanged,
                 cancellationToken
             );
             return result.Item1 ? 0 : -1;
         }
 
-        async public static Task<int> UploadFiles(FtpParameters parameters, CancellationToken cancellationToken)
+        async public static Task<int> UploadFiles(FtpParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged = null)
         {
-            return 0;
+            using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
+            await clientSsh.ConnectAsync(cancellationToken);
+            using var clientFtp = new SftpClient(parameters.Server, parameters.Username, parameters.Password);
+            await clientFtp.ConnectAsync(cancellationToken);
+
             if (parameters.DeleteOnUpload)
             {
-                using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
-                await clientSsh.ConnectAsync(cancellationToken);
                 using SshCommand cmd = clientSsh.CreateCommand($"sudo rm -rf {parameters.TargetPath}");
                 await cmd.ExecuteAsync(cancellationToken);
                 using SshCommand cmd2 = clientSsh.CreateCommand($"mkdir -p {parameters.TargetPath}");
                 await cmd2.ExecuteAsync(cancellationToken);
             }
 
-            using var clientFtp = new SftpClient(parameters.Server, parameters.Username, parameters.Password);
-            await clientFtp.ConnectAsync(cancellationToken);
+            // upload all files
+            var files = Directory.GetFiles(parameters.LocalPath, "*.*", SearchOption.AllDirectories);
+            for (int i = 0; i < files.Length; ++i)
+            {
+                progressChanged?.Invoke(new ProgressChangedArgs()
+                {
+                    Progress = (int)(i / (float)files.Length * 100),
+                });
+
+                var file = files[i];
+                var relative = file.ExcludePathPart(parameters.LocalPath);
+                var target = parameters.TargetPath.TrimEnd('/');
+
+                // create a directory for it
+                using SshCommand cmd3 = clientSsh.CreateCommand(
+                    $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
+                await cmd3.ExecuteAsync(cancellationToken);
+
+                using var fs = File.OpenRead(file);
+                await clientFtp.UploadAsync(fs, $"{target}/{relative}");
+            }
+            return 0;
         }
     }
 }

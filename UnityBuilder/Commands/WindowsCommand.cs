@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HashComputer.Backend.Entities;
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,8 +9,11 @@ namespace UnityBuilder.Commands
 {
     public class WindowsCommand : IPlatformCommand
     {
-        async public Task<int> Build(BuildParameters parameters, CancellationToken cancellationToken)
+        async public Task<int> Build(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged)
         {
+            if (pars is not BuildParameters parameters)
+                throw new ArgumentException(nameof(parameters));
+
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {
                 FileName = parameters.UnityPath,
@@ -43,14 +47,18 @@ namespace UnityBuilder.Commands
             return proc.ExitCode;
         }
 
-        async public Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken)
+        async public Task<int> ComputeHash(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged)
         {
-            return await CommandHelper.ComputeHash(parameters, cancellationToken);
+            if (pars is not HashParameters parameters)
+                throw new ArgumentException(nameof(parameters));
+            return await CommandHelper.ComputeHash(parameters, cancellationToken, progressChanged);
         }
 
-        async public Task<int> UploadFtp(FtpParameters parameters, CancellationToken cancellationToken)
+        async public Task<int> UploadFtp(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged)
         {
-            throw new System.NotImplementedException();
+            if (pars is not FtpParameters parameters)
+                throw new ArgumentException(nameof(parameters));
+            return await CommandHelper.UploadFiles(parameters, cancellationToken, progressChanged);
         }
     }
 }

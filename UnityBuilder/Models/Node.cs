@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HashComputer.Backend.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,11 @@ namespace UnityBuilder.Models
     {
         public string Id { get; set; }
         public IParameters Parameters { get; set; }
-        public CancellationToken CancellationToken { get; set; }
+        public CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
         public NodeType Type { get; set; }
         public List<string> DependsOn { get; set; } = new();
-        public Func<CancellationToken, Task> Action { get; set; }
+        public Func<IParameters, CancellationToken, Action<ProgressChangedArgs>, Task<int>> Action { get; set; }
+
+        public int Progress { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Threading;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,18 +54,33 @@ namespace UnityBuilder.Services
                     completed.Add(pair.Key);
                 else
                     throw finished.Exception!;
+
+                // отменяем все ноды 
+                if (token.IsCancellationRequested)
+                {
+                    foreach (var node in nodes)
+                    {
+                        node.CancellationTokenSource.Cancel();
+                    }
+                }
             }
         }
 
-        public async static Task RunNode(Node node, CancellationToken cancellationToken)
+        public async static Task RunNode(Node node)
         {
             var semaphore = limits[node.Type];
 
-            await semaphore.WaitAsync(cancellationToken);
+            await semaphore.WaitAsync(node.CancellationTokenSource.Token);
 
             try
             {
-                await node.Action(cancellationToken); 
+                var _ = await node.Action(node.Parameters, node.CancellationTokenSource.Token, (progress) =>
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        node.Progress = progress.Progress;
+                    });
+                }); 
             }
             finally
             {

@@ -21,7 +21,7 @@
 		<PackageReference Include="HashComputer" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" />
 		<PackageReference Include="Hypocrite.Container" />
-		<PackageReference Include="Material.Icons"/>
+		<PackageReference Include="Material.Icons" />
 		<PackageReference Include="Material.Icons.Avalonia" />
         <PackageReference Include="SSH.NET" />
 	</ItemGroup>
