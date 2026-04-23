@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UnityBuilder.Desktop/UnityBuilder.Desktop.csproj" />
+  <Project Path="UnityBuilder/UnityBuilder.csproj" />
+</Solution>
