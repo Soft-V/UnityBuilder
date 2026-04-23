@@ -1,6 +1,6 @@
 ﻿namespace UnityBuilder.Models
 {
-    public class BuildParameters
+    public class BuildParameters : IParameters
     {
         public string UnityPath { get; set; }
         public string ProjectPath { get; set; }

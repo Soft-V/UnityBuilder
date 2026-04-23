@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace UnityBuilder.Models
 {
-    internal class IParameters
+    public interface IParameters
     {
+
     }
 }

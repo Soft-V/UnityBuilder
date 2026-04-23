@@ -40,8 +40,10 @@ namespace UnityBuilder.Services
                 if (running.Count == 0)
                     throw new Exception("Deadlock");
 
+                // ждем пока вернётся выполненный таск
                 var finished = await Task.WhenAny(running.Values);
 
+                // ищем его среди выполненных
                 var pair = running.First(p => p.Value == finished);
                 running.Remove(pair.Key);
 
