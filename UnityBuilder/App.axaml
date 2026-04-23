@@ -9,7 +9,22 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
 
+    <Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Resources/Themes/ThemeHolder.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="#EC4899" RegionColor="#FFF1F5" ErrorText="#BE185D" />
+                <ColorPaletteResources x:Key="Dark" Accent="#F472B6" RegionColor="#1F1120" ErrorText="#FB7185" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        <StyleInclude Source="/Resources/Styles/ScrollViewerStyles.axaml" />
+        <StyleInclude Source="/Resources/Styles/ControlStyles.axaml" />
     </Application.Styles>
 </Application>

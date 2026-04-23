@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<!-- Corporate Dark Theme Colors -->
+
+	<!-- Backgrounds -->
+	<SolidColorBrush x:Key="AppBackground" Color="#0B0B10" />
+	<SolidColorBrush x:Key="SurfaceBackground" Color="#15151D" />
+	<SolidColorBrush x:Key="ElevatedBackground" Color="#1C1C26" />
+
+	<!-- Text -->
+	<SolidColorBrush x:Key="TextPrimary" Color="#F8FAFC" />
+	<SolidColorBrush x:Key="TextSecondary" Color="#CBD5E1" />
+	<SolidColorBrush x:Key="TextMuted" Color="#94A3B8" />
+	<SolidColorBrush x:Key="TextOnAccent" Color="#FFFFFF" />
+
+	<!-- Highlight -->
+	<SolidColorBrush x:Key="HighlightBackground" Color="#3A1A2B" />
+	<SolidColorBrush x:Key="HighlightForeground" Color="#FBCFE8" />
+
+	<!-- Accents -->
+	<SolidColorBrush x:Key="AccentPrimary" Color="#F472B6" />
+	<SolidColorBrush x:Key="AccentHover" Color="#FB64A5" />
+	<SolidColorBrush x:Key="AccentPressed" Color="#EC4899" />
+
+	<!-- Semantic Colors -->
+	<SolidColorBrush x:Key="SuccessColor" Color="#22C55E" />
+	<SolidColorBrush x:Key="WarningColor" Color="#F59E0B" />
+	<SolidColorBrush x:Key="DangerColor" Color="#EF4444" />
+	<SolidColorBrush x:Key="DangerHover" Color="#DC2626" />
+
+	<!-- Borders -->
+	<SolidColorBrush x:Key="BorderColor" Color="#2A2A36" />
+	<SolidColorBrush x:Key="BorderLight" Color="#1F1F2A" />
+
+</ResourceDictionary>

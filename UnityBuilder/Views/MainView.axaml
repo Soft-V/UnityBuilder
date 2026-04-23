@@ -3,14 +3,211 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:UnityBuilder.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:conv="using:UnityBuilder.Converters"
+             mc:Ignorable="d"
              x:Class="UnityBuilder.Views.MainView"
              x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
-  </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <UserControl.Resources>
+        <conv:AndBoolConverter x:Key="AndBoolConverter"/>
+    </UserControl.Resources>
+
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <ScrollViewer Background="{DynamicResource AppBackground}">
+
+        <StackPanel Margin="32"
+                    Spacing="26"
+                    MaxWidth="800"
+                    HorizontalAlignment="Center">
+
+            <TextBlock Text="Unity Builder"
+                       FontSize="30"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimary}"/>
+
+            <StackPanel Spacing="10">
+
+                <TextBlock Text="Project settings"
+                           FontSize="16"
+                           Foreground="{DynamicResource TextPrimary}"/>
+
+                <TextBox Width="460" Watermark="Unity path"/>
+                <TextBox Width="460" Watermark="Project path"/>
+                <TextBox Width="460" Watermark="Build version"/>
+
+            </StackPanel>
+
+            <StackPanel Spacing="10">
+
+                <CheckBox x:Name="CBLoadToFtp"
+                          Content="Upload to FTP"/>
+
+                <StackPanel Spacing="8"
+                            Margin="24,0,0,0"
+                            IsVisible="{Binding #CBLoadToFtp.IsChecked}">
+
+                    <TextBox Width="460" Watermark="FTP server"/>
+                    <TextBox Width="460" Watermark="Username"/>
+                    <TextBox Width="460" Watermark="Password"
+                             PasswordChar="*"/>
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Spacing="14">
+
+                <TextBlock Text="Platforms"
+                           FontSize="16"
+                           Foreground="{DynamicResource TextPrimary}"/>
+
+
+                <StackPanel Spacing="10">
+
+                    <StackPanel Spacing="6">
+
+                        <CheckBox Content="Windows x64"
+                                  x:Name="WinX64"/>
+
+                        <TextBox Width="460"
+                                 Watermark="Output path (Windows x64)"
+                                 Margin="24,0,0,0">
+
+                            <TextBox.IsVisible>
+                                <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                    <Binding ElementName="WinX64" Path="IsChecked"/>
+                                    <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+                                </MultiBinding>
+                            </TextBox.IsVisible>
+
+                        </TextBox>
+
+                    </StackPanel>
+
+                    <StackPanel Spacing="6">
+
+                        <CheckBox Content="Windows arm64"
+                                  x:Name="WinArm64"/>
+
+                        <TextBox Width="460"
+                                 Watermark="Output path (Windows arm64)"
+                                 Margin="24,0,0,0">
+
+                            <TextBox.IsVisible>
+                                <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                    <Binding ElementName="WinArm64" Path="IsChecked"/>
+                                    <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+                                </MultiBinding>
+                            </TextBox.IsVisible>
+
+                        </TextBox>
+
+                    </StackPanel>
+                    
+                    <StackPanel Spacing="6">
+
+                        <CheckBox Content="Windows x86"
+                                  x:Name="WinX86"/>
+
+                        <TextBox Width="460"
+                                 Watermark="Output path (Windows x86)"
+                                 Margin="24,0,0,0">
+
+                            <TextBox.IsVisible>
+                                <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                    <Binding ElementName="WinX86" Path="IsChecked"/>
+                                    <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+                                </MultiBinding>
+                            </TextBox.IsVisible>
+
+                        </TextBox>
+
+                    </StackPanel>
+
+                    <StackPanel Spacing="6">
+
+                        <CheckBox Content="Linux x64"
+                                  x:Name="LinuxX64"/>
+
+                        <TextBox Width="460"
+                                 Watermark="Output path (Linux x64)"
+                                 Margin="24,0,0,0">
+
+                            <TextBox.IsVisible>
+                                <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                    <Binding ElementName="LinuxX64" Path="IsChecked"/>
+                                    <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+                                </MultiBinding>
+                            </TextBox.IsVisible>
+
+                        </TextBox>
+
+                    </StackPanel>
+
+                    <StackPanel Spacing="6">
+
+                        <CheckBox Content="MacOS x64"
+                                  x:Name="MacX64"/>
+
+                        <TextBox Width="460"
+                                 Watermark="Output path (MacOS x64)"
+                                 Margin="24,0,0,0">
+
+                            <TextBox.IsVisible>
+                                <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                    <Binding ElementName="MacX64" Path="IsChecked"/>
+                                    <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+                                </MultiBinding>
+                            </TextBox.IsVisible>
+
+                        </TextBox>
+
+                    </StackPanel>
+
+                    <StackPanel Spacing="6">
+
+                        <CheckBox Content="Android"
+                                  x:Name="Android"
+                                  IsEnabled="False"/>
+
+                        <TextBox Width="460"
+                                 Watermark="Keystore / output path (Android)"
+                                 Margin="24,0,0,0">
+
+                            <TextBox.IsVisible>
+                                <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                    <Binding ElementName="Android" Path="IsChecked"/>
+                                    <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+                                </MultiBinding>
+                            </TextBox.IsVisible>
+
+                        </TextBox>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="12">
+
+                <Button Content="Cancel"
+                        Width="120"/>
+
+                <Button Content="Start Build"
+                        Width="160"
+                        Background="{DynamicResource AccentPrimary}"
+                        Foreground="{DynamicResource TextOnAccent}"/>
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
 </UserControl>
