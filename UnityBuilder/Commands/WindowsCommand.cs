@@ -1,20 +1,21 @@
-﻿using UnityBuilder.Models;
+﻿using System.Threading.Tasks;
+using UnityBuilder.Models;
 
 namespace UnityBuilder.Commands
 {
     public class WindowsCommand : IPlatformCommand
     {
-        public int Build(BuildParameters parameters)
+        async public Task<int> Build(BuildParameters parameters)
+        {
+            
+        }
+
+        async public Task<int> ComputeHash(HashParameters parameters)
         {
             throw new System.NotImplementedException();
         }
 
-        public int ComputeHash(HashParameters parameters)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public int UploadFtp(FtpParameters parameters)
+        async public Task<int> UploadFtp(FtpParameters parameters)
         {
             throw new System.NotImplementedException();
         }
