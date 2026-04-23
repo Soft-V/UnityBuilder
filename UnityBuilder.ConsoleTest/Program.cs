@@ -1,5 +1,7 @@
 ﻿using UnityBuilder.Commands;
 using UnityBuilder.Models;
+using UnityBuilder.Models.Enums;
+using UnityBuilder.Services;
 
 namespace UnityBuilder.ConsoleTest
 {
@@ -24,7 +26,24 @@ namespace UnityBuilder.ConsoleTest
             };
 
             var winBuild = new WindowsCommand();
-            var res = await winBuild.Build(buildParameters, cts.Token);
+            var nodes = new List<Node>
+            {
+                new Node
+                {
+                    Id = "build-win",
+                    Type = NodeType.Build,
+                    Action = token => winBuild.Build(buildParameters, token)
+                },
+                new Node
+                {
+                    Id = "build-win2",
+                    Type = NodeType.Build,
+                    DependsOn = new List<string> { "build-win" },
+                    Action = token => winBuild.Build(buildParameters, token)
+                }
+            };
+
+            await PipelineRunner.Run(nodes, cts.Token);
         }
     }
 }

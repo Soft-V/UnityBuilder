@@ -1,6 +1,6 @@
 ﻿namespace UnityBuilder.Models
 {
-    public class FtpParameters
+    public class FtpParameters : IParameters
     {
         public string Server { get; set; }
         public int Port { get; set; }
