@@ -34,20 +34,6 @@ namespace UnityBuilder
                     DataContext = Container.Resolve<MainViewModel>()
                 };
             }
-            else if (ApplicationLifetime is IActivityApplicationLifetime singleViewFactoryApplicationLifetime)
-            {
-                singleViewFactoryApplicationLifetime.MainViewFactory = () => new MainView
-                {
-                    DataContext = Container.Resolve<MainViewModel>()
-                };
-            }
-            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-            {
-                singleViewPlatform.MainView = new MainView
-                {
-                    DataContext = Container.Resolve<MainViewModel>()
-                };
-            }
 
             base.OnFrameworkInitializationCompleted();
         }

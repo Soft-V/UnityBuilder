@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:UnityBuilder"
              x:Class="UnityBuilder.App"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -24,6 +25,8 @@
                 <ColorPaletteResources x:Key="Dark" Accent="#F472B6" RegionColor="#1F1120" ErrorText="#FB7185" />
             </FluentTheme.Palettes>
         </FluentTheme>
+        <materialIcons:MaterialIconStyles />
+        <StyleInclude Source="/Resources/Styles/ButtonStyles.axaml" />
         <StyleInclude Source="/Resources/Styles/ScrollViewerStyles.axaml" />
     </Application.Styles>
 </Application>

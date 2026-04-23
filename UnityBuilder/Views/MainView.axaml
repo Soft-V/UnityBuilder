@@ -1,235 +1,304 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:UnityBuilder.ViewModels"
-             xmlns:conv="using:UnityBuilder.Converters"
-             mc:Ignorable="d"
-             x:Class="UnityBuilder.Views.MainView"
-             x:DataType="vm:MainViewModel">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:UnityBuilder.ViewModels"
+			 xmlns:conv="using:UnityBuilder.Converters"
+			 mc:Ignorable="d"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 x:Class="UnityBuilder.Views.MainView"
+			 x:DataType="vm:MainViewModel"
+			 Background="{DynamicResource AppBackground}">
 
-    <UserControl.Resources>
-        <conv:AndBoolConverter x:Key="AndBoolConverter"/>
-    </UserControl.Resources>
+	<UserControl.Resources>
+		<conv:AndBoolConverter x:Key="AndBoolConverter"/>
+	</UserControl.Resources>
 
-    <ScrollViewer Background="{DynamicResource AppBackground}">
+	<!-- ROOT GRID -->
+	<Grid RowDefinitions="Auto,*, Auto">
 
-        <StackPanel Margin="32"
-                    Spacing="28"
-                    MaxWidth="820"
-                    HorizontalAlignment="Center">
+		<!-- HEADER (fixed) -->
+		<Grid Grid.Row="0"
+			  Margin="32,20,32,0"
+			  ColumnDefinitions="*,Auto">
 
-            <!-- HEADER -->
-            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+			<TextBlock Text="Unity Builder"
+					   FontSize="32"
+					   FontWeight="SemiBold"
+					   Foreground="{DynamicResource TextPrimary}"/>
 
-                <TextBlock Text="Unity Builder"
-                           FontSize="32"
-                           FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextPrimary}"/>
+			<Button Grid.Column="1"
+					Classes="toolbar-btn"
+					Padding="12,6"
+					Command="{Binding SwitchThemeCommand}">
+				<materialIcons:MaterialIcon Kind="Brightness4"
+											Height="25"
+											Foreground="{DynamicResource AccentPrimary}"
+											Width="25"/>	
+			</Button>
 
-                <!-- THEME BUTTON -->
-                <Button Grid.Column="1"
-                        Content="Theme"
-                        Padding="12,6"
-                        Command="{Binding SwitchThemeCommand}"
-                        Background="{DynamicResource SurfaceBackground}"
-                        BorderBrush="{DynamicResource BorderColor}"
-                        Foreground="{DynamicResource TextPrimary}"/>
+		</Grid>
 
-            </Grid>
+		<!-- SCROLL AREA -->
+		<ScrollViewer Grid.Row="1"
+					  VerticalScrollBarVisibility="Auto">
 
-            <!-- CARD: PROJECT -->
-            <Border Background="{DynamicResource SurfaceBackground}"
-                    BorderBrush="{DynamicResource BorderColor}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="16">
+			<!-- IMPORTANT: NO StackPanel ROOT LIMIT -->
+			<StackPanel Margin="32"
+						Spacing="28"
+						MaxWidth="820"
+						HorizontalAlignment="Center">
 
-                <StackPanel Spacing="10">
+				<!-- ===== PROJECT ===== -->
+				<Border Background="{DynamicResource SurfaceBackground}"
+						BorderBrush="{DynamicResource BorderColor}"
+						BorderThickness="1"
+						CornerRadius="12"
+						Padding="16">
 
-                    <TextBlock Text="Project settings"
-                               FontSize="16"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextPrimary}"/>
+					<StackPanel Spacing="10">
+						<TextBlock Text="Project settings"
+								   FontSize="16"
+								   FontWeight="SemiBold"/>
 
-                    <TextBox Width="460" Watermark="Unity path"/>
-                    <TextBox Width="460" Watermark="Project path"/>
-                    <TextBox Width="460" Watermark="Build version"/>
+						<TextBox Width="460" Watermark="Unity path"/>
+						<TextBox Width="460" Watermark="Project path"/>
+						<TextBox Width="460" Watermark="Build version"/>
+					</StackPanel>
 
-                </StackPanel>
+				</Border>
 
-            </Border>
+				<!-- ===== FTP ===== -->
+				<Border Background="{DynamicResource SurfaceBackground}"
+						BorderBrush="{DynamicResource BorderColor}"
+						BorderThickness="1"
+						CornerRadius="12"
+						Padding="16">
 
-            <!-- CARD: FTP -->
-            <Border Background="{DynamicResource SurfaceBackground}"
-                    BorderBrush="{DynamicResource BorderColor}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="16">
+					<StackPanel Spacing="10">
 
-                <StackPanel Spacing="10">
+						<CheckBox x:Name="CBLoadToFtp"
+								  Content="Upload to FTP"
+								  FontWeight="Medium"/>
 
-                    <CheckBox x:Name="CBLoadToFtp"
-                              Content="Upload to FTP"
-                              FontWeight="Medium"/>
+						<StackPanel Spacing="8"
+									IsVisible="{Binding #CBLoadToFtp.IsChecked}">
 
-                    <StackPanel Spacing="8"
-                                Margin="24,0,0,0"
-                                IsVisible="{Binding #CBLoadToFtp.IsChecked}">
+							<TextBox Width="460" Watermark="FTP server"/>
+							<TextBox Width="460" Watermark="Username"/>
+							<TextBox Width="460" Watermark="Password"
+									 PasswordChar="*"/>
 
-                        <TextBox Width="460" Watermark="FTP server"/>
-                        <TextBox Width="460" Watermark="Username"/>
-                        <TextBox Width="460" Watermark="Password"
-                                 PasswordChar="*"/>
+						</StackPanel>
 
-                    </StackPanel>
+					</StackPanel>
 
-                </StackPanel>
+				</Border>
 
-            </Border>
+				<!-- ===== PLATFORMS (оставил как есть логически) ===== -->
+				<Border Background="{DynamicResource SurfaceBackground}"
+						BorderBrush="{DynamicResource BorderColor}"
+						BorderThickness="1"
+						CornerRadius="12"
+						Padding="16">
 
-            <!-- CARD: PLATFORMS -->
-            <Border Background="{DynamicResource SurfaceBackground}"
-                    BorderBrush="{DynamicResource BorderColor}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="16">
+					<StackPanel Spacing="12">
 
-                <StackPanel Spacing="14">
+						<!-- Windows x64 -->
+						<Border Background="{DynamicResource ElevatedBackground}"
+								CornerRadius="8"
+								Padding="10">
 
-                    <TextBlock Text="Platforms"
-                               FontSize="16"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextPrimary}"/>
+							<StackPanel Spacing="6">
 
-                    <!-- PLATFORM ITEMS -->
-                    <StackPanel Spacing="12">
+								<CheckBox Content="Windows x64" x:Name="WinX64"/>
 
-                        <!-- Windows x64 -->
-                        <StackPanel Spacing="6">
-                            <CheckBox Content="Windows x64" x:Name="WinX64"/>
+								<TextBox Width="460"
+										 Margin="24,0,0,0"
+										 Watermark="Output path (Windows x64)">
 
-                            <TextBox Width="460"
-                                     Watermark="Output path (Windows x64)">
+									<TextBox.IsVisible>
+										<MultiBinding Converter="{StaticResource AndBoolConverter}">
+											<Binding ElementName="WinX64" Path="IsChecked"/>
+											<Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+										</MultiBinding>
+									</TextBox.IsVisible>
 
-                                <TextBox.IsVisible>
-                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                                        <Binding ElementName="WinX64" Path="IsChecked"/>
-                                        <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
-                                    </MultiBinding>
-                                </TextBox.IsVisible>
+								</TextBox>
 
-                            </TextBox>
-                        </StackPanel>
+							</StackPanel>
 
-                        <!-- Windows arm64 -->
-                        <StackPanel Spacing="6">
-                            <CheckBox Content="Windows arm64" x:Name="WinArm64"/>
+						</Border>
 
-                            <TextBox Width="460"
-                                     Watermark="Output path (Windows arm64)">
+						<!-- Windows arm64 -->
+						<Border Background="{DynamicResource ElevatedBackground}"
+								CornerRadius="8"
+								Padding="10">
 
-                                <TextBox.IsVisible>
-                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                                        <Binding ElementName="WinArm64" Path="IsChecked"/>
-                                        <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
-                                    </MultiBinding>
-                                </TextBox.IsVisible>
+							<StackPanel Spacing="6">
 
-                            </TextBox>
-                        </StackPanel>
+								<CheckBox Content="Windows arm64" x:Name="WinArm64"/>
 
-                        <!-- Linux -->
-                        <StackPanel Spacing="6">
-                            <CheckBox Content="Linux x64" x:Name="LinuxX64"/>
+								<TextBox Width="460"
+										 Margin="24,0,0,0"
+										 Watermark="Output path (Windows arm64)">
 
-                            <TextBox Width="460"
-                                     Watermark="Output path (Linux x64)">
+									<TextBox.IsVisible>
+										<MultiBinding Converter="{StaticResource AndBoolConverter}">
+											<Binding ElementName="WinArm64" Path="IsChecked"/>
+											<Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+										</MultiBinding>
+									</TextBox.IsVisible>
 
-                                <TextBox.IsVisible>
-                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                                        <Binding ElementName="LinuxX64" Path="IsChecked"/>
-                                        <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
-                                    </MultiBinding>
-                                </TextBox.IsVisible>
+								</TextBox>
 
-                            </TextBox>
-                        </StackPanel>
+							</StackPanel>
 
-                        <!-- Mac -->
-                        <StackPanel Spacing="6">
-                            <CheckBox Content="MacOS x64" x:Name="MacX64"/>
+						</Border>
 
-                            <TextBox Width="460"
-                                     Watermark="Output path (MacOS x64)">
+						<!-- Windows x86 -->
+						<Border Background="{DynamicResource ElevatedBackground}"
+								CornerRadius="8"
+								Padding="10">
 
-                                <TextBox.IsVisible>
-                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                                        <Binding ElementName="MacX64" Path="IsChecked"/>
-                                        <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
-                                    </MultiBinding>
-                                </TextBox.IsVisible>
+							<StackPanel Spacing="6">
 
-                            </TextBox>
-                        </StackPanel>
+								<CheckBox Content="Windows x86" x:Name="WinX86"/>
 
-                        <!-- Android -->
-                        <StackPanel Spacing="6">
-                            <CheckBox Content="Android"
-                                      x:Name="Android"
-                                      IsEnabled="False"/>
+								<TextBox Width="460"
+										 Margin="24,0,0,0"
+										 Watermark="Output path (Windows x86)">
 
-                            <TextBox Width="460"
-                                     Watermark="Keystore / output path (Android)">
+									<TextBox.IsVisible>
+										<MultiBinding Converter="{StaticResource AndBoolConverter}">
+											<Binding ElementName="WinX86" Path="IsChecked"/>
+											<Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+										</MultiBinding>
+									</TextBox.IsVisible>
 
-                                <TextBox.IsVisible>
-                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                                        <Binding ElementName="Android" Path="IsChecked"/>
-                                        <Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
-                                    </MultiBinding>
-                                </TextBox.IsVisible>
+								</TextBox>
 
-                            </TextBox>
-                        </StackPanel>
+							</StackPanel>
 
-                    </StackPanel>
+						</Border>
 
-                </StackPanel>
+						<!-- Linux x64 -->
+						<Border Background="{DynamicResource ElevatedBackground}"
+								CornerRadius="8"
+								Padding="10">
 
-            </Border>
+							<StackPanel Spacing="6">
 
-            <!-- ACTION BAR -->
-            <Border Background="{DynamicResource SurfaceBackground}"
-                    BorderBrush="{DynamicResource BorderColor}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="14">
+								<CheckBox Content="Linux x64" x:Name="LinuxX64"/>
 
-                <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+								<TextBox Width="460"
+										 Margin="24,0,0,0"
+										 Watermark="Output path (Linux x64)">
 
-                    <TextBlock Text="Ready to build"
-                               Foreground="{DynamicResource TextMuted}"/>
+									<TextBox.IsVisible>
+										<MultiBinding Converter="{StaticResource AndBoolConverter}">
+											<Binding ElementName="LinuxX64" Path="IsChecked"/>
+											<Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+										</MultiBinding>
+									</TextBox.IsVisible>
 
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal"
-                                Spacing="12">
+								</TextBox>
 
-                        <Button Content="Cancel"
-                                Width="120"/>
+							</StackPanel>
 
-                        <Button Content="Start Build"
-                                Width="160"
-                                Background="{DynamicResource AccentPrimary}"
-                                Foreground="{DynamicResource TextOnAccent}"/>
+						</Border>
 
-                    </StackPanel>
+						<!-- MacOS x64 -->
+						<Border Background="{DynamicResource ElevatedBackground}"
+								CornerRadius="8"
+								Padding="10">
 
-                </Grid>
+							<StackPanel Spacing="6">
 
-            </Border>
+								<CheckBox Content="MacOS x64" x:Name="MacX64"/>
 
-        </StackPanel>
+								<TextBox Width="460"
+										 Margin="24,0,0,0"
+										 Watermark="Output path (MacOS x64)">
 
-    </ScrollViewer>
+									<TextBox.IsVisible>
+										<MultiBinding Converter="{StaticResource AndBoolConverter}">
+											<Binding ElementName="MacX64" Path="IsChecked"/>
+											<Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+										</MultiBinding>
+									</TextBox.IsVisible>
+
+								</TextBox>
+
+							</StackPanel>
+
+						</Border>
+
+						<!-- Android -->
+						<Border Background="{DynamicResource ElevatedBackground}"
+								CornerRadius="8"
+								Padding="10">
+
+							<StackPanel Spacing="6">
+
+								<CheckBox Content="Android"
+										  x:Name="Android"
+										  IsEnabled="False"/>
+
+								<TextBox Width="460"
+										 Margin="24,0,0,0"
+										 Watermark="Keystore / output path (Android)">
+
+									<TextBox.IsVisible>
+										<MultiBinding Converter="{StaticResource AndBoolConverter}">
+											<Binding ElementName="Android" Path="IsChecked"/>
+											<Binding ElementName="CBLoadToFtp" Path="IsChecked"/>
+										</MultiBinding>
+									</TextBox.IsVisible>
+
+								</TextBox>
+
+							</StackPanel>
+
+						</Border>
+
+					</StackPanel>
+
+				</Border>
+
+			</StackPanel>
+
+		</ScrollViewer>
+
+		<!-- ACTION BAR -->
+		<Border Background="{DynamicResource SurfaceBackground}"
+				BorderBrush="{DynamicResource BorderColor}"
+				BorderThickness="1"
+				CornerRadius="12"
+				Grid.Row="2"
+				Padding="14">
+
+			<Grid ColumnDefinitions="*,Auto">
+
+				<TextBlock Text="Ready to build"
+						   Foreground="{DynamicResource TextMuted}"/>
+
+				<StackPanel Grid.Column="1"
+							Orientation="Horizontal"
+							Spacing="12">
+
+					<Button Content="Cancel" Width="120"/>
+
+					<Button Content="Start Build"
+							Width="160"
+							Classes="accent-btn"/>
+
+				</StackPanel>
+
+			</Grid>
+
+		</Border>
+
+	</Grid>
 
 </UserControl>
