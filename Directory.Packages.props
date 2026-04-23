@@ -21,6 +21,7 @@
 		<PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
 		<PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.5" />
 		<PackageVersion Include="Hypocrite.Container" Version="1.2.5" />
+		<PackageVersion Include="SSH.NET" Version="2025.1.0" />
 
 	</ItemGroup>
 </Project>
