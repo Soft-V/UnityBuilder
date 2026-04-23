@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="UnityBuilder.ConsoleTest/UnityBuilder.ConsoleTest.csproj" Id="4e5ca166-47b3-4913-92f9-eaacae31ab85" />
   <Project Path="UnityBuilder.Desktop/UnityBuilder.Desktop.csproj" />
   <Project Path="UnityBuilder/UnityBuilder.csproj" />
 </Solution>
