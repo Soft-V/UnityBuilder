@@ -24,6 +24,9 @@ namespace UnityBuilder.Commands
             {
                 if (!platform.NeedBuild)
                     continue;
+
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
                 var buildNode = new Node()
                 {
                     Id = $"build-{platform.PlatformName}",
@@ -37,7 +40,8 @@ namespace UnityBuilder.Commands
                     },
                     Type = Models.Enums.NodeType.Build,
                     DependsOn = previousBuildNode == null ? [] : [previousBuildNode.Id],
-                    Action = platformCommand.Build
+                    Action = platformCommand.Build,
+                    CancellationTokenSource = cancellationTokenSource
                 };
                 previousBuildNode = buildNode;
 
@@ -57,7 +61,8 @@ namespace UnityBuilder.Commands
                         },
                         Type = Models.Enums.NodeType.Hash,
                         DependsOn = [buildNode.Id],
-                        Action = platformCommand.ComputeHash
+                        Action = platformCommand.ComputeHash,
+                        CancellationTokenSource = cancellationTokenSource
                     };
 
                     nodes.Add(computeHashNode);
@@ -82,7 +87,8 @@ namespace UnityBuilder.Commands
                         },
                         Type = Models.Enums.NodeType.Ftp,
                         DependsOn = computeHashNode == null ? [buildNode.Id] : [computeHashNode.Id],
-                        Action = platformCommand.UploadFtp
+                        Action = platformCommand.UploadFtp,
+                        CancellationTokenSource = cancellationTokenSource
                     };
 
                     nodes.Add(ftpNode);
@@ -92,9 +98,7 @@ namespace UnityBuilder.Commands
         }
         public static async Task Execute(HashSet<Node> nodes, CancellationToken token)
         {
-
             await PipelineRunner.Run(nodes, token);
-
         }
     }
 }

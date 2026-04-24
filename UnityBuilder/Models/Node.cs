@@ -13,7 +13,7 @@ namespace UnityBuilder.Models
     {
         public string Id { get; set; }
         public IParameters Parameters { get; set; }
-        public CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
+        public CancellationTokenSource CancellationTokenSource { get; set; }
         public NodeType Type { get; set; }
         public List<string> DependsOn { get; set; } = new();
         public Func<IParameters, CancellationToken, Action<ProgressChangedArgs>, Action<string>, Task<int>> Action { get; set; }
