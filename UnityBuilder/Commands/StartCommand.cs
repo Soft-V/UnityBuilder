@@ -13,18 +13,18 @@ namespace UnityBuilder.Commands
 {
     public static class PiplineStartCommand
     {
-        public static async Task Execute(PagesViewModel viewModel, CancellationToken token)
+        public static async Task<HashSet<Node>> CreateNodes(PagesViewModel viewModel)
         {
             HashSet<Node> nodes = new HashSet<Node>();
             Node previousBuildNode = null;
 
             IPlatformCommand platformCommand = new WindowsCommand();
 
-            foreach(var platform in viewModel.GetBuildPlatforms)
+            foreach (var platform in viewModel.GetBuildPlatforms)
             {
                 if (!platform.NeedBuild)
                     continue;
-                var buildNode = new Node() 
+                var buildNode = new Node()
                 {
                     Id = $"build-{platform.PlatformName}",
                     Parameters = new BuildParameters
@@ -72,13 +72,13 @@ namespace UnityBuilder.Commands
                         Id = $"ftp-{platform.PlatformName}",
                         Parameters = new FtpParameters
                         {
-                           Server = viewModel.FtpServer,
-                           Port = viewModel.FtpPort,
-                           DeleteOnUpload = viewModel.FtpDeleteOnUpload,
-                           Username = viewModel.FtpUsername, 
-                           Password = viewModel.FtpPassword,
-                           LocalPath = Path.Combine(viewModel.OutputDirectory, platform.PlatformName),
-                           TargetPath = platform.Path
+                            Server = viewModel.FtpServer,
+                            Port = viewModel.FtpPort,
+                            DeleteOnUpload = viewModel.FtpDeleteOnUpload,
+                            Username = viewModel.FtpUsername,
+                            Password = viewModel.FtpPassword,
+                            LocalPath = Path.Combine(viewModel.OutputDirectory, platform.PlatformName),
+                            TargetPath = platform.Path
                         },
                         Type = Models.Enums.NodeType.Ftp,
                         DependsOn = computeHashNode == null ? [buildNode.Id] : [computeHashNode.Id],
@@ -87,10 +87,14 @@ namespace UnityBuilder.Commands
 
                     nodes.Add(ftpNode);
                 }
-
             }
+            return nodes;
+        }
+        public static async Task Execute(HashSet<Node> nodes, CancellationToken token)
+        {
 
             await PipelineRunner.Run(nodes, token);
+
         }
     }
 }
