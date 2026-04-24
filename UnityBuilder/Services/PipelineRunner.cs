@@ -107,7 +107,7 @@ namespace UnityBuilder.Services
                     });
                 }); 
             }
-            catch
+            catch(Exception e) 
             {
             }
             finally
