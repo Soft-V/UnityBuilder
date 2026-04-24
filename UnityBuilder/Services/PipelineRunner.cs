@@ -53,7 +53,10 @@ namespace UnityBuilder.Services
                 if (finished.IsCompletedSuccessfully)
                     completed.Add(pair.Key);
                 else
-                    throw finished.Exception!;
+                {
+                    CancelNodeAndChildren(pair.Key, nodes);
+                    throw finished.Exception;
+                }
 
                 // отменяем все ноды 
                 if (token.IsCancellationRequested)
@@ -64,6 +67,12 @@ namespace UnityBuilder.Services
                     }
                 }
             }
+        }
+
+        private static void CancelNodeAndChildren(string key, HashSet<Node> nodes)
+        {
+            var cancelNode = nodes.FirstOrDefault(x => x.Id == key);
+            cancelNode.CancellationTokenSource.Cancel();
         }
 
         public async static Task RunNode(Node node)
@@ -91,6 +100,10 @@ namespace UnityBuilder.Services
                         node.ProcessOutput += data + "\n";
                     });
                 }); 
+            }
+            catch
+            {
+
             }
             finally
             {
