@@ -34,7 +34,7 @@ namespace UnityBuilder.Services
                 {
                     Console.WriteLine($"START {node.Id}");
 
-                    var task = RunNode(node, token); 
+                    var task = RunNode(node); 
                     running[node.Id] = task;
                 }
 
