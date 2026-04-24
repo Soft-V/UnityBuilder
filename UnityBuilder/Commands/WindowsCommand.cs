@@ -52,6 +52,10 @@ namespace UnityBuilder.Commands
                 Debug.WriteLine(a.Data);
             };
             proc.ErrorDataReceived += (s, a) => outputDataChanged?.Invoke(a.Data);
+
+            proc.BeginOutputReadLine(); 
+            proc.BeginErrorReadLine();
+
             await proc.WaitForExitAsync();
             return proc.ExitCode;
         }

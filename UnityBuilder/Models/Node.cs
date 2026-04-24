@@ -21,10 +21,10 @@ namespace UnityBuilder.Models
         public Func<IParameters, CancellationToken, Action<ProgressChangedArgs>, Action<string>, Task<int>> Action { get; set; }
 
         [ObservableProperty]
-        public string _processOutput;
+        private string _processOutput;
         [ObservableProperty]
-        public int _progress;
+        private int _progress;
         [ObservableProperty]
-        public bool _isInfinityProgress;
+        private bool _isInfinityProgress;
     }
 }
