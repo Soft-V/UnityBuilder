@@ -20,7 +20,7 @@ namespace UnityBuilder.Services
                 [NodeType.Ftp] = new SemaphoreSlim(10)
             };
 
-        public async static Task Run(List<Node> nodes, CancellationToken token)
+        public async static Task Run(HashSet<Node> nodes, CancellationToken token)
         {
             var completed = new HashSet<string>();
             var running = new Dictionary<string, Task>();
@@ -95,6 +95,7 @@ namespace UnityBuilder.Services
             finally
             {
                 semaphore.Release();
+                node.CancellationTokenSource.Dispose();
             }
         }
     }
