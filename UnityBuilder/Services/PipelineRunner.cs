@@ -55,7 +55,6 @@ namespace UnityBuilder.Services
                 else
                 {
                     CancelNodeAndChildren(pair.Key, nodes);
-                    throw finished.Exception;
                 }
 
                 // отменяем все ноды 
@@ -103,7 +102,7 @@ namespace UnityBuilder.Services
             }
             catch
             {
-
+                node.CancellationTokenSource.Cancel();
             }
             finally
             {

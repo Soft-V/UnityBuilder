@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
+using UnityBuilder.Commands;
 using UnityBuilder.Models;
 
 namespace UnityBuilder.ViewModels
@@ -52,7 +53,7 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty]
         private string _androidFtpPath;
 
-        public IEnumerable<(bool NeedBuild, string Path, string PlatformName)> GetBuildPlatforms => 
+        public IEnumerable<(bool? NeedBuild, string Path, string PlatformName)> GetBuildPlatforms => 
         [
             (BuildWinX64, WinX64FtpPath, TargetPlatforms.Windows64),
             (BuildWinX86, WinX86FtpPath, TargetPlatforms.Windows86),
@@ -60,5 +61,28 @@ namespace UnityBuilder.ViewModels
             (BuildMacX64, MacX64FtpPath, TargetPlatforms.OsX),
             (BuildAndroid, AndroidFtpPath, TargetPlatforms.Android),
         ];
+
+        public void SetParameters(PagesViewModel savedParameters)
+        {
+            UnityPath = savedParameters.UnityPath;
+            ProjectPath = savedParameters.ProjectPath;
+            BuildVersion = savedParameters.BuildVersion;
+            OutputDirectory = savedParameters.OutputDirectory;
+            ComputeHashes = savedParameters.ComputeHashes;
+            UploadOnFtp = savedParameters.UploadOnFtp;
+            FtpUsername = savedParameters.FtpUsername;
+            FtpPassword = savedParameters.FtpPassword;
+            FtpPort = savedParameters.FtpPort;
+            FtpServer = savedParameters.FtpServer;
+            FtpDeleteOnUpload = savedParameters.FtpDeleteOnUpload;
+            BuildWinX64 = savedParameters.BuildWinX64;
+            WinX64FtpPath = savedParameters.WinX64FtpPath;
+            BuildMacX64 = savedParameters.BuildMacX64;
+            MacX64FtpPath = savedParameters.MacX64FtpPath;
+            BuildLinuxX64 = savedParameters.BuildLinuxX64;
+            LinuxX64FtpPath = savedParameters.LinuxX64FtpPath;
+            BuildWinX86 = savedParameters.BuildWinX86;
+            WinX86FtpPath = savedParameters.WinX86FtpPath;
+        }
     }
 }

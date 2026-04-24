@@ -1,6 +1,7 @@
 ﻿using HashComputer.Backend;
 using HashComputer.Backend.Entities;
 using HashComputer.Backend.Services;
+using Newtonsoft.Json;
 using Renci.SshNet;
 using System;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Extensions;
 using UnityBuilder.Models;
+using UnityBuilder.ViewModels;
 
 namespace UnityBuilder.Commands
 {
@@ -75,6 +77,21 @@ namespace UnityBuilder.Commands
                 outputDataChanged?.Invoke($"Uploaded {target}/{relative}");
             }
             return 0;
+        }
+
+        public static void SaveParameters(PagesViewModel pagesViewModel)
+        {
+            var json = JsonConvert.SerializeObject(pagesViewModel);
+            UnityBuilder.Properties.Settings.Default.ParametersJson = json;
+            UnityBuilder.Properties.Settings.Default.Save();
+        }
+        public static PagesViewModel GetSavedParameters()
+        {
+            var json = UnityBuilder.Properties.Settings.Default.ParametersJson;
+            if (string.IsNullOrWhiteSpace(json))
+                return null;
+            var content = JsonConvert.DeserializeObject<PagesViewModel>(json);
+            return content; 
         }
     }
 }

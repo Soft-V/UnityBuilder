@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Styling;
 using CraftHub.Services;
 using System;
+using UnityBuilder.Commands;
+using UnityBuilder.ViewModels;
 
 namespace UnityBuilder.Views
 {
@@ -15,6 +17,15 @@ namespace UnityBuilder.Views
         public MainWindow()
         {
             InitializeComponent();
+            
+            //Clear properties kakish
+            //UnityBuilder.Properties.Settings.Default.ParametersJson = string.Empty;
+            //UnityBuilder.Properties.Settings.Default.Save();
+            //return;
+
+            var savedParameters = CommandHelper.GetSavedParameters();
+            if (savedParameters != null)
+                App.Current.Container.Resolve<PagesViewModel>().SetParameters(savedParameters);
 
             _themeService = App.Current.Container.Resolve<ThemeService>();
             ContentControl.PageTransition = new PageSlide()
@@ -42,6 +53,8 @@ namespace UnityBuilder.Views
 
             _currentPage.OnNextPage += OnNextPage;
             _currentPage.OnPreviousPage += OnPreviousPage;
+
+            CommandHelper.SaveParameters(App.Current.Container.Resolve<PagesViewModel>());
         }
 
         private void OnPreviousPage(object sender, EventArgs args)
@@ -56,6 +69,7 @@ namespace UnityBuilder.Views
 
             _currentPage.OnNextPage += OnNextPage;
             _currentPage.OnPreviousPage += OnPreviousPage;
+            CommandHelper.SaveParameters(App.Current.Container.Resolve<PagesViewModel>());
         }
 
         private IPageView GetCurrentPage()

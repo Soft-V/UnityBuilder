@@ -22,7 +22,7 @@ namespace UnityBuilder.Commands
 
             foreach (var platform in viewModel.GetBuildPlatforms)
             {
-                if (!platform.NeedBuild)
+                if (!(platform.NeedBuild ?? false))
                     continue;
 
                 CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();

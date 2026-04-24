@@ -46,5 +46,17 @@ namespace UnityBuilder.Properties {
                 this["CurrentLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ParametersJson {
+            get {
+                return ((string)(this["ParametersJson"]));
+            }
+            set {
+                this["ParametersJson"] = value;
+            }
+        }
     }
 }
