@@ -64,6 +64,7 @@ namespace UnityBuilder.Views
             {
                 case 0: return App.Current.Container.Resolve<FirstPage>();
                 case 1: return App.Current.Container.Resolve<SecondPage>();
+                case 2: return App.Current.Container.Resolve<ThirdPage>();
                 default: throw new NotImplementedException();
             }
         }

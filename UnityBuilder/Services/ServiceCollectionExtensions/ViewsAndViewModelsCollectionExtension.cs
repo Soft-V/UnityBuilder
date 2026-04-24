@@ -15,6 +15,7 @@ namespace UnityBuilder.Services.ServiceCollectionExtensions
         {
             collection.RegisterSingleton<FirstPage, FirstPage>();
             collection.RegisterSingleton<SecondPage, SecondPage>();
+            collection.RegisterSingleton<ThirdPage, ThirdPage>();
         }
 
         public static void AddViewModels(this ILightContainer collection)
