@@ -9,11 +9,12 @@ namespace UnityBuilder.Commands
 {
     public class WindowsCommand : IPlatformCommand
     {
-        async public Task<int> Build(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged)
+        async public Task<int> Build(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             if (pars is not BuildParameters parameters)
                 throw new ArgumentException(nameof(parameters));
 
+            progressChanged?.Invoke(new ProgressChangedArgs() { Progress = -1 });
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {
                 FileName = parameters.UnityPath,
@@ -41,24 +42,28 @@ namespace UnityBuilder.Commands
                     "-logfile", "-"
                 ]),
                 CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
             };
             var proc = Process.Start(startInfo);
+            proc.OutputDataReceived += (s, a) => outputDataChanged?.Invoke(a.Data);
+            proc.ErrorDataReceived += (s, a) => outputDataChanged?.Invoke(a.Data);
             await proc.WaitForExitAsync();
             return proc.ExitCode;
         }
 
-        async public Task<int> ComputeHash(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged)
+        async public Task<int> ComputeHash(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             if (pars is not HashParameters parameters)
                 throw new ArgumentException(nameof(parameters));
-            return await CommandHelper.ComputeHash(parameters, cancellationToken, progressChanged);
+            return await CommandHelper.ComputeHash(parameters, cancellationToken, progressChanged, outputDataChanged);
         }
 
-        async public Task<int> UploadFtp(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged)
+        async public Task<int> UploadFtp(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             if (pars is not FtpParameters parameters)
                 throw new ArgumentException(nameof(parameters));
-            return await CommandHelper.UploadFiles(parameters, cancellationToken, progressChanged);
+            return await CommandHelper.UploadFiles(parameters, cancellationToken, progressChanged, outputDataChanged);
         }
     }
 }

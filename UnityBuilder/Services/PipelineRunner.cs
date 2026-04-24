@@ -74,11 +74,21 @@ namespace UnityBuilder.Services
 
             try
             {
-                var _ = await node.Action(node.Parameters, node.CancellationTokenSource.Token, (progress) =>
+                var _ = await node.Action(node.Parameters, node.CancellationTokenSource.Token, 
+                (progress) =>
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
                         node.Progress = progress.Progress;
+                        if (progress.Progress == -1)
+                            node.IsInfinityProgress = true;
+                    });
+                },
+                (data) =>
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        node.ProcessOutput += data + "\n";
                     });
                 }); 
             }

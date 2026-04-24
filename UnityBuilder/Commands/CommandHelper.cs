@@ -14,9 +14,10 @@ namespace UnityBuilder.Commands
 {
     public static class CommandHelper
     {
-        async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged = null)
+        async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             ComputerService computerService = new ComputerService();
+            outputDataChanged?.Invoke($"Computing hashes in {parameters.TargetPath}");
             var result = await computerService.ComputeHash(
                 new ComputeParameters()
                 {
@@ -29,10 +30,11 @@ namespace UnityBuilder.Commands
                 progressChanged,
                 cancellationToken
             );
+            outputDataChanged?.Invoke(result.Item2);
             return result.Item1 ? 0 : -1;
         }
 
-        async public static Task<int> UploadFiles(FtpParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged = null)
+        async public static Task<int> UploadFiles(FtpParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
             await clientSsh.ConnectAsync(cancellationToken);
@@ -43,8 +45,10 @@ namespace UnityBuilder.Commands
             {
                 using SshCommand cmd = clientSsh.CreateCommand($"sudo rm -rf {parameters.TargetPath}");
                 await cmd.ExecuteAsync(cancellationToken);
+                outputDataChanged?.Invoke(cmd.Result);
                 using SshCommand cmd2 = clientSsh.CreateCommand($"mkdir -p {parameters.TargetPath}");
                 await cmd2.ExecuteAsync(cancellationToken);
+                outputDataChanged?.Invoke(cmd2.Result);
             }
 
             // upload all files
@@ -64,9 +68,11 @@ namespace UnityBuilder.Commands
                 using SshCommand cmd3 = clientSsh.CreateCommand(
                     $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
                 await cmd3.ExecuteAsync(cancellationToken);
+                outputDataChanged?.Invoke(cmd3.Result);
 
                 using var fs = File.OpenRead(file);
                 await clientFtp.UploadAsync(fs, $"{target}/{relative}");
+                outputDataChanged?.Invoke($"Uploaded {target}/{relative}");
             }
             return 0;
         }
