@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace UnityBuilder.ViewModels
 {
@@ -52,5 +54,15 @@ namespace UnityBuilder.ViewModels
         private bool _buildAndroid;
         [ObservableProperty]
         private string _androidFtpPath;
+
+        public IEnumerable<(bool, string)> GetBuildPlatforms => 
+        [
+            (BuildWinX64, WinX64FtpPath),
+            (BuildWinArm64, WinArm64FtpPath),
+            (BuildWinX86, WinX86FtpPath),
+            (BuildLinuxX64, LinuxX64FtpPath),
+            (BuildMacX64, MacX64FtpPath),
+            (BuildAndroid, AndroidFtpPath),
+        ];
     }
 }
