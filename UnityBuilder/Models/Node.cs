@@ -1,4 +1,5 @@
-﻿using HashComputer.Backend.Entities;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HashComputer.Backend.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Models.Enums;
+using UnityBuilder.ViewModels;
 
 namespace UnityBuilder.Models
 {
-    public class Node
+    public partial class Node : ObservableObject
     {
         public string Id { get; set; }
         public IParameters Parameters { get; set; }
@@ -18,8 +20,11 @@ namespace UnityBuilder.Models
         public List<string> DependsOn { get; set; } = new();
         public Func<IParameters, CancellationToken, Action<ProgressChangedArgs>, Action<string>, Task<int>> Action { get; set; }
 
-        public string ProcessOutput { get; set; }
-        public int Progress { get; set; }
-        public bool IsInfinityProgress { get; set; }
+        [ObservableProperty]
+        public string _processOutput;
+        [ObservableProperty]
+        public int _progress;
+        [ObservableProperty]
+        public bool _isInfinityProgress;
     }
 }

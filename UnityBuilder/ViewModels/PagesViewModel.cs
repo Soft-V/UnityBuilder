@@ -36,10 +36,6 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty]
         private string _winX64FtpPath;
         [ObservableProperty]
-        private bool _buildWinArm64;
-        [ObservableProperty]
-        private string _winArm64FtpPath;
-        [ObservableProperty]
         private bool _buildWinX86;
         [ObservableProperty]
         private string _winX86FtpPath;
@@ -59,11 +55,10 @@ namespace UnityBuilder.ViewModels
         public IEnumerable<(bool NeedBuild, string Path, string PlatformName)> GetBuildPlatforms => 
         [
             (BuildWinX64, WinX64FtpPath, TargetPlatforms.Windows64),
-            (BuildWinArm64, WinArm64FtpPath, TargetPlatforms.Windows64),
-            (BuildWinX86, WinX86FtpPath, TargetPlatforms.Windows64),
-            (BuildLinuxX64, LinuxX64FtpPath, TargetPlatforms.Windows64),
-            (BuildMacX64, MacX64FtpPath, TargetPlatforms.Windows64),
-            (BuildAndroid, AndroidFtpPath, TargetPlatforms.Windows64),
+            (BuildWinX86, WinX86FtpPath, TargetPlatforms.Windows86),
+            (BuildLinuxX64, LinuxX64FtpPath, TargetPlatforms.Linux64),
+            (BuildMacX64, MacX64FtpPath, TargetPlatforms.OsX),
+            (BuildAndroid, AndroidFtpPath, TargetPlatforms.Android),
         ];
     }
 }

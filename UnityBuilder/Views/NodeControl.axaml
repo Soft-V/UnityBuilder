@@ -3,10 +3,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="UnityBuilder.Views.NodeControl">
+             x:Class="UnityBuilder.Views.NodeControl"
+             xmlns:m="using:UnityBuilder.Models"
+			 x:DataType="m:Node">
     <Grid>
-		<Border>
-			
+		<Border CornerRadius="8"
+                Width="180"
+                Height="70"
+                Background="{DynamicResource BorderColor}"
+                BorderThickness="1">
+			<Grid RowDefinitions="Auto,Auto">
+				<TextBlock Text="{Binding Id}" Margin="0,8,0,0" FontSize="12" HorizontalAlignment="Center"/>
+				<TextBlock Text="{Binding Progress, StringFormat='{}{0}%'}" Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center"/>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

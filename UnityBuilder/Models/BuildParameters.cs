@@ -13,8 +13,9 @@
     public static class TargetPlatforms
     {
         public const string OsX = "StandaloneOSX";
-        public const string Windows = "StandaloneWindows";
+        public const string Windows86 = "StandaloneWindows";
         public const string Windows64 = "StandaloneWindows64";
         public const string Linux64 = "StandaloneLinux64";
+        public const string Android = "Android";
     }
 }

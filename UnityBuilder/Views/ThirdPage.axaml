@@ -51,32 +51,6 @@
 
 					</Border>
 
-					<!-- Windows arm64 -->
-					<Border Background="{DynamicResource ElevatedBackground}"
-							CornerRadius="8"
-							Padding="10">
-
-						<StackPanel Spacing="6">
-
-							<CheckBox Content="Windows arm64" x:Name="WinArm64" IsChecked="{Binding BuildWinArm64}"/>
-
-							<TextBox Width="460"
-										Margin="24,0,0,0"
-										Watermark="Output path (Windows arm64)" Text="{Binding WinArm64FtpPath}">
-
-								<TextBox.IsVisible>
-									<MultiBinding Converter="{StaticResource AndBoolConverter}">
-										<Binding ElementName="WinArm64" Path="IsChecked"/>
-										<Binding Path="UploadOnFtp"/>
-									</MultiBinding>
-								</TextBox.IsVisible>
-
-							</TextBox>
-
-						</StackPanel>
-
-					</Border>
-
 					<!-- Windows x86 -->
 					<Border Background="{DynamicResource ElevatedBackground}"
 							CornerRadius="8"
