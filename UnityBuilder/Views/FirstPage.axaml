@@ -20,10 +20,35 @@
 							FontSize="16"
 							FontWeight="SemiBold"/>
 
-				<TextBox Width="460" Watermark="Unity path" Text="{Binding UnityPath}"/>
-				<TextBox Width="460" Watermark="Project path" Text="{Binding ProjectPath}"/>
-				<TextBox Width="460" Watermark="Build version" Text="{Binding BuildVersion}"/>
-				<TextBox Width="460" Watermark="Output directory" Text="{Binding OutputDirectory}"/>
+				<Grid ColumnDefinitions="*,Auto">
+					<TextBox Width="460" Watermark="Unity path" Text="{Binding UnityPath}"/>
+					<Button Content="Choose"
+							Width="120"
+							Grid.Column="1"
+							Margin="6,0,0,0"
+							Classes="accent-btn"
+							Command="{Binding ChooseUnityPathCommand}"/>
+				</Grid>
+				<Grid ColumnDefinitions="*,Auto">
+					<TextBox Width="460" Watermark="Project path" Text="{Binding ProjectPath}"/>
+					<Button Content="Choose"
+							Width="120"
+							Grid.Column="1"
+							Margin="6,0,0,0"
+							Classes="accent-btn"
+							Command="{Binding ChooseProjectPathCommand}"/>
+				</Grid>
+				<TextBox Width="460" Watermark="Build version" Text="{Binding BuildVersion}"
+						 HorizontalAlignment="Left"/>
+				<Grid ColumnDefinitions="*,Auto">
+					<TextBox Width="460" Watermark="Output directory" Text="{Binding OutputDirectory}"/>
+					<Button Content="Choose"
+							Width="120"
+							Grid.Column="1"
+							Margin="6,0,0,0"
+							Classes="accent-btn"
+							Command="{Binding ChooseOutputPathCommand}"/>
+				</Grid>
 			</StackPanel>
 
 		</Border>

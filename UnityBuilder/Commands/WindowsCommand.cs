@@ -46,7 +46,11 @@ namespace UnityBuilder.Commands
                 RedirectStandardError = true,
             };
             var proc = Process.Start(startInfo);
-            proc.OutputDataReceived += (s, a) => outputDataChanged?.Invoke(a.Data);
+            proc.OutputDataReceived += (s, a) =>
+            {
+                outputDataChanged?.Invoke(a.Data);
+                Debug.WriteLine(a.Data);
+            };
             proc.ErrorDataReceived += (s, a) => outputDataChanged?.Invoke(a.Data);
             await proc.WaitForExitAsync();
             return proc.ExitCode;

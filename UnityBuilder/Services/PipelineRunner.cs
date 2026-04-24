@@ -27,43 +27,50 @@ namespace UnityBuilder.Services
 
             while (completed.Count < nodes.Count)
             {
-                var ready = nodes.Where(n =>!completed.Contains(n.Id) && !running.ContainsKey(n.Id) && n.DependsOn.All(d => completed.Contains(d)))
+                try
+                {
+                    var ready = nodes.Where(n => !completed.Contains(n.Id) && !running.ContainsKey(n.Id) && n.DependsOn.All(d => completed.Contains(d)))
                     .ToList();
 
-                foreach (var node in ready)
-                {
-                    Console.WriteLine($"START {node.Id}");
-
-                    var task = RunNode(node); 
-                    running[node.Id] = task;
-                }
-
-                if (running.Count == 0)
-                    throw new Exception("Deadlock");
-
-                // ждем пока вернётся выполненный таск
-                var finished = await Task.WhenAny(running.Values);
-
-                // ищем его среди выполненных
-                var pair = running.First(p => p.Value == finished);
-                running.Remove(pair.Key);
-
-                Console.WriteLine($"DONE {pair.Key}");
-
-                if (finished.IsCompletedSuccessfully)
-                    completed.Add(pair.Key);
-                else
-                {
-                    CancelNodeAndChildren(pair.Key, nodes);
-                }
-
-                // отменяем все ноды 
-                if (token.IsCancellationRequested)
-                {
-                    foreach (var node in nodes)
+                    foreach (var node in ready)
                     {
-                        node.CancellationTokenSource.Cancel();
+                        Console.WriteLine($"START {node.Id}");
+
+                        var task = RunNode(node);
+                        running[node.Id] = task;
                     }
+
+                    if (running.Count == 0)
+                        throw new Exception("Deadlock");
+
+                    // ждем пока вернётся выполненный таск
+                    var finished = await Task.WhenAny(running.Values);
+
+                    // ищем его среди выполненных
+                    var pair = running.First(p => p.Value == finished);
+                    running.Remove(pair.Key);
+
+                    Console.WriteLine($"DONE {pair.Key}");
+
+                    if (finished.IsCompletedSuccessfully)
+                        completed.Add(pair.Key);
+                    else
+                    {
+                        CancelNodeAndChildren(pair.Key, nodes);
+                    }
+
+                    // отменяем все ноды 
+                    if (token.IsCancellationRequested)
+                    {
+                        foreach (var node in nodes)
+                        {
+                            node.CancellationTokenSource.Cancel();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
                 }
             }
         }
@@ -102,12 +109,10 @@ namespace UnityBuilder.Services
             }
             catch
             {
-                node.CancellationTokenSource.Cancel();
             }
             finally
             {
                 semaphore.Release();
-                node.CancellationTokenSource.Dispose();
             }
         }
     }

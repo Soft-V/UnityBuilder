@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityBuilder.Commands;
 using UnityBuilder.Models;
 using UnityBuilder.ViewModels;
 
@@ -19,6 +20,9 @@ public partial class PipelinePage : UserControl, IPageView
         DataContext = App.Current.Container.Resolve<PipelinePageViewModel>();
         InitializeComponent();
         CreateNodes();
+
+        var vm = DataContext as PipelinePageViewModel;
+        vm.Start();
     }
 
     private void Button1_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
