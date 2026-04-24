@@ -28,6 +28,29 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty]
         private bool _ftpDeleteOnUpload;
 
-
+        [ObservableProperty]
+        private bool _buildWinX64;
+        [ObservableProperty]
+        private string _winX64FtpPath;
+        [ObservableProperty]
+        private bool _buildWinArm64;
+        [ObservableProperty]
+        private string _winArm64FtpPath;
+        [ObservableProperty]
+        private bool _buildWinX86;
+        [ObservableProperty]
+        private string _winX86FtpPath;
+        [ObservableProperty]
+        private bool _buildLinuxX64;
+        [ObservableProperty]
+        private string _linuxX64FtpPath;
+        [ObservableProperty]
+        private bool _buildMacX64;
+        [ObservableProperty]
+        private string _macX64FtpPath;
+        [ObservableProperty]
+        private bool _buildAndroid;
+        [ObservableProperty]
+        private string _androidFtpPath;
     }
 }

@@ -29,11 +29,11 @@
 
 					<StackPanel Spacing="6">
 
-						<CheckBox Content="Windows x64" x:Name="WinX64"/>
+						<CheckBox Content="Windows x64" x:Name="WinX64" IsChecked="{Binding BuildWinX64}"/>
 
 						<TextBox Width="460"
 									Margin="24,0,0,0"
-									Watermark="Output path (Windows x64)">
+									Watermark="Output path (Windows x64)"  Text="{Binding WinX64FtpPath}">
 
 							<TextBox.IsVisible>
 								<MultiBinding Converter="{StaticResource AndBoolConverter}">
@@ -55,11 +55,11 @@
 
 					<StackPanel Spacing="6">
 
-						<CheckBox Content="Windows arm64" x:Name="WinArm64"/>
+						<CheckBox Content="Windows arm64" x:Name="WinArm64" IsChecked="{Binding BuildWinArm64}"/>
 
 						<TextBox Width="460"
 									Margin="24,0,0,0"
-									Watermark="Output path (Windows arm64)">
+									Watermark="Output path (Windows arm64)" Text="{Binding WinArm64FtpPath}">
 
 							<TextBox.IsVisible>
 								<MultiBinding Converter="{StaticResource AndBoolConverter}">
@@ -81,11 +81,11 @@
 
 					<StackPanel Spacing="6">
 
-						<CheckBox Content="Windows x86" x:Name="WinX86"/>
+						<CheckBox Content="Windows x86" x:Name="WinX86" IsChecked="{Binding BuildWinX86}"/>
 
 						<TextBox Width="460"
 									Margin="24,0,0,0"
-									Watermark="Output path (Windows x86)">
+									Watermark="Output path (Windows x86)"  Text="{Binding WinX86FtpPath}">
 
 							<TextBox.IsVisible>
 								<MultiBinding Converter="{StaticResource AndBoolConverter}">
@@ -107,11 +107,11 @@
 
 					<StackPanel Spacing="6">
 
-						<CheckBox Content="Linux x64" x:Name="LinuxX64"/>
+						<CheckBox Content="Linux x64" x:Name="LinuxX64" IsChecked="{Binding BuildLinuxX64}"/>
 
 						<TextBox Width="460"
 									Margin="24,0,0,0"
-									Watermark="Output path (Linux x64)">
+									Watermark="Output path (Linux x64)" Text="{Binding LinuxX64FtpPath}">
 
 							<TextBox.IsVisible>
 								<MultiBinding Converter="{StaticResource AndBoolConverter}">
@@ -133,11 +133,11 @@
 
 					<StackPanel Spacing="6">
 
-						<CheckBox Content="MacOS x64" x:Name="MacX64"/>
+						<CheckBox Content="MacOS x64" x:Name="MacX64" IsChecked="{Binding BuildMacX64}"/>
 
 						<TextBox Width="460"
 									Margin="24,0,0,0"
-									Watermark="Output path (MacOS x64)">
+									Watermark="Output path (MacOS x64)" Text="{Binding MacX64FtpPath}">
 
 							<TextBox.IsVisible>
 								<MultiBinding Converter="{StaticResource AndBoolConverter}">
@@ -161,11 +161,11 @@
 
 						<CheckBox Content="Android"
 									x:Name="Android"
-									IsEnabled="False"/>
+									IsEnabled="False"  IsChecked="{Binding BuildAndroid}"/>
 
 						<TextBox Width="460"
 									Margin="24,0,0,0"
-									Watermark="Keystore / output path (Android)">
+									Watermark="Keystore / output path (Android)"  Text="{Binding AndroidFtpPath}">
 
 							<TextBox.IsVisible>
 								<MultiBinding Converter="{StaticResource AndBoolConverter}">
