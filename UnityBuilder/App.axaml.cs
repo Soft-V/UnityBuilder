@@ -1,4 +1,4 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
@@ -26,6 +26,7 @@ namespace UnityBuilder
             Container.RegisterInstance<ILightContainer>(Container);
             Container.AddCommonServices();
             Container.AddViewModels();
+            Container.AddViews();
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {

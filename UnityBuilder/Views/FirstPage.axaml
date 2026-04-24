@@ -1,0 +1,63 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="UnityBuilder.Views.FirstPage"
+			 xmlns:vm="using:UnityBuilder.ViewModels"
+			 x:DataType="vm:PagesViewModel">
+	<Grid>
+		<Border Background="{DynamicResource SurfaceBackground}"
+				BorderBrush="{DynamicResource BorderColor}"
+				BorderThickness="1"
+				CornerRadius="12"
+				Padding="16"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center">
+
+			<StackPanel Spacing="10">
+				<TextBlock Text="Project settings"
+							FontSize="16"
+							FontWeight="SemiBold"/>
+
+				<TextBox Width="460" Watermark="Unity path" Text="{Binding UnityPath}"/>
+				<TextBox Width="460" Watermark="Project path" Text="{Binding ProjectPath}"/>
+				<TextBox Width="460" Watermark="Build version" Text="{Binding BuildVersion}"/>
+				<TextBox Width="460" Watermark="Output directory" Text="{Binding OutputDirectory}"/>
+			</StackPanel>
+
+		</Border>
+
+		<!-- ACTION BAR -->
+		<Border Background="{DynamicResource SurfaceBackground}"
+				BorderBrush="{DynamicResource BorderColor}"
+				BorderThickness="1"
+				CornerRadius="12"
+				VerticalAlignment="Bottom"
+				HorizontalAlignment="Stretch"
+				Padding="14"
+				Margin="6">
+
+			<Grid ColumnDefinitions="*,Auto">
+
+				<TextBlock Text="Project Settings"
+						   VerticalAlignment="Center"
+						   Foreground="{DynamicResource TextMuted}"/>
+
+				<StackPanel Grid.Column="1"
+							Orientation="Horizontal"
+							Spacing="12">
+
+					<Button Content="Next page"
+							Width="160"
+							Classes="accent-btn"
+							Click="Button_Click"/>
+
+				</StackPanel>
+
+			</Grid>
+
+		</Border>
+	</Grid>
+    
+</UserControl>

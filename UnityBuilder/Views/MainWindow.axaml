@@ -1,8 +1,9 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:UnityBuilder.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
         xmlns:views="using:UnityBuilder.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="UnityBuilder.Views.MainWindow"
@@ -10,5 +11,30 @@
         MinWidth="600"
         Icon="/Assets/avalonia-logo.ico"
         Title="UnityBuilder">
-        <views:MainView />
+    <!-- ROOT GRID -->
+	<Grid RowDefinitions="Auto,*">
+
+		<!-- HEADER (fixed) -->
+		<Grid Grid.Row="0"
+			  Margin="32,20,32,0"
+			  ColumnDefinitions="*,Auto">
+
+			<TextBlock Text="Unity Builder"
+					   FontSize="32"
+					   FontWeight="SemiBold"
+					   Foreground="{DynamicResource TextPrimary}"/>
+
+			<Button Grid.Column="1"
+					Classes="toolbar-btn"
+					Padding="12,6"
+					Click="Button_Click">
+				<materialIcons:MaterialIcon Kind="Brightness4"
+											Height="25"
+											Foreground="{DynamicResource AccentPrimary}"
+											Width="25"/>	
+			</Button>
+
+		</Grid>
+		<TransitioningContentControl Name="ContentControl" Grid.Row="1"/>
+	</Grid>
 </Window>
