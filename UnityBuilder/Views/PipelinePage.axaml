@@ -1,0 +1,76 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:conv="using:UnityBuilder.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="UnityBuilder.Views.PipelinePage"
+			 xmlns:vm="using:UnityBuilder.ViewModels"
+			 x:DataType="vm:PipelinePageViewModel">
+	<UserControl.Resources>
+		<conv:AndBoolConverter x:Key="AndBoolConverter"/>
+	</UserControl.Resources>
+    <Grid>
+		
+
+		<!-- ACTION BAR -->
+		<Border Background="{DynamicResource SurfaceBackground}"
+				BorderBrush="{DynamicResource BorderColor}"
+				BorderThickness="1"
+				CornerRadius="12"
+				VerticalAlignment="Bottom"
+				HorizontalAlignment="Stretch"
+				Padding="14"
+				Margin="6">
+
+			<Grid ColumnDefinitions="*,Auto">
+
+				<TextBlock Text="Running..."
+						   VerticalAlignment="Center"
+						   Foreground="{DynamicResource WarningColor}">
+					<TextBlock.IsVisible>
+						<MultiBinding Converter="{StaticResource AndBoolConverter}">
+							<Binding Path="IsRunning"/>
+							<Binding Path="!IsDone"/>
+						</MultiBinding>
+					</TextBlock.IsVisible>
+				</TextBlock>
+				<TextBlock Text="Stopped"
+						   VerticalAlignment="Center"
+						   Foreground="{DynamicResource DangerColor}">
+					<TextBlock.IsVisible>
+						<MultiBinding Converter="{StaticResource AndBoolConverter}">
+							<Binding Path="!IsRunning"/>
+							<Binding Path="!IsDone"/>
+						</MultiBinding>
+					</TextBlock.IsVisible>
+				</TextBlock>
+				<TextBlock Text="Done"
+						   VerticalAlignment="Center"
+						   Foreground="{DynamicResource SuccessColor}">
+					<TextBlock.IsVisible>
+						<MultiBinding Converter="{StaticResource AndBoolConverter}">
+							<Binding Path="!IsRunning"/>
+							<Binding Path="IsDone"/>
+						</MultiBinding>
+					</TextBlock.IsVisible>
+				</TextBlock>
+
+				<StackPanel Grid.Column="1"
+							Orientation="Horizontal"
+							Spacing="12">
+
+					<Button Content="Previous page" Width="120"
+							IsEnabled="{Binding !IsRunning}"
+							Click="Button1_Click"/>
+					<Button Content="Cancel"
+							IsEnabled="{Binding IsRunning}"
+							Width="160"/>
+
+				</StackPanel>
+
+			</Grid>
+			
+		</Border>
+	</Grid>
+</UserControl>
