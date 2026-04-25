@@ -2,92 +2,122 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:conv="using:UnityBuilder.Converters"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:converters="using:UnityBuilder.Converters"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="700"
              x:Class="UnityBuilder.Views.PipelinePage"
-			 xmlns:vm="using:UnityBuilder.ViewModels"
-			 x:DataType="vm:PipelinePageViewModel">
-	<UserControl.Resources>
-		<conv:AndBoolConverter x:Key="AndBoolConverter"/>
-	</UserControl.Resources>
+             xmlns:vm="using:UnityBuilder.ViewModels"
+             x:DataType="vm:PipelinePageViewModel">
+
+    <UserControl.Resources>
+        <converters:AndBoolConverter x:Key="AndBoolConverter" />
+        <converters:NodeStateToBrushConverter x:Key="NodeStateToBrushConverter" />
+    </UserControl.Resources>
+
     <Grid>
-		<Border Background="{DynamicResource SurfaceBackground}"
-				BorderBrush="{DynamicResource BorderColor}"
-				BorderThickness="1"
-				CornerRadius="12"
-				VerticalAlignment="Stretch"
-				HorizontalAlignment="Stretch"
-				Padding="14"
-				Margin="100,40,100,90">
-			<ScrollViewer VerticalScrollBarVisibility="Auto"
-						  HorizontalScrollBarVisibility="Auto">
-				<Canvas Width="1000"
-						Height="700"
-						Background="Transparent"
-						Name="pipelineCanvas">
-			
-				</Canvas>
-			</ScrollViewer>
-		</Border>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="100" />
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
 
-		<!-- ACTION BAR -->
-		<Border Background="{DynamicResource SurfaceBackground}"
-				BorderBrush="{DynamicResource BorderColor}"
-				BorderThickness="1"
-				CornerRadius="12"
-				VerticalAlignment="Bottom"
-				HorizontalAlignment="Stretch"
-				Padding="14"
-				Margin="6">
+        <Border Grid.Row="0"
+                Background="{DynamicResource SurfaceBackground}"
+                BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Margin="6,6,6,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <Canvas Width="1200"
+                        Height="800"
+                        Background="Transparent"
+                        Name="pipelineCanvas" />
+            </ScrollViewer>
+        </Border>
+        
+        <GridSplitter Height="5"
+                      Background="Transparent"
+                      Grid.Row="1"
+                      ResizeDirection="Rows"
+                      IsVisible="{Binding SelectedNode, Converter={x:Static ObjectConverters.IsNotNull}}"
+                      ResizeBehavior="PreviousAndNext" />
 
-			<Grid ColumnDefinitions="*,Auto">
+        <Border Grid.Row="2"
+                x:Name="ConsolePanel"
+                Background="{DynamicResource ElevatedBackground}"
+                BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="1"
+                CornerRadius="12"
+                SizeChanged="Control_OnSizeChanged"
+                Margin="6,6,6,0"
+                IsVisible="{Binding SelectedNode, Converter={x:Static ObjectConverters.IsNotNull}}">
 
-				<TextBlock Text="Running..."
-						   VerticalAlignment="Center"
-						   Foreground="{DynamicResource WarningColor}">
-					<TextBlock.IsVisible>
-						<MultiBinding Converter="{StaticResource AndBoolConverter}">
-							<Binding Path="IsRunning"/>
-							<Binding Path="!IsDone"/>
-						</MultiBinding>
-					</TextBlock.IsVisible>
-				</TextBlock>
-				<TextBlock Text="Stopped"
-						   VerticalAlignment="Center"
-						   Foreground="{DynamicResource DangerColor}">
-					<TextBlock.IsVisible>
-						<MultiBinding Converter="{StaticResource AndBoolConverter}">
-							<Binding Path="!IsRunning"/>
-							<Binding Path="!IsDone"/>
-						</MultiBinding>
-					</TextBlock.IsVisible>
-				</TextBlock>
-				<TextBlock Text="Done"
-						   VerticalAlignment="Center"
-						   Foreground="{DynamicResource SuccessColor}">
-					<TextBlock.IsVisible>
-						<MultiBinding Converter="{StaticResource AndBoolConverter}">
-							<Binding Path="!IsRunning"/>
-							<Binding Path="IsDone"/>
-						</MultiBinding>
-					</TextBlock.IsVisible>
-				</TextBlock>
+            <Grid RowDefinitions="Auto,*">
 
-				<StackPanel Grid.Column="1"
-							Orientation="Horizontal"
-							Spacing="12">
+                <Grid VerticalAlignment="Top" 
+                      Margin="10">
 
-					<Button Content="Previous page" Width="120"
-							IsEnabled="{Binding !IsRunning}"
-							Click="Button1_Click"/>
-					<Button Content="Cancel"
-							IsEnabled="{Binding IsRunning}"
-							Width="160"/>
+                    <TextBlock Text="{Binding SelectedNode.Id}"
+                               HorizontalAlignment="Left" />
 
-				</StackPanel>
+                    <Button Grid.Column="3"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Click="CloseConsole_Click"
+                            Classes="toolbar-btn"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                        <materialIcons:MaterialIcon Kind="Close"/>
+                    </Button>
 
-			</Grid>
-			
-		</Border>
-	</Grid>
+                </Grid>
+
+                <Border Grid.Row="1"
+                        CornerRadius="0,0,10,10">
+                    <ScrollViewer x:Name="ConsoleScroll"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  Padding="14,8">
+                        <TextBlock x:Name="ConsoleOutput"
+                                   Text="{Binding SelectedNode.ProcessOutput}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource TextSecondary}"
+                                   TextWrapping="Wrap" />
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="3"
+                Background="{DynamicResource SurfaceBackground}"
+                BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="14,10"
+                Margin="6,6,6,6">
+
+            <Grid ColumnDefinitions="*,Auto">
+
+                <TextBlock Text="Pipline"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource TextMuted}" />
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                    <Button Content="Previous page"
+                            Width="120"
+                            IsEnabled="{Binding !IsRunning}"
+                            Click="Button1_Click" />
+                    <Button Content="Cancel"
+                            Classes="Accent"
+                            IsEnabled="{Binding IsRunning}"
+                            Width="120"
+                            Click="CancelButton_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>

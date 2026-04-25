@@ -53,10 +53,14 @@ namespace UnityBuilder.Services
                     Console.WriteLine($"DONE {pair.Key}");
 
                     if (finished.IsCompletedSuccessfully)
+                    {
                         completed.Add(pair.Key);
+                        (nodes.First(x => x.Id == pair.Key)).State = NodeState.Done;
+                    }
                     else
                     {
                         CancelNodeAndChildren(pair.Key, nodes);
+                        (nodes.First(x => x.Id == pair.Key)).State = NodeState.Error;
                     }
 
                     // отменяем все ноды 
@@ -70,7 +74,7 @@ namespace UnityBuilder.Services
                 }
                 catch (Exception e)
                 {
-
+                    break;
                 }
             }
         }
@@ -79,6 +83,7 @@ namespace UnityBuilder.Services
         {
             var cancelNode = nodes.FirstOrDefault(x => x.Id == key);
             cancelNode.CancellationTokenSource.Cancel();
+            cancelNode.State = NodeState.Cancelled;
         }
 
         public async static Task RunNode(Node node)

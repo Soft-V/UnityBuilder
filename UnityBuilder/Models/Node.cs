@@ -26,5 +26,7 @@ namespace UnityBuilder.Models
         private int _progress;
         [ObservableProperty]
         private bool _isInfinityProgress;
+        [ObservableProperty]
+        private NodeState _state = NodeState.Pending;
     }
 }

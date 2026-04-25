@@ -19,7 +19,7 @@
 			  Margin="32,20,32,0"
 			  ColumnDefinitions="*,Auto">
 
-			<TextBlock Text="Unity Builder"
+			<TextBlock Text="UN&#92;TY BU&#92;LDER"
 					   FontSize="32"
 					   FontWeight="SemiBold"
 					   Foreground="{DynamicResource TextPrimary}"/>

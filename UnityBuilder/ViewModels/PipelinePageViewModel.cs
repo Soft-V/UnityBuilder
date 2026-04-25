@@ -13,6 +13,8 @@ namespace UnityBuilder.ViewModels
         private bool _isRunning;
         [ObservableProperty]
         private bool _isDone;
+        [ObservableProperty]
+        private Node _selectedNode;
 
         private CancellationTokenSource _cancellationToken;
 
@@ -32,7 +34,7 @@ namespace UnityBuilder.ViewModels
 
         async public void Start()
         {
-            await PiplineStartCommand.Execute(Nodes, _cancellationToken.Token);
+            // await PiplineStartCommand.Execute(Nodes, _cancellationToken.Token);
         }
     }
 }
