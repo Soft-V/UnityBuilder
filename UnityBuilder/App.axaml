@@ -22,6 +22,7 @@
             </FluentTheme.Palettes>
         </FluentTheme>
         <materialIcons:MaterialIconStyles />
+		<StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <StyleInclude Source="/Resources/Styles/ButtonStyles.axaml" />
         <StyleInclude Source="/Resources/Styles/ScrollViewerStyles.axaml" />
     </Application.Styles>

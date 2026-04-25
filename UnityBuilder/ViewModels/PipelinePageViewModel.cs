@@ -14,6 +14,11 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty]
         private bool _isDone;
 
+        [ObservableProperty]
+        private string _selectedNodeId;
+        [ObservableProperty]
+        private string _selectedNodeOutput;
+
         private CancellationTokenSource _cancellationToken;
 
         public HashSet<Node> Nodes { get; set; }

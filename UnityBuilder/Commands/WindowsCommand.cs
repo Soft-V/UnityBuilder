@@ -48,7 +48,7 @@ namespace UnityBuilder.Commands
             };
             var proc = Process.Start(startInfo);
 
-            using DelayedActionCaller outputDelayer = new DelayedActionCaller(outputDataChanged);
+            using DelayedActionCaller outputDelayer = new DelayedActionCaller(outputDataChanged, 1000);
             proc.OutputDataReceived += (s, a) => outputDelayer.Handle(a.Data);
             proc.ErrorDataReceived += (s, a) => outputDataChanged?.Invoke(a.Data);
 

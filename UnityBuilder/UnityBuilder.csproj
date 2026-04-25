@@ -24,6 +24,8 @@
 		<PackageReference Include="Material.Icons" />
 		<PackageReference Include="Material.Icons.Avalonia" />
         <PackageReference Include="SSH.NET" />
+
+		<PackageReference Include="Avalonia.AvaloniaEdit" />
 	</ItemGroup>
 
 	<ItemGroup>

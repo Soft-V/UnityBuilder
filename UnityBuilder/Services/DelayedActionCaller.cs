@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace UnityBuilder.Services
 {
@@ -24,6 +25,8 @@ namespace UnityBuilder.Services
 
         public void Handle(string data)
         {
+            if (_action == null)
+                return;
             lock (_lock)
             {
                 _data.Add(data);

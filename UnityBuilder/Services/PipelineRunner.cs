@@ -101,9 +101,10 @@ namespace UnityBuilder.Services
                 },
                 (data) =>
                 {
+                    node.ProcessOutput += data;
                     Dispatcher.UIThread.Post(() =>
                     {
-                        node.ProcessOutput += data + "\n";
+                        node.CallProcessOutputChanged(data);
                     });
                 }); 
             }

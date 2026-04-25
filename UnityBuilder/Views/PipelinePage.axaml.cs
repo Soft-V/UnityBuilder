@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ public partial class PipelinePage : UserControl, IPageView
 {
     public event EventHandler OnNextPage;
     public event EventHandler OnPreviousPage;
+
+    private NodeControl _selectedControl;
 
     public PipelinePage()
     {
@@ -70,7 +73,48 @@ public partial class PipelinePage : UserControl, IPageView
                 pipelineCanvas.Children.Add(control);
                 Canvas.SetLeft(control, x);
                 Canvas.SetTop(control, y);
+
+                control.PointerPressed += OnNodeControlPressed;
+
+                // make the first node to be selected by default
+                if (_selectedControl == null)
+                    OnNodeControlPressed(control, null);
             }
         }
+    }
+
+    private void OnNodeControlPressed(object sender, PointerPressedEventArgs args)
+    {
+        if (sender is not NodeControl control)
+            return;
+
+        if (_selectedControl != null)
+        {
+            var nodeVmOld = _selectedControl.DataContext as Node;
+            nodeVmOld.ProcessOutputChanged -= Node_ProcessOutputChanged;
+        }
+
+        _selectedControl = control;
+
+        var nodeVm = _selectedControl.DataContext as Node;
+        nodeVm.ProcessOutputChanged += Node_ProcessOutputChanged;
+
+        // set current output id name
+        var vm = DataContext as PipelinePageViewModel;
+        vm.SelectedNodeId = nodeVm.Id;
+        // vm.SelectedNodeOutput = nodeVm.ProcessOutput;
+
+        avaloniaTextEditor.Text = nodeVm.ProcessOutput;
+    }
+
+    private void Node_ProcessOutputChanged(object sender, string data)
+    {
+        // handle only process output
+        if (sender is not Node node)
+            return;
+
+        var vm = DataContext as PipelinePageViewModel;
+        // vm.SelectedNodeOutput = node.ProcessOutput;
+        avaloniaTextEditor.AppendText(data);
     }
 }

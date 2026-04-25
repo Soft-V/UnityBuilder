@@ -22,5 +22,7 @@
 		<PackageVersion Include="Material.Icons.Avalonia" Version="2.4.1" />
 		<PackageVersion Include="SSH.NET" Version="2025.1.0" />
 
+		<PackageVersion Include="Avalonia.AvaloniaEdit" Version="11.2.0" />
+
 	</ItemGroup>
 </Project>

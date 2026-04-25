@@ -20,11 +20,17 @@ namespace UnityBuilder.Models
         public List<string> DependsOn { get; set; } = new();
         public Func<IParameters, CancellationToken, Action<ProgressChangedArgs>, Action<string>, Task<int>> Action { get; set; }
 
-        [ObservableProperty]
-        private string _processOutput;
+        public string ProcessOutput { get; set; }
+
         [ObservableProperty]
         private int _progress;
         [ObservableProperty]
         private bool _isInfinityProgress;
+
+        public event EventHandler<string> ProcessOutputChanged;
+        public void CallProcessOutputChanged(string data)
+        {
+            ProcessOutputChanged?.Invoke(this, data);
+        }
     }
 }
