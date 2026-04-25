@@ -15,7 +15,7 @@ public partial class PipelinePage : UserControl, IPageView
     public event EventHandler OnNextPage;
     public event EventHandler OnPreviousPage;
 
-    private NodeControl _selectedControl;
+    private Node _selectedNode;
 
     public PipelinePage()
     {
@@ -35,43 +35,6 @@ public partial class PipelinePage : UserControl, IPageView
     private void CancelButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         
-    }
-
-    private void CloseConsole_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-        SelectNode(null, null);
-    }
-
-    private void SelectNode(NodeControl? control, Node? node)
-    {
-        if (_selectedControl != null)
-            _selectedControl.IsSelected = false;
-
-        if (_subscribedNode != null)
-            _subscribedNode.PropertyChanged -= OnSelectedNodeOutputChanged;
-
-        _selectedControl = control;
-        _subscribedNode = node;
-
-        if (control != null)
-            control.IsSelected = true;
-
-        if (node != null)
-            node.PropertyChanged += OnSelectedNodeOutputChanged;
-
-        var vm = (PipelinePageViewModel)DataContext!;
-        vm.SelectedNode = node;
-    }
-
-    private void OnSelectedNodeOutputChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(Node.ProcessOutput))
-        {
-            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
-            {
-                ConsoleScroll.ScrollToEnd();
-            });
-        }
     }
 
     async public void CreateNodes()
@@ -111,42 +74,37 @@ public partial class PipelinePage : UserControl, IPageView
                 int y = 30 + (i * 100);
 
                 NodeControl control = new NodeControl(linedUp[i][j]);
-                control.NodeClicked += OnNodeClicked;
                 pipelineCanvas.Children.Add(control);
                 Canvas.SetLeft(control, x);
                 Canvas.SetTop(control, y);
 
-                control.PointerPressed += OnNodeControlPressed;
+                control.NodeClicked += OnNodeControlPressed;
 
                 // make the first node to be selected by default
-                if (_selectedControl == null)
-                    OnNodeControlPressed(control, null);
+                if (_selectedNode == null)
+                    OnNodeControlPressed(control, control.DataContext as Node);
             }
         }
     }
 
-    private void OnNodeControlPressed(object sender, PointerPressedEventArgs args)
+    private void OnNodeControlPressed(object sender, Node node)
     {
         if (sender is not NodeControl control)
             return;
 
-        if (_selectedControl != null)
+        if (_selectedNode != null)
         {
-            var nodeVmOld = _selectedControl.DataContext as Node;
-            nodeVmOld.ProcessOutputChanged -= Node_ProcessOutputChanged;
+            _selectedNode.ProcessOutputChanged -= Node_ProcessOutputChanged;
         }
 
-        _selectedControl = control;
-
-        var nodeVm = _selectedControl.DataContext as Node;
-        nodeVm.ProcessOutputChanged += Node_ProcessOutputChanged;
+        _selectedNode = node;
+        _selectedNode.ProcessOutputChanged += Node_ProcessOutputChanged;
 
         // set current output id name
         var vm = DataContext as PipelinePageViewModel;
-        vm.SelectedNodeId = nodeVm.Id;
-        // vm.SelectedNodeOutput = nodeVm.ProcessOutput;
+        vm.SelectedNodeId = _selectedNode.Id;
 
-        avaloniaTextEditor.Text = nodeVm.ProcessOutput;
+        avaloniaTextEditor.Text = _selectedNode.ProcessOutput;
     }
 
     private void Node_ProcessOutputChanged(object sender, string data)
@@ -156,7 +114,6 @@ public partial class PipelinePage : UserControl, IPageView
             return;
 
         var vm = DataContext as PipelinePageViewModel;
-        // vm.SelectedNodeOutput = node.ProcessOutput;
         avaloniaTextEditor.AppendText(data);
     }
 }
