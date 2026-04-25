@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Models;
+using UnityBuilder.Services;
 
 namespace UnityBuilder.Commands
 {
@@ -46,11 +47,9 @@ namespace UnityBuilder.Commands
                 RedirectStandardError = true,
             };
             var proc = Process.Start(startInfo);
-            proc.OutputDataReceived += (s, a) =>
-            {
-                outputDataChanged?.Invoke(a.Data);
-                Debug.WriteLine(a.Data);
-            };
+
+            using DelayedActionCaller outputDelayer = new DelayedActionCaller(outputDataChanged);
+            proc.OutputDataReceived += (s, a) => outputDelayer.Handle(a.Data);
             proc.ErrorDataReceived += (s, a) => outputDataChanged?.Invoke(a.Data);
 
             proc.BeginOutputReadLine(); 
