@@ -1,15 +1,39 @@
-﻿using Avalonia;
+﻿using System;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Avalonia.Interactivity;
 using UnityBuilder.Models;
 
-namespace UnityBuilder.Views;
-
-public partial class NodeControl : UserControl
+namespace UnityBuilder.Views
 {
-    public NodeControl(Node node)
+    public partial class NodeControl : UserControl
     {
-        DataContext = node;
-        InitializeComponent();
+        private readonly Node _node;
+
+        public event EventHandler<Node> NodeClicked;
+
+        private bool _isSelected;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                this.FindControl<Button>("CardButton")?.Classes.Set("selected", value);
+            }
+        }
+
+        public NodeControl(Node node)
+        {
+            _node = node;
+            DataContext = node;
+            InitializeComponent();
+            this.FindControl<Button>("CardButton").Click += OnCardClick;
+        }
+
+        private void OnCardClick(object? sender, RoutedEventArgs e)
+        {
+            NodeClicked?.Invoke(this, _node);
+        }
     }
 }

@@ -115,7 +115,7 @@
                             Orientation="Horizontal"
                             Spacing="12">
 
-                    <Button Content="Previous page" Width="120"
+                    <Button Content="← Back" Width="120"
                             IsEnabled="{Binding !IsRunning}"
                             Click="Button1_Click"/>
                     <Button Content="Cancel"

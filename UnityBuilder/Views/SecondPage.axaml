@@ -1,80 +1,104 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="540"
              x:Class="UnityBuilder.Views.SecondPage"
-			 xmlns:vm="using:UnityBuilder.ViewModels"
-			 x:DataType="vm:PagesViewModel">
-    <Grid>
-		<!-- ===== FTP ===== -->
-		<Border Background="{DynamicResource SurfaceBackground}"
-				BorderBrush="{DynamicResource BorderColor}"
-				BorderThickness="1"
-				VerticalAlignment="Center"
-				HorizontalAlignment="Center"
-				CornerRadius="12"
-				Padding="16">
+             xmlns:vm="using:UnityBuilder.ViewModels"
+             x:DataType="vm:PagesViewModel">
 
-			<StackPanel Spacing="10">
+    <Grid RowDefinitions="*,Auto">
 
-				<CheckBox Content="Compute hashes"
-							FontWeight="Medium"
-							IsChecked="{Binding ComputeHashes}"/>
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <Border Classes="card" Margin="16">
 
-				<CheckBox x:Name="CBLoadToFtp"
-							Content="Upload to FTP"
-							FontWeight="Medium"
-							IsChecked="{Binding UploadOnFtp}"/>
+                <StackPanel Spacing="20">
 
-				<StackPanel Spacing="8"
-							IsVisible="{Binding #CBLoadToFtp.IsChecked}">
+                    <StackPanel Spacing="4">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="Build Options" Classes="page-title"/>
+                        </StackPanel>
+                        <TextBlock Text="Configure file hashing and FTP upload"
+                                   Classes="caption"/>
+                    </StackPanel>
 
-					<TextBox Width="460" Watermark="FTP server" Text="{Binding FtpServer}"/>
-					<TextBox Width="460" Watermark="Username" Text="{Binding FtpUsername}"/>
-					<TextBox Width="460" Watermark="Password"
-								PasswordChar="*" Text="{Binding FtpPassword}"/>
-					<TextBox Width="460" Watermark="Port" Text="{Binding FtpPort}"/>
-					<CheckBox Content="Delete on upload"
-							  FontWeight="Medium" IsChecked="{Binding FtpDeleteOnUpload}"/>
+                    <Border Classes="divider"/>
 
-				</StackPanel>
+                    <Border Classes="card-elevated">
+                        <StackPanel Spacing="6">
+                            <CheckBox Content="Compute file hashes"
+                                      FontWeight="Medium"
+                                      IsChecked="{Binding ComputeHashes}"/>
+                            <TextBlock Text="A checksum file will be generated after each build"
+                                       Classes="caption" Margin="26,0,0,0"/>
+                        </StackPanel>
+                    </Border>
 
-			</StackPanel>
+                    <Border Classes="card-elevated">
+                        <StackPanel Spacing="14">
 
-		</Border>
+                            <CheckBox x:Name="CBLoadToFtp"
+                                      Content="Upload to FTP"
+                                      FontWeight="Medium"
+                                      IsChecked="{Binding UploadOnFtp}"/>
 
-		<!-- ACTION BAR -->
-		<Border Background="{DynamicResource SurfaceBackground}"
-				BorderBrush="{DynamicResource BorderColor}"
-				BorderThickness="1"
-				CornerRadius="12"
-				VerticalAlignment="Bottom"
-				HorizontalAlignment="Stretch"
-				Padding="14"
-				Margin="6">
+                            <StackPanel Spacing="12" Margin="0,4,0,0"
+                                        IsVisible="{Binding #CBLoadToFtp.IsChecked}">
 
-			<Grid ColumnDefinitions="*,Auto">
+                                <Grid ColumnDefinitions="*,160">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="Server" Classes="field-label"/>
+                                        <TextBox Watermark="ftp.example.com"
+                                                 Text="{Binding FtpServer}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
+                                        <TextBlock Text="Port" Classes="field-label"/>
+                                        <TextBox Watermark="21" Text="{Binding FtpPort}"/>
+                                    </StackPanel>
+                                </Grid>
 
-				<TextBlock Text="FTP and hash"
-						   VerticalAlignment="Center"
-						   Foreground="{DynamicResource TextMuted}"/>
+                                <Grid ColumnDefinitions="*,*">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Text="Username" Classes="field-label"/>
+                                        <TextBox Watermark="username"
+                                                 Text="{Binding FtpUsername}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
+                                        <TextBlock Text="Password" Classes="field-label"/>
+                                        <TextBox Watermark="••••••••"
+                                                 PasswordChar="●"
+                                                 Text="{Binding FtpPassword}"/>
+                                    </StackPanel>
+                                </Grid>
 
-				<StackPanel Grid.Column="1"
-							Orientation="Horizontal"
-							Spacing="12">
+                                <CheckBox Content="Delete remote files before upload"
+                                          FontWeight="Medium"
+                                          IsChecked="{Binding FtpDeleteOnUpload}"/>
 
-					<Button Content="Previous page" Width="120"
-							Click="Button1_Click"/>
-					<Button Content="Next page"
-							Width="160"
-							Classes="accent-btn"
-							Click="Button_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
 
-				</StackPanel>
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
 
-			</Grid>
+        <Border Grid.Row="1" Classes="action-bar">
+            <Grid>
+                <Border Classes="badge" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left">
+                    <TextBlock Text="Step 2 of 3" Classes="caption"/>
+                </Border>
+                <StackPanel Orientation="Horizontal" 
+                            Spacing="10"
+                            HorizontalAlignment="Right">
+                    <Button Content="← Back" Width="110" Click="Button1_Click"/>
+                    <Button Content="Next →" Width="110" Classes="accent-btn" Click="Button_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-		</Border>
-	</Grid>
+    </Grid>
 </UserControl>

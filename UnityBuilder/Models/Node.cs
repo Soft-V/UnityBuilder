@@ -32,5 +32,7 @@ namespace UnityBuilder.Models
         {
             ProcessOutputChanged?.Invoke(this, data);
         }
+        [ObservableProperty]
+        private NodeState _state = NodeState.Pending;
     }
 }
