@@ -107,7 +107,7 @@
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             Spacing="10">
-                    <Button Content="Previous page"
+                    <Button Content="← Back"
                             Width="120"
                             IsEnabled="{Binding !IsRunning}"
                             Click="Button1_Click" />

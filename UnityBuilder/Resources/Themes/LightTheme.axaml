@@ -1,36 +1,40 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<!-- Corporate Light Theme Colors -->
+    <!-- ── Light Theme ─────────────────────────────── -->
 
-	<!-- Backgrounds -->
-	<SolidColorBrush x:Key="AppBackground" Color="#F7F7FB" />
-	<SolidColorBrush x:Key="SurfaceBackground" Color="#FFFFFF" />
-	<SolidColorBrush x:Key="ElevatedBackground" Color="#F2F3F8" />
+    <!-- Backgrounds (neutral grays, no blue/pink tint) -->
+    <SolidColorBrush x:Key="AppBackground"       Color="#F5F5F7" />
+    <SolidColorBrush x:Key="SurfaceBackground"   Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ElevatedBackground"  Color="#EBEBED" />
 
-	<!-- Text -->
-	<SolidColorBrush x:Key="TextPrimary" Color="#0F172A" />
-	<SolidColorBrush x:Key="TextSecondary" Color="#334155" />
-	<SolidColorBrush x:Key="TextMuted" Color="#64748B" />
-	<SolidColorBrush x:Key="TextOnAccent" Color="#FFFFFF" />
+    <!-- Text -->
+    <SolidColorBrush x:Key="TextPrimary"         Color="#1D1D1F" />
+    <SolidColorBrush x:Key="TextSecondary"       Color="#3D3D3F" />
+    <SolidColorBrush x:Key="TextMuted"           Color="#86868B" />
+    <SolidColorBrush x:Key="TextOnAccent"        Color="#FFFFFF" />
 
-	<!-- Highlight -->
-	<SolidColorBrush x:Key="HighlightBackground" Color="#FFE4EC" />
-	<SolidColorBrush x:Key="HighlightForeground" Color="#9D174D" />
+    <!-- Highlight -->
+    <SolidColorBrush x:Key="HighlightBackground" Color="#FCE7F3" />
+    <SolidColorBrush x:Key="HighlightForeground" Color="#9D174D" />
 
-	<!-- Accents (Pink Corporate) -->
-	<SolidColorBrush x:Key="AccentPrimary" Color="#EC4899" />
-	<SolidColorBrush x:Key="AccentHover" Color="#DB2777" />
-	<SolidColorBrush x:Key="AccentPressed" Color="#BE185D" />
+    <!-- Accent (pink) -->
+    <SolidColorBrush x:Key="AccentPrimary"       Color="#EC4899" />
+    <SolidColorBrush x:Key="AccentHover"         Color="#DB2777" />
+    <SolidColorBrush x:Key="AccentPressed"       Color="#BE185D" />
 
-	<!-- Semantic Colors -->
-	<SolidColorBrush x:Key="SuccessColor" Color="#16A34A" />
-	<SolidColorBrush x:Key="WarningColor" Color="#D97706" />
-	<SolidColorBrush x:Key="DangerColor" Color="#DC2626" />
-	<SolidColorBrush x:Key="DangerHover" Color="#B91C1C" />
+    <!-- Semantic -->
+    <SolidColorBrush x:Key="SuccessColor"        Color="#15803D" />
+    <SolidColorBrush x:Key="WarningColor"        Color="#B45309" />
+    <SolidColorBrush x:Key="DangerColor"         Color="#DC2626" />
+    <SolidColorBrush x:Key="DangerHover"         Color="#B91C1C" />
 
-	<!-- Borders -->
-	<SolidColorBrush x:Key="BorderColor" Color="#E2E8F0" />
-	<SolidColorBrush x:Key="BorderLight" Color="#F1F5F9" />
+    <!-- Borders -->
+    <SolidColorBrush x:Key="BorderColor"         Color="#D1D1D6" />
+    <SolidColorBrush x:Key="BorderLight"         Color="#E5E5EA" />
+
+    <!-- Scrollbar (visible on light backgrounds) -->
+    <SolidColorBrush x:Key="ScrollThumb"         Color="#AEAEB2" />
+    <SolidColorBrush x:Key="ScrollThumbHover"    Color="#6E6E73" />
 
 </ResourceDictionary>

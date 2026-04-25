@@ -1,0 +1,46 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Design.PreviewWith>
+        <StackPanel Spacing="16" Margin="24" Width="320">
+            <TextBox Watermark="Default input"/>
+            <TextBox Text="Filled value"/>
+            <TextBox Watermark="Password" PasswordChar="●"/>
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="TextBox">
+        <Setter Property="Background"       Value="{DynamicResource ElevatedBackground}"/>
+        <Setter Property="Foreground"       Value="{DynamicResource TextPrimary}"/>
+        <Setter Property="BorderBrush"      Value="{DynamicResource BorderColor}"/>
+        <Setter Property="BorderThickness"  Value="1"/>
+        <Setter Property="CornerRadius"     Value="7"/>
+        <Setter Property="Padding"          Value="10,8"/>
+        <Setter Property="FontSize"         Value="13"/>
+        <Setter Property="MinHeight"        Value="0"/>
+        <Setter Property="SelectionBrush"   Value="{DynamicResource AccentPrimary}"/>
+    </Style>
+
+    <Style Selector="TextBox:pointerover">
+        <Setter Property="BorderBrush"      Value="{DynamicResource AccentHover}"/>
+    </Style>
+
+    <Style Selector="TextBox:focus-within">
+        <Setter Property="BorderBrush"      Value="{DynamicResource AccentPrimary}"/>
+        <Setter Property="Background"       Value="{DynamicResource SurfaceBackground}"/>
+    </Style>
+
+    <Style Selector="TextBox:disabled">
+        <Setter Property="Opacity"          Value="0.5"/>
+    </Style>
+
+    <Style Selector="TextBox /template/ Border#PART_BorderElement">
+        <Setter Property="CornerRadius"     Value="7"/>
+    </Style>
+
+    <Style Selector="TextBox /template/ TextBlock#PART_Watermark">
+        <Setter Property="Foreground"       Value="{DynamicResource TextMuted}"/>
+        <Setter Property="FontSize"         Value="13"/>
+    </Style>
+
+</Styles>

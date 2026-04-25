@@ -1,63 +1,51 @@
 <Styles xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style Selector="ScrollViewer">
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
 
     <Style Selector="ScrollBar">
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
 
     <Style Selector="ScrollBar RepeatButton">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-    </Style>
-
-    <Style Selector="ScrollBar[Orientation=Horizontal]">
-        <Setter Property="AllowAutoHide" Value="False" />
-    </Style>
-    <Style Selector="ScrollBar[Orientation=Horizontal] Thumb">
-        <Setter Property="CornerRadius" Value="18" />
-        <Setter Property="Height" Value="6" />
-        <Setter Property="Background" Value="{DynamicResource BorderColor}" />
-    </Style>
-    <Style Selector="ScrollBar[Orientation=Horizontal] Thumb:pointerover">
-        <Setter Property="Background" Value="{DynamicResource BorderLight}" />
+        <Setter Property="Background"      Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
     </Style>
 
     <Style Selector="ScrollBar[Orientation=Vertical]">
-        <Setter Property="AllowAutoHide" Value="False" />
+        <Setter Property="AllowAutoHide" Value="True"/>
+        <Setter Property="Width"         Value="8"/>
     </Style>
+
     <Style Selector="ScrollBar[Orientation=Vertical] Thumb">
-        <Setter Property="CornerRadius" Value="6" />
-        <Setter Property="Width" Value="8" />
-        <Setter Property="Background" Value="{DynamicResource BorderColor}" />
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Width"        Value="6"/>
+        <Setter Property="Background"   Value="{DynamicResource ScrollThumb}"/>
+        <Setter Property="Margin"       Value="1"/>
     </Style>
+
     <Style Selector="ScrollBar[Orientation=Vertical] Thumb:pointerover">
-        <Setter Property="Background" Value="{DynamicResource BorderLight}" />
+        <Setter Property="Width"      Value="8"/>
+        <Setter Property="Background" Value="{DynamicResource ScrollThumbHover}"/>
     </Style>
 
-    <Style Selector="ScrollViewer ScrollBar[Orientation=Horizontal]">
-        <Setter Property="AllowAutoHide" Value="False" />
+    <Style Selector="ScrollBar[Orientation=Horizontal]">
+        <Setter Property="AllowAutoHide" Value="True"/>
+        <Setter Property="Height"        Value="8"/>
     </Style>
 
-    <Style Selector="ScrollViewer ScrollBar[Orientation=Horizontal] Thumb">
-        <Setter Property="CornerRadius" Value="18" />
-        <Setter Property="Height" Value="6" />
-        <Setter Property="Background" Value="{DynamicResource BorderColor}" />
-    </Style>
-    <Style Selector="ScrollViewer ScrollBar[Orientation=Horizontal] Thumb:pointerover">
-        <Setter Property="Background" Value="{DynamicResource BorderLight}" />
+    <Style Selector="ScrollBar[Orientation=Horizontal] Thumb">
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Height"       Value="6"/>
+        <Setter Property="Background"   Value="{DynamicResource ScrollThumb}"/>
+        <Setter Property="Margin"       Value="1"/>
     </Style>
 
-    <Style Selector="ScrollViewer ScrollBar[Orientation=Vertical] Thumb">
-        <Setter Property="CornerRadius" Value="6" />
-        <Setter Property="Width" Value="8" />
-        <Setter Property="Background" Value="{DynamicResource BorderColor}" />
-    </Style>
-    <Style Selector="ScrollViewer ScrollBar[Orientation=Vertical] Thumb:pointerover">
-        <Setter Property="Background" Value="{DynamicResource BorderLight}" />
+    <Style Selector="ScrollBar[Orientation=Horizontal] Thumb:pointerover">
+        <Setter Property="Height"     Value="8"/>
+        <Setter Property="Background" Value="{DynamicResource ScrollThumbHover}"/>
     </Style>
 
 </Styles>

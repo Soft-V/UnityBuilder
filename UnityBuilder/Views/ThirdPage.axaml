@@ -2,196 +2,177 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 xmlns:conv="using:UnityBuilder.Converters"
+             xmlns:conv="using:UnityBuilder.Converters"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
              x:Class="UnityBuilder.ThirdPage"
-			 xmlns:vm="using:UnityBuilder.ViewModels"
-			 x:DataType="vm:PagesViewModel">
-	<UserControl.Resources>
-		<conv:AndBoolConverter x:Key="AndBoolConverter"/>
-	</UserControl.Resources>
-    <Grid>
-		<!-- ===== PLATFORMS (оставил как есть логически) ===== -->
-		<Border Background="{DynamicResource SurfaceBackground}"
-				BorderBrush="{DynamicResource BorderColor}"
-				BorderThickness="1"
-				CornerRadius="12"
-				VerticalAlignment="Center"
-				HorizontalAlignment="Center"
-				Margin="0,40,0,100"
-				Padding="16">
-			<!-- SCROLL AREA -->
-			<ScrollViewer 
-						  VerticalScrollBarVisibility="Auto">
-				<StackPanel Spacing="12" Margin="0,0,10,0">
+             xmlns:vm="using:UnityBuilder.ViewModels"
+             x:DataType="vm:PagesViewModel">
 
-					<!-- Windows x64 -->
-					<Border Background="{DynamicResource ElevatedBackground}"
-							CornerRadius="8"
-							Padding="10">
+    <UserControl.Resources>
+        <conv:AndBoolConverter x:Key="AndBoolConverter" />
+    </UserControl.Resources>
 
-						<StackPanel Spacing="6">
+    <Grid RowDefinitions="*,Auto">
 
-							<CheckBox Content="Windows x64" x:Name="WinX64" IsChecked="{Binding BuildWinX64}"/>
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <Border Classes="card" Margin="16">
 
-							<TextBox Width="460"
-										Margin="24,0,0,0"
-										Watermark="Output path (Windows x64)"  Text="{Binding WinX64FtpPath}">
+                <StackPanel Spacing="20">
 
-								<TextBox.IsVisible>
-									<MultiBinding Converter="{StaticResource AndBoolConverter}">
-										<Binding ElementName="WinX64" Path="IsChecked"/>
-										<Binding Path="UploadOnFtp"/>
-									</MultiBinding>
-								</TextBox.IsVisible>
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="Target Platforms" Classes="page-title" />
+                        <TextBlock Text="Select which platforms to build for"
+                                   Classes="caption" />
+                    </StackPanel>
 
-							</TextBox>
+                    <Border Classes="divider" />
 
-						</StackPanel>
+                    <Border Classes="card-elevated">
+                        <StackPanel Spacing="8">
+                            <CheckBox Content="Windows x64"
+                                      x:Name="WinX64"
+                                      IsChecked="{Binding BuildWinX64}" />
+                            <TextBlock Text="Path on the remote server" Classes="field-label">
+                                <TextBlock.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="WinX64" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <TextBox Watermark="FTP destination path (Windows x64)"
+                                     Text="{Binding WinX64FtpPath}">
+                                <TextBox.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="WinX64" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBox.IsVisible>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
 
-					</Border>
+                    <Border Classes="card-elevated">
+                        <StackPanel Spacing="8">
+                            <CheckBox Content="Windows x86"
+                                      x:Name="WinX86"
+                                      IsChecked="{Binding BuildWinX86}" />
+                            <TextBlock Text="Path on the remote server" Classes="field-label">
+                                <TextBlock.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="WinX86" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <TextBox Watermark="FTP destination path (Windows x86)"
+                                     Text="{Binding WinX86FtpPath}">
+                                <TextBox.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="WinX86" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBox.IsVisible>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
 
-					<!-- Windows x86 -->
-					<Border Background="{DynamicResource ElevatedBackground}"
-							CornerRadius="8"
-							Padding="10">
+                    <Border Classes="card-elevated">
+                        <StackPanel Spacing="8">
+                            <CheckBox Content="Linux x64"
+                                      x:Name="LinuxX64"
+                                      IsChecked="{Binding BuildLinuxX64}" />
+                            <TextBlock Text="Path on the remote server" Classes="field-label">
+                                <TextBlock.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="LinuxX64" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <TextBox Watermark="FTP destination path (Linux x64)"
+                                     Text="{Binding LinuxX64FtpPath}">
+                                <TextBox.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="LinuxX64" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBox.IsVisible>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
 
-						<StackPanel Spacing="6">
+                    <Border Classes="card-elevated">
+                        <StackPanel Spacing="8">
+                            <CheckBox Grid.Column="1" Content="macOS x64"
+                                      x:Name="MacX64"
+                                      IsChecked="{Binding BuildMacX64}" />
+                            <TextBlock Text="Path on the remote server" Classes="field-label">
+                                <TextBlock.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="MacX64" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <TextBox Watermark="FTP destination path (macOS x64)"
+                                     Text="{Binding MacX64FtpPath}">
+                                <TextBox.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="MacX64" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBox.IsVisible>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
 
-							<CheckBox Content="Windows x86" x:Name="WinX86" IsChecked="{Binding BuildWinX86}"/>
+                    <Border Classes="card-elevated" Opacity="0.5">
+                        <StackPanel Spacing="8">
+                            <CheckBox Grid.Column="1" Content="Android"
+                                      x:Name="Android"
+                                      IsEnabled="False"
+                                      IsChecked="{Binding BuildAndroid}" />
+                            <TextBlock Text="Path on the remote server" Classes="field-label">
+                                <TextBlock.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="Android" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBlock.IsVisible>
+                            </TextBlock>
+                            <TextBox Watermark="FTP destination path (Android)"
+                                     Text="{Binding AndroidFtpPath}" Margin="26,0,0,0">
+                                <TextBox.IsVisible>
+                                    <MultiBinding Converter="{StaticResource AndBoolConverter}">
+                                        <Binding ElementName="Android" Path="IsChecked" />
+                                        <Binding Path="UploadOnFtp" />
+                                    </MultiBinding>
+                                </TextBox.IsVisible>
+                            </TextBox>
+                        </StackPanel>
+                    </Border>
 
-							<TextBox Width="460"
-										Margin="24,0,0,0"
-										Watermark="Output path (Windows x86)"  Text="{Binding WinX86FtpPath}">
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
 
-								<TextBox.IsVisible>
-									<MultiBinding Converter="{StaticResource AndBoolConverter}">
-										<Binding ElementName="WinX86" Path="IsChecked"/>
-										<Binding Path="UploadOnFtp"/>
-									</MultiBinding>
-								</TextBox.IsVisible>
+        <Border Grid.Row="1" Classes="action-bar">
+            <Grid>
+                <Border Classes="badge"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center">
+                    <TextBlock Text="Step 3 of 3" Classes="caption" />
+                </Border>
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal"
+                            Spacing="10">
+                    <Button Content="← Back" Width="110" Click="Button1_Click" />
+                    <Button Content="▶ Start Build" Width="130" Classes="accent-btn" Click="Button_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
 
-							</TextBox>
-
-						</StackPanel>
-
-					</Border>
-
-					<!-- Linux x64 -->
-					<Border Background="{DynamicResource ElevatedBackground}"
-							CornerRadius="8"
-							Padding="10">
-
-						<StackPanel Spacing="6">
-
-							<CheckBox Content="Linux x64" x:Name="LinuxX64" IsChecked="{Binding BuildLinuxX64}"/>
-
-							<TextBox Width="460"
-										Margin="24,0,0,0"
-										Watermark="Output path (Linux x64)" Text="{Binding LinuxX64FtpPath}">
-
-								<TextBox.IsVisible>
-									<MultiBinding Converter="{StaticResource AndBoolConverter}">
-										<Binding ElementName="LinuxX64" Path="IsChecked"/>
-										<Binding Path="UploadOnFtp"/>
-									</MultiBinding>
-								</TextBox.IsVisible>
-
-							</TextBox>
-
-						</StackPanel>
-
-					</Border>
-
-					<!-- MacOS x64 -->
-					<Border Background="{DynamicResource ElevatedBackground}"
-							CornerRadius="8"
-							Padding="10">
-
-						<StackPanel Spacing="6">
-
-							<CheckBox Content="MacOS x64" x:Name="MacX64" IsChecked="{Binding BuildMacX64}"/>
-
-							<TextBox Width="460"
-										Margin="24,0,0,0"
-										Watermark="Output path (MacOS x64)" Text="{Binding MacX64FtpPath}">
-
-								<TextBox.IsVisible>
-									<MultiBinding Converter="{StaticResource AndBoolConverter}">
-										<Binding ElementName="MacX64" Path="IsChecked"/>
-										<Binding Path="UploadOnFtp"/>
-									</MultiBinding>
-								</TextBox.IsVisible>
-
-							</TextBox>
-
-						</StackPanel>
-
-					</Border>
-
-					<!-- Android -->
-					<Border Background="{DynamicResource ElevatedBackground}"
-							CornerRadius="8"
-							Padding="10">
-
-						<StackPanel Spacing="6">
-
-							<CheckBox Content="Android"
-										x:Name="Android"
-										IsEnabled="False"  IsChecked="{Binding BuildAndroid}"/>
-
-							<TextBox Width="460"
-										Margin="24,0,0,0"
-										Watermark="Keystore / output path (Android)"  Text="{Binding AndroidFtpPath}">
-
-								<TextBox.IsVisible>
-									<MultiBinding Converter="{StaticResource AndBoolConverter}">
-										<Binding ElementName="Android" Path="IsChecked"/>
-										<Binding Path="UploadOnFtp"/>
-									</MultiBinding>
-								</TextBox.IsVisible>
-
-							</TextBox>
-
-						</StackPanel>
-
-					</Border>
-
-				</StackPanel>
-			</ScrollViewer>
-		</Border>
-
-		<!-- ACTION BAR -->
-		<Border Background="{DynamicResource SurfaceBackground}"
-				BorderBrush="{DynamicResource BorderColor}"
-				BorderThickness="1"
-				CornerRadius="12"
-				VerticalAlignment="Bottom"
-				HorizontalAlignment="Stretch"
-				Padding="14"
-				Margin="6">
-
-			<Grid ColumnDefinitions="*,Auto">
-
-				<TextBlock Text="Platforms"
-						   VerticalAlignment="Center"
-						   Foreground="{DynamicResource TextMuted}"/>
-
-				<StackPanel Grid.Column="1"
-							Orientation="Horizontal"
-							Spacing="12">
-
-					<Button Content="Previous page" Width="120"
-							Click="Button1_Click"/>
-					<Button Content="Start"
-							Width="160"
-							Classes="accent-btn"
-							Click="Button_Click"/>
-
-				</StackPanel>
-
-			</Grid>
-			
-		</Border>
-	</Grid>
+    </Grid>
 </UserControl>

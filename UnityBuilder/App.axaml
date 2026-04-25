@@ -17,11 +17,14 @@
     <Application.Styles>
         <FluentTheme>
             <FluentTheme.Palettes>
-                <ColorPaletteResources x:Key="Light" Accent="#EC4899" RegionColor="#FFF1F5" ErrorText="#BE185D" />
-                <ColorPaletteResources x:Key="Dark" Accent="#F472B6" RegionColor="#1F1120" ErrorText="#FB7185" />
+                <ColorPaletteResources x:Key="Light" Accent="#EC4899" RegionColor="#F5F5F7" ErrorText="#BE185D" />
+                <ColorPaletteResources x:Key="Dark"  Accent="#F472B6" RegionColor="#13131C" ErrorText="#F87171" />
             </FluentTheme.Palettes>
         </FluentTheme>
         <materialIcons:MaterialIconStyles />
+        <StyleInclude Source="/Resources/Styles/TextBlockStyles.axaml" />
+        <StyleInclude Source="/Resources/Styles/BorderStyles.axaml" />
+        <StyleInclude Source="/Resources/Styles/TextBoxStyles.axaml" />
         <StyleInclude Source="/Resources/Styles/ButtonStyles.axaml" />
         <StyleInclude Source="/Resources/Styles/ScrollViewerStyles.axaml" />
     </Application.Styles>
