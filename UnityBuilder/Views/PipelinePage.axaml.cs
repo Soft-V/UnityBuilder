@@ -69,15 +69,15 @@ public partial class PipelinePage : UserControl, IPageView
         // create
         double canvasMaxRight = 0;
         double canvasMaxBottom = 0;
-        const int nodeWidth = 200;
-        const int nodeHeight = 70;
+        const int nodeWidth = 250;
+        const int nodeHeight = 100;
         const int padding = 30;
 
         for (int i = 0; i < linedUp.Count; ++i)
         {
             for (int j = 0; j < linedUp[i].Count; ++j)
             {
-                int x = padding + (j * 220);
+                int x = padding + (j * 270);
                 int y = padding + (i * 100);
 
                 NodeControl control = new NodeControl(linedUp[i][j]);

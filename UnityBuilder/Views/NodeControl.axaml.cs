@@ -35,5 +35,12 @@ namespace UnityBuilder.Views
         {
             NodeClicked?.Invoke(this, _node);
         }
+
+        private void Button_Click(object? sender, RoutedEventArgs e)
+        {
+            var currentNode = DataContext as Node;
+            if (!currentNode.CancellationTokenSource.IsCancellationRequested)
+                currentNode.CancellationTokenSource.Cancel();
+        }
     }
 }

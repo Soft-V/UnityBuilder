@@ -92,10 +92,11 @@ namespace UnityBuilder.Services
 
             await semaphore.WaitAsync(node.CancellationTokenSource.Token);
 
+            int nodeResult = -1;
             try
             {
                 node.State = NodeState.Running;
-                var _ = await node.Action(node.Parameters, node.CancellationTokenSource.Token, 
+                nodeResult = await node.Action(node.Parameters, node.CancellationTokenSource.Token,
                 (progress) =>
                 {
                     Dispatcher.UIThread.Post(() =>
@@ -112,15 +113,27 @@ namespace UnityBuilder.Services
                     {
                         node.CallProcessOutputChanged(data);
                     });
-                }); 
+                });
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
+                node.State = NodeState.Error;
+                node.CancellationTokenSource.Cancel();
             }
             finally
             {
-                if(node.Type == NodeType.Build)
-                    node.IsInfinityProgress = false;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (node.Type == NodeType.Build)
+                        node.IsInfinityProgress = false;
+                    node.Progress = 100;
+                    if (nodeResult != 0)
+                    {
+                        node.State = NodeState.Error;
+                        node.CancellationTokenSource.Cancel();
+                    }
+                });
+
                 semaphore.Release();
             }
         }

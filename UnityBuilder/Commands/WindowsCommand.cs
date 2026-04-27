@@ -61,7 +61,28 @@ namespace UnityBuilder.Commands
             _unityBuildProcess.BeginOutputReadLine();
             _unityBuildProcess.BeginErrorReadLine();
 
-            await _unityBuildProcess?.WaitForExitAsync(cancellationToken);
+            try
+            {
+                await _unityBuildProcess.WaitForExitAsync(cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                // Убиваем процесс при отмене, иначе он продолжит держать stdout/stderr открытыми
+                try
+                {
+                    if (!_unityBuildProcess.HasExited)
+                        _unityBuildProcess.Kill(entireProcessTree: true);
+                }
+                catch (InvalidOperationException) { /* процесс уже завершился */ }
+
+                throw; // пробрасываем дальше, чтобы вызывающий код знал об отмене
+            }
+            finally
+            {
+                // CancelOutputRead гарантирует завершение потоков чтения
+                try { _unityBuildProcess.CancelOutputRead(); } catch { }
+                try { _unityBuildProcess.CancelErrorRead(); } catch { }
+            }
             outputDelayer.Handle($"Done");
             return _unityBuildProcess?.ExitCode ?? -1;
         }

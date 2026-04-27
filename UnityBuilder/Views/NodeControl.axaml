@@ -17,7 +17,10 @@
 			<Setter Property="CornerRadius" Value="10" />
 			<Setter Property="Padding" Value="0" />
 			<Setter Property="Cursor" Value="Hand" />
-			<Setter Property="Width" Value="200" />
+			<Setter Property="Width" Value="250" />
+			<Setter Property="Height" Value="100" />
+			<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+			<Setter Property="VerticalContentAlignment" Value="Stretch" />
 		</Style>
 		<Style Selector="Button#CardButton:pointerover /template/ ContentPresenter">
 			<Setter Property="Background" Value="{DynamicResource SurfaceBackground}" />
@@ -51,6 +54,12 @@
 								   Foreground="{Binding State, Converter={StaticResource StateToBrush}}" />
 					</Grid>
 				</Grid>
+				<Button Content="×"
+						Foreground="{DynamicResource TextMuted}"
+						HorizontalAlignment="Right"
+						Classes="toolbar-btn"
+						Click="Button_Click"
+						VerticalAlignment="Top"/>
 
 				<ProgressBar Grid.Row="1"
 							 Minimum="0"
