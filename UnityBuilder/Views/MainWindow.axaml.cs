@@ -113,6 +113,29 @@ namespace UnityBuilder.Views
             this.FindControl<Border>("StepPiplineSeparator")?.Classes.Set("done", _currentPageIndex > 3);
         }
 
+        private void GoToStep(int targetIndex)
+        {
+            if (targetIndex == _currentPageIndex) return;
+
+            _currentPage.OnNextPage -= OnNextPage;
+            _currentPage.OnPreviousPage -= OnPreviousPage;
+
+            ContentControl.IsTransitionReversed = targetIndex < _currentPageIndex;
+            _currentPageIndex = targetIndex;
+            _currentPage = GetCurrentPage();
+            ContentControl.Content = _currentPage;
+
+            _currentPage.OnNextPage += OnNextPage;
+            _currentPage.OnPreviousPage += OnPreviousPage;
+            UpdateStepIndicators();
+            CommandHelper.SaveParameters(App.Current.Container.Resolve<PagesViewModel>());
+        }
+
+        private void StepOne_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) => GoToStep(0);
+        private void StepTwo_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) => GoToStep(1);
+        private void StepThree_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) => GoToStep(2);
+        private void StepPipline_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e) => GoToStep(3);
+
         #region Theme
         private void SwitchTheme()
         {

@@ -64,84 +64,106 @@
 				<Setter Property="VerticalAlignment" Value="Center"/>
 			</Style>
 		</Style>
+
+		<Style Selector="Button.step-row">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Padding" Value="6,4"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+			<Setter Property="Cursor" Value="Hand"/>
+		</Style>
+		<Style Selector="Button.step-row:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource ElevatedBackground}"/>
+		</Style>
+		<Style Selector="Button.step-row:disabled /template/ ContentPresenter">
+			<Setter Property="Background" Value="Transparent"/>
+		</Style>
+		<Style Selector="Button.step-row:pressed /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource BorderLight}"/>
+		</Style>
 	</Window.Styles>
-	<!-- ROOT GRID -->
 	<Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto, *">
 
-		<Border Classes="card"  
+		<Border Classes="card"
 				Grid.Row="1"
 				Margin="16,16,0,16">
 
-			<StackPanel Spacing="10" Margin="20">
+			<StackPanel Spacing="0" Margin="4">
 				<TextBlock Text="Steps"
-						   Classes="section-title"/>
-				<Grid ColumnDefinitions="Auto, *" RowDefinitions="*, auto">
-					<Border x:Name="StepOne"
-							Classes="steps">
-						<TextBlock Text="1"/>
-					</Border>
-					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
-								VerticalAlignment="Center">
-						<TextBlock Text="Project" Classes="section-title" x:Name="TBProject"/>
-						<TextBlock Text="Unity &amp; paths" Classes="field-label"/>
-					</StackPanel>
-					<Border Classes="steps"
-							Height="30"
-							Margin="5,10,5,0"
-							Grid.Row="1"
-							x:Name="StepTwoSeparator"
-							Width="5"/>
-				</Grid>
+						   Classes="section-title"
+						   Margin="6,0,6,10"/>
 
-				<Grid ColumnDefinitions="Auto, *"  RowDefinitions="*, auto">
-					<Border x:Name="StepTwo"
-							Classes="steps">
-						<TextBlock Text="2"/>
-					</Border>
-					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
-								VerticalAlignment="Center">
-						<TextBlock Text="Build options" Classes="section-title" x:Name="TBBuildOptions"/>
-						<TextBlock Text="Hashes &amp; FTP" Classes="field-label"/>
-					</StackPanel>
-					<Border Classes="steps"
-							Height="30"
-							Margin="5,10,5,0"
-							x:Name="StepThreeSeparator"
-							Grid.Row="1"
-							Width="5"/>
-				</Grid>
-				<Grid ColumnDefinitions="Auto, *"  RowDefinitions="*, auto">
-					<Border x:Name="StepThree"
-							Classes="steps">
-						<TextBlock Text="3"/>
-					</Border>
-					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
-								VerticalAlignment="Center">
-						<TextBlock Text="Platforms" Classes="section-title" x:Name="TBPlatforms"/>
-						<TextBlock Text="Target systems" Classes="field-label"/>
-					</StackPanel>
-					<Border Classes="steps"
-							Height="30"
-							Margin="5,10,5,0"
-							x:Name="StepPiplineSeparator"
-							Grid.Row="1"
-							Width="5"/>
-				</Grid>
-				<Grid ColumnDefinitions="Auto, *">
-					<Border x:Name="StepPipline"
-							Classes="steps">
-						<TextBlock Text="4"/>
-					</Border>
-					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
-								VerticalAlignment="Center">
-						<TextBlock Text="Pipline" Classes="section-title" x:Name="TBPipline"/>
-						<TextBlock Text="Build &amp; deploy" Classes="field-label"/>
-					</StackPanel>
-				</Grid>
+				<Button Classes="step-row" Click="StepOne_Click">
+					<Grid ColumnDefinitions="Auto, *">
+						<Border x:Name="StepOne" Classes="steps">
+							<TextBlock Text="1"/>
+						</Border>
+						<StackPanel Grid.Column="1" Spacing="3" Margin="10,0,0,0"
+									VerticalAlignment="Center">
+							<TextBlock Text="Project" Classes="section-title" x:Name="TBProject"/>
+							<TextBlock Text="Unity &amp; paths" Classes="field-label"/>
+						</StackPanel>
+					</Grid>
+				</Button>
+				<Border x:Name="StepTwoSeparator"
+						Classes="steps"
+						Height="24" Width="5"
+						HorizontalAlignment="Left"
+						Margin="23,0,0,0"/>
+
+				<Button Classes="step-row" Click="StepTwo_Click">
+					<Grid ColumnDefinitions="Auto, *">
+						<Border x:Name="StepTwo" Classes="steps">
+							<TextBlock Text="2"/>
+						</Border>
+						<StackPanel Grid.Column="1" Spacing="3" Margin="10,0,0,0"
+									VerticalAlignment="Center">
+							<TextBlock Text="Build options" Classes="section-title" x:Name="TBBuildOptions"/>
+							<TextBlock Text="Hashes &amp; FTP" Classes="field-label"/>
+						</StackPanel>
+					</Grid>
+				</Button>
+				<Border x:Name="StepThreeSeparator"
+						Classes="steps"
+						Height="24" Width="5"
+						HorizontalAlignment="Left"
+						Margin="23,0,0,0"/>
+
+				<Button Classes="step-row" Click="StepThree_Click">
+					<Grid ColumnDefinitions="Auto, *">
+						<Border x:Name="StepThree" Classes="steps">
+							<TextBlock Text="3"/>
+						</Border>
+						<StackPanel Grid.Column="1" Spacing="3" Margin="10,0,0,0"
+									VerticalAlignment="Center">
+							<TextBlock Text="Platforms" Classes="section-title" x:Name="TBPlatforms"/>
+							<TextBlock Text="Target systems" Classes="field-label"/>
+						</StackPanel>
+					</Grid>
+				</Button>
+				<Border x:Name="StepPiplineSeparator"
+						Classes="steps"
+						Height="24" Width="5"
+						HorizontalAlignment="Left"
+						Margin="23,0,0,0"/>
+
+				<Button Classes="step-row" Click="StepThree_Click" IsEnabled="False">
+					<Grid ColumnDefinitions="Auto, *">
+						<Border x:Name="StepPipline" Classes="steps">
+							<TextBlock Text="4"/>
+						</Border>
+						<StackPanel Grid.Column="1" Spacing="3" Margin="10,0,0,0"
+									VerticalAlignment="Center">
+							<TextBlock Text="Pipeline" Classes="section-title" x:Name="TBPipline"/>
+							<TextBlock Text="Build &amp; deploy" Classes="field-label"/>
+						</StackPanel>
+					</Grid>
+				</Button>
 			</StackPanel>
 		</Border>
 
-		<!-- HEADER (fixed) -->
 		<Grid Grid.Row="0"
 			  Margin="32,20,32,0"
 			  Grid.ColumnSpan="2"
