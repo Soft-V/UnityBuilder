@@ -55,7 +55,8 @@ namespace UnityBuilder.Services
                     if (finished.IsCompletedSuccessfully)
                     {
                         completed.Add(pair.Key);
-                        (nodes.First(x => x.Id == pair.Key)).State = NodeState.Done;
+                        if (nodes.First(x => x.Id == pair.Key).State != NodeState.Cancelled)
+                            (nodes.First(x => x.Id == pair.Key)).State = NodeState.Done;
                     }
                     else
                     {
@@ -88,7 +89,7 @@ namespace UnityBuilder.Services
                 {
                     return NodeState.Error;
                 }
-                if(node.State == NodeState.Cancelled)
+                if (node.State == NodeState.Cancelled)
                 {
                     return NodeState.Cancelled;
                 }
@@ -149,6 +150,7 @@ namespace UnityBuilder.Services
             {
                 Dispatcher.UIThread.Post(() =>
                 {
+
                     if (node.Type == NodeType.Build)
                         node.IsInfinityProgress = false;
                     node.Progress = 100;
