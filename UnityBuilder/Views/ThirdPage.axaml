@@ -16,7 +16,7 @@
     <Grid RowDefinitions="*,Auto">
 
         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-            <Border Classes="card" Margin="16">
+            <Border Classes="card" Margin="16,16,16,0">
 
                 <StackPanel Spacing="20">
 
@@ -158,13 +158,8 @@
             </Border>
         </ScrollViewer>
 
-        <Border Grid.Row="1" Classes="action-bar">
+        <Border Grid.Row="1" Classes="action-bar" Margin="16,16,16,16">
             <Grid>
-                <Border Classes="badge"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center">
-                    <TextBlock Text="Step 3 of 3" Classes="caption" />
-                </Border>
                 <StackPanel HorizontalAlignment="Right"
                             Orientation="Horizontal"
                             Spacing="10">

@@ -1,40 +1,145 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:UnityBuilder.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:UnityBuilder.ViewModels"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-        xmlns:views="using:UnityBuilder.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="UnityBuilder.Views.MainWindow"
-        MinHeight="500"
-        MinWidth="600"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="UnityBuilder">
+		xmlns:views="using:UnityBuilder.Views"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:Class="UnityBuilder.Views.MainWindow"
+		MinHeight="500"
+		MinWidth="600"
+		Icon="/Assets/avalonia-logo.ico"
+		Title="UnityBuilder">
 
 	<Window.Styles>
 		<Style Selector="Border.steps">
-			<Setter Property="Height" Value="25"/>
-			<Setter Property="Width" Value="25"/>
-			<Setter Property="Background" Value="Gray"/>
+			<Setter Property="Height" Value="40"/>
+			<Setter Property="Width" Value="40"/>
+			<Setter Property="CornerRadius" Value="20"/>
+			<Setter Property="Background" Value="{DynamicResource BorderLight}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Background" Duration="0:0:0.3"/>
+					<DoubleTransition Property="Width" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+					<DoubleTransition Property="Height" Duration="0:0:0.3" Easing="CubicEaseOut"/>
+				</Transitions>
+			</Setter>
+			<Style Selector="^ TextBlock">
+				<Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+				<Setter Property="HorizontalAlignment" Value="Center"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
 		</Style>
-		<Style Selector="Border.steps.done">
+
+		<Style Selector="Border.steps.selected">
 			<Setter Property="Background" Value="{DynamicResource AccentPrimary}"/>
+
+			<Style Selector="^ TextBlock">
+				<Setter Property="Foreground" Value="White"/>
+				<Setter Property="HorizontalAlignment" Value="Center"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+		</Style>
+
+		<Style Selector="TextBlock.selected">
+			<Setter Property="FontWeight" Value="Bold"/>
+		</Style>
+
+		<Style Selector="Border.steps.done">
+			<Setter Property="Background" Value="{DynamicResource DoneColor}"/>
+			<Style Selector="^ TextBlock">
+				<Setter Property="Foreground" Value="White"/>
+				<Setter Property="HorizontalAlignment" Value="Center"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+		</Style>
+		<Style Selector="Border.steps.error">
+			<Setter Property="Background" Value="{DynamicResource ErrorColor}"/>
+			<Style Selector="^ TextBlock">
+				<Setter Property="Foreground" Value="White"/>
+				<Setter Property="HorizontalAlignment" Value="Center"/>
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
 		</Style>
 	</Window.Styles>
-    <!-- ROOT GRID -->
+	<!-- ROOT GRID -->
 	<Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto, *">
 
-		<StackPanel Spacing="10" Grid.Row="1">
-			<Border x:Name="StepOne"
-					Classes="steps"/>
-			<Border x:Name="StepTwo"
-					Classes="steps"/>
-			<Border x:Name="StepThree"
-					Classes="steps"/>
-			<Border x:Name="StepPipline"
-					Classes="steps"/>
-		</StackPanel>
+		<Border Classes="card"  
+				Grid.Row="1"
+				Margin="16,16,0,16">
+
+			<StackPanel Spacing="10" Margin="20">
+				<TextBlock Text="Steps"
+						   Classes="section-title"/>
+				<Grid ColumnDefinitions="Auto, *" RowDefinitions="*, auto">
+					<Border x:Name="StepOne"
+							Classes="steps">
+						<TextBlock Text="1"/>
+					</Border>
+					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
+								VerticalAlignment="Center">
+						<TextBlock Text="Project" Classes="section-title" x:Name="TBProject"/>
+						<TextBlock Text="Unity &amp; paths" Classes="field-label"/>
+					</StackPanel>
+					<Border Classes="steps"
+							Height="30"
+							Margin="5,10,5,0"
+							Grid.Row="1"
+							x:Name="StepTwoSeparator"
+							Width="5"/>
+				</Grid>
+
+				<Grid ColumnDefinitions="Auto, *"  RowDefinitions="*, auto">
+					<Border x:Name="StepTwo"
+							Classes="steps">
+						<TextBlock Text="2"/>
+					</Border>
+					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
+								VerticalAlignment="Center">
+						<TextBlock Text="Build options" Classes="section-title" x:Name="TBBuildOptions"/>
+						<TextBlock Text="Hashes &amp; FTP" Classes="field-label"/>
+					</StackPanel>
+					<Border Classes="steps"
+							Height="30"
+							Margin="5,10,5,0"
+							x:Name="StepThreeSeparator"
+							Grid.Row="1"
+							Width="5"/>
+				</Grid>
+				<Grid ColumnDefinitions="Auto, *"  RowDefinitions="*, auto">
+					<Border x:Name="StepThree"
+							Classes="steps">
+						<TextBlock Text="3"/>
+					</Border>
+					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
+								VerticalAlignment="Center">
+						<TextBlock Text="Platforms" Classes="section-title" x:Name="TBPlatforms"/>
+						<TextBlock Text="Target systems" Classes="field-label"/>
+					</StackPanel>
+					<Border Classes="steps"
+							Height="30"
+							Margin="5,10,5,0"
+							x:Name="StepPiplineSeparator"
+							Grid.Row="1"
+							Width="5"/>
+				</Grid>
+				<Grid ColumnDefinitions="Auto, *">
+					<Border x:Name="StepPipline"
+							Classes="steps">
+						<TextBlock Text="4"/>
+					</Border>
+					<StackPanel Grid.Column="1" Spacing="5" Margin="10,0,0,0"
+								VerticalAlignment="Center">
+						<TextBlock Text="Pipline" Classes="section-title" x:Name="TBPipline"/>
+						<TextBlock Text="Build &amp; deploy" Classes="field-label"/>
+					</StackPanel>
+				</Grid>
+			</StackPanel>
+		</Border>
 
 		<!-- HEADER (fixed) -->
 		<Grid Grid.Row="0"
@@ -42,7 +147,7 @@
 			  Grid.ColumnSpan="2"
 			  ColumnDefinitions="*,Auto">
 
-			<TextBlock Text="UN\TY BU\LDER"
+			<TextBlock Text="UN/TY BU/LDER"
 					   FontSize="32"
 					   FontWeight="SemiBold"
 					   Foreground="{DynamicResource TextPrimary}"/>
@@ -54,7 +159,7 @@
 				<materialIcons:MaterialIcon Kind="Brightness4"
 											Height="25"
 											Foreground="{DynamicResource AccentPrimary}"
-											Width="25"/>	
+											Width="25"/>
 			</Button>
 
 		</Grid>

@@ -12,7 +12,7 @@
         <conv:AndBoolConverter x:Key="AndBoolConverter"/>
     </UserControl.Resources>
     <Grid>
-        <Grid ColumnDefinitions="*,*" Margin="6,40,6,90">
+        <Grid ColumnDefinitions="*,*" Margin="16,16,0,16">
             <Border Background="{DynamicResource SurfaceBackground}"
                     BorderBrush="{DynamicResource BorderColor}"
                     BorderThickness="1"
@@ -76,7 +76,7 @@
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Stretch"
                 Padding="14"
-                Margin="6">
+                Margin="16">
 
             <Grid ColumnDefinitions="*,Auto">
 

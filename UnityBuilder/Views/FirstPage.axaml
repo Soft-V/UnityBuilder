@@ -68,21 +68,18 @@
 						</StackPanel>
 					</Grid>
 
-					<TextBlock Text="Build name" Classes="field-label"/>
-					<TextBox Watermark="Robocad V"
-							 Text="{Binding BuildName}"/>
+					<StackPanel Spacing="6">
+						<TextBlock Text="Build name" Classes="field-label"/>
+						<TextBox Watermark="Robocad V"
+								 Text="{Binding BuildName}"/>
+					</StackPanel>
 
 				</StackPanel>
 			</Border>
 		</ScrollViewer>
 
-		<Border Grid.Row="1" Classes="action-bar">
+		<Border Grid.Row="1" Classes="action-bar" Margin="16,0,16,16">
 			<Grid>
-				<Border Classes="badge"
-						HorizontalAlignment="Left"
-						VerticalAlignment="Center">
-					<TextBlock Text="Step 1 of 3" Classes="caption"/>
-				</Border>
 				<Button Content="Next →" Width="130"
 						Classes="accent-btn"
 						HorizontalAlignment="Right"

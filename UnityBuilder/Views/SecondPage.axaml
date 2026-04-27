@@ -84,13 +84,8 @@
             </Border>
         </ScrollViewer>
 
-        <Border Grid.Row="1" Classes="action-bar">
+        <Border Grid.Row="1" Classes="action-bar" Margin="16,0,16,16">
             <Grid>
-                <Border Classes="badge" 
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left">
-                    <TextBlock Text="Step 2 of 3" Classes="caption"/>
-                </Border>
                 <StackPanel Orientation="Horizontal" 
                             Spacing="10"
                             HorizontalAlignment="Right">

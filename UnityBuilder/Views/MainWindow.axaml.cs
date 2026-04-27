@@ -39,6 +39,8 @@ namespace UnityBuilder.Views
             ContentControl.Content = _currentPage;
             _currentPage.OnNextPage += OnNextPage;
             _currentPage.OnPreviousPage += OnPreviousPage;
+
+            UpdateStepIndicators();
         }
 
         private void OnNextPage(object sender, EventArgs args)
@@ -91,6 +93,24 @@ namespace UnityBuilder.Views
             this.FindControl<Border>("StepTwo")?.Classes.Set("done", _currentPageIndex > 1);
             this.FindControl<Border>("StepThree")?.Classes.Set("done", _currentPageIndex > 2);
             this.FindControl<Border>("StepPipline")?.Classes.Set("done", _currentPageIndex > 3);
+
+            this.FindControl<Border>("StepOne")?.Classes.Set("selected", _currentPageIndex == 0);
+            this.FindControl<Border>("StepTwo")?.Classes.Set("selected", _currentPageIndex == 1);
+            this.FindControl<Border>("StepThree")?.Classes.Set("selected", _currentPageIndex == 2);
+            this.FindControl<Border>("StepPipline")?.Classes.Set("selected", _currentPageIndex == 3);
+
+            this.FindControl<TextBlock>("TBProject")?.Classes.Set("selected", _currentPageIndex == 0);
+            this.FindControl<TextBlock>("TBBuildOptions")?.Classes.Set("selected", _currentPageIndex == 1);
+            this.FindControl<TextBlock>("TBPlatforms")?.Classes.Set("selected", _currentPageIndex == 2);
+            this.FindControl<TextBlock>("TBPipline")?.Classes.Set("selected", _currentPageIndex == 3);
+
+            this.FindControl<Border>("StepTwoSeparator")?.Classes.Set("selected", _currentPageIndex > 0);
+            this.FindControl<Border>("StepThreeSeparator")?.Classes.Set("selected", _currentPageIndex > 1);
+            this.FindControl<Border>("StepPiplineSeparator")?.Classes.Set("selected", _currentPageIndex > 2);
+
+            this.FindControl<Border>("StepTwoSeparator")?.Classes.Set("done", _currentPageIndex > 1);
+            this.FindControl<Border>("StepThreeSeparator")?.Classes.Set("done", _currentPageIndex > 2);
+            this.FindControl<Border>("StepPiplineSeparator")?.Classes.Set("done", _currentPageIndex > 3);
         }
 
         #region Theme
