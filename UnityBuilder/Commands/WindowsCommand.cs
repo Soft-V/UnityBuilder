@@ -20,7 +20,7 @@ namespace UnityBuilder.Commands
                 throw new ArgumentException(nameof(parameters));
 
             // build path
-            string buildPath = Path.Combine(parameters.OutputPath, $"{parameters.BuildVersion}{PlatformSpecificHelper.GetPlatformExtension(parameters.TargetPlatform)}");
+            string buildPath = Path.Combine(parameters.OutputPath, $"{parameters.BuildName}{PlatformSpecificHelper.GetPlatformExtension(parameters.TargetPlatform)}");
 
             progressChanged?.Invoke(new ProgressChangedArgs() { Progress = -1 });
             ProcessStartInfo startInfo = new ProcessStartInfo()
@@ -35,8 +35,6 @@ namespace UnityBuilder.Commands
                     "-executeMethod", "UnityBuilderAction.Builder.BuildProject", // TODO: allow custom
                     "-buildTarget", $"\"{parameters.TargetPlatform}\"",
                     "-customBuildPath", $"\"{buildPath}\"",
-                    "-buildName", "robocadV",
-                    "-productName", "robocadV",
                     "-buildVersion", $"\"{parameters.BuildVersion}\"",
                     /* TODO: android
                     "-androidVersionCode", "`"$Env: ANDROID_VERSION_CODE`"",
