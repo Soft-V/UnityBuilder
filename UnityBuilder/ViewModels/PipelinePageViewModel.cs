@@ -4,15 +4,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Commands;
 using UnityBuilder.Models;
+using UnityBuilder.Models.Enums;
 
 namespace UnityBuilder.ViewModels
 {
     public partial class PipelinePageViewModel : ViewModelBase
     {
         [ObservableProperty]
-        private bool _isRunning;
-        [ObservableProperty]
-        private bool _isDone;
+        private NodeState _stateResult = NodeState.Running;
         [ObservableProperty]
         private Node _selectedNode;
 
@@ -21,7 +20,7 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty]
         private string _selectedNodeOutput;
 
-        private CancellationTokenSource _cancellationToken;
+        public readonly CancellationTokenSource _cancellationToken;
 
         public HashSet<Node> Nodes { get; set; }
 
@@ -39,7 +38,8 @@ namespace UnityBuilder.ViewModels
 
         async public void Start()
         {
-            // await PiplineStartCommand.Execute(Nodes, _cancellationToken.Token);
+            StateResult = await PiplineStartCommand.Execute(Nodes, _cancellationToken.Token);
         }
+
     }
 }
