@@ -94,6 +94,7 @@ namespace UnityBuilder.Services
 
             try
             {
+                node.State = NodeState.Running;
                 var _ = await node.Action(node.Parameters, node.CancellationTokenSource.Token, 
                 (progress) =>
                 {
