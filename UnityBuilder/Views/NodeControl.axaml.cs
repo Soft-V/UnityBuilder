@@ -40,7 +40,10 @@ namespace UnityBuilder.Views
         {
             var currentNode = DataContext as Node;
             if (!currentNode.CancellationTokenSource.IsCancellationRequested)
+            {
+                currentNode.State = Models.Enums.NodeState.Cancelled;
                 currentNode.CancellationTokenSource.Cancel();
+            }
         }
     }
 }

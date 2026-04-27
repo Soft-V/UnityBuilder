@@ -20,7 +20,7 @@ namespace UnityBuilder.Services
                 [NodeType.Ftp] = new SemaphoreSlim(10)
             };
 
-        public async static Task Run(HashSet<Node> nodes, CancellationToken token)
+        public async static Task<NodeState> Run(HashSet<Node> nodes, CancellationToken token)
         {
             var completed = new HashSet<string>();
             var running = new Dictionary<string, Task>();
@@ -69,7 +69,10 @@ namespace UnityBuilder.Services
                         foreach (var node in nodes)
                         {
                             if (!node.CancellationTokenSource.IsCancellationRequested)
+                            {
+                                node.State = NodeState.Cancelled;
                                 node.CancellationTokenSource.Cancel();
+                            }
                         }
                     }
                 }
@@ -78,6 +81,19 @@ namespace UnityBuilder.Services
                     break;
                 }
             }
+
+            foreach (var node in nodes)
+            {
+                if (node.State == NodeState.Error)
+                {
+                    return NodeState.Error;
+                }
+                if(node.State == NodeState.Cancelled)
+                {
+                    return NodeState.Cancelled;
+                }
+            }
+            return NodeState.Done;
         }
 
         private static void CancelNodeAndChildren(string key, HashSet<Node> nodes)
@@ -117,6 +133,12 @@ namespace UnityBuilder.Services
                     });
                 });
             }
+            catch (TaskCanceledException e)
+            {
+                node.State = NodeState.Cancelled;
+                if (!node.CancellationTokenSource.IsCancellationRequested)
+                    node.CancellationTokenSource.Cancel();
+            }
             catch (Exception e)
             {
                 node.State = NodeState.Error;
@@ -130,7 +152,7 @@ namespace UnityBuilder.Services
                     if (node.Type == NodeType.Build)
                         node.IsInfinityProgress = false;
                     node.Progress = 100;
-                    if (nodeResult != 0)
+                    if (nodeResult != 0 && !node.CancellationTokenSource.IsCancellationRequested)
                     {
                         node.State = NodeState.Error;
                         if (!node.CancellationTokenSource.IsCancellationRequested)

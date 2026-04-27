@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Models;
+using UnityBuilder.Models.Enums;
 using UnityBuilder.Services;
 using UnityBuilder.ViewModels;
 
@@ -97,9 +98,9 @@ namespace UnityBuilder.Commands
             }
             return nodes;
         }
-        public static async Task Execute(HashSet<Node> nodes, CancellationToken token)
+        public static async Task<NodeState> Execute(HashSet<Node> nodes, CancellationToken token)
         {
-            await PipelineRunner.Run(nodes, token);
+            return await PipelineRunner.Run(nodes, token);
         }
     }
 }

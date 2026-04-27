@@ -10,6 +10,7 @@
              x:DataType="vm:PipelinePageViewModel">
     <UserControl.Resources>
         <conv:AndBoolConverter x:Key="AndBoolConverter"/>
+        <conv:NodeStateToBrushConverter x:Key="NodeStateToBrushConverter"/>
     </UserControl.Resources>
     <Grid RowDefinitions="*, Auto">
         <Grid Grid.Row="0" Margin="16,16,16,8">
@@ -71,46 +72,18 @@
 
             <Grid ColumnDefinitions="*,Auto">
 
-                <TextBlock Text="Running..."
+                <TextBlock Text="{Binding StateResult}"
                            VerticalAlignment="Center"
-                           Foreground="{DynamicResource WarningColor}">
-                    <TextBlock.IsVisible>
-                        <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                            <Binding Path="IsRunning"/>
-                            <Binding Path="!IsDone"/>
-                        </MultiBinding>
-                    </TextBlock.IsVisible>
-                </TextBlock>
-                <TextBlock Text="Stopped"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource DangerColor}">
-                    <TextBlock.IsVisible>
-                        <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                            <Binding Path="!IsRunning"/>
-                            <Binding Path="!IsDone"/>
-                        </MultiBinding>
-                    </TextBlock.IsVisible>
-                </TextBlock>
-                <TextBlock Text="Done"
-                           VerticalAlignment="Center"
-                           Foreground="{DynamicResource SuccessColor}">
-                    <TextBlock.IsVisible>
-                        <MultiBinding Converter="{StaticResource AndBoolConverter}">
-                            <Binding Path="!IsRunning"/>
-                            <Binding Path="IsDone"/>
-                        </MultiBinding>
-                    </TextBlock.IsVisible>
-                </TextBlock>
-
+                           Foreground="{Binding StateResult, Converter={StaticResource NodeStateToBrushConverter}}"/>
+                
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             Spacing="12">
 
                     <Button Content="← Back" Width="120"
-                            IsEnabled="{Binding !IsRunning}"
                             Click="Button1_Click"/>
                     <Button Content="Cancel"
-                            IsEnabled="{Binding IsRunning}"
+                            Click="CancelButton_Click"
                             Width="160"/>
 
                 </StackPanel>

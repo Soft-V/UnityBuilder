@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using UnityBuilder.Models;
+using UnityBuilder.Models.Enums;
 using UnityBuilder.ViewModels;
 
 namespace UnityBuilder.Views;
@@ -26,6 +27,12 @@ public partial class PipelinePage : UserControl, IPageView
 
         var vm = DataContext as PipelinePageViewModel;
         vm.Start();
+        this.Unloaded += PipelinePage_Unloaded;
+    }
+
+    private void PipelinePage_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        CancelButton_Click(null, null);
     }
 
     private void Button1_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -35,10 +42,18 @@ public partial class PipelinePage : UserControl, IPageView
 
     private void CancelButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-
+        (DataContext as PipelinePageViewModel)._cancellationToken.Cancel();
+        foreach (var node in (DataContext as PipelinePageViewModel).Nodes)
+        {
+            if (!node.CancellationTokenSource.IsCancellationRequested)
+            {
+                node.State = NodeState.Cancelled;
+                node.CancellationTokenSource.Cancel();
+            }
+        }
     }
 
-    async public void CreateNodes()
+    public async void CreateNodes()
     {
         var vm = DataContext as PipelinePageViewModel;
         await vm.GenerateNodes();
