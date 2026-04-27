@@ -68,7 +68,8 @@ namespace UnityBuilder.Services
                     {
                         foreach (var node in nodes)
                         {
-                            node.CancellationTokenSource.Cancel();
+                            if (!node.CancellationTokenSource.IsCancellationRequested)
+                                node.CancellationTokenSource.Cancel();
                         }
                     }
                 }
@@ -82,7 +83,8 @@ namespace UnityBuilder.Services
         private static void CancelNodeAndChildren(string key, HashSet<Node> nodes)
         {
             var cancelNode = nodes.FirstOrDefault(x => x.Id == key);
-            cancelNode.CancellationTokenSource.Cancel();
+            if (!cancelNode.CancellationTokenSource.IsCancellationRequested)
+                cancelNode.CancellationTokenSource.Cancel();
             cancelNode.State = NodeState.Cancelled;
         }
 
@@ -90,11 +92,11 @@ namespace UnityBuilder.Services
         {
             var semaphore = limits[node.Type];
 
-            await semaphore.WaitAsync(node.CancellationTokenSource.Token);
-
             int nodeResult = -1;
             try
             {
+                await semaphore.WaitAsync(node.CancellationTokenSource.Token);
+
                 node.State = NodeState.Running;
                 nodeResult = await node.Action(node.Parameters, node.CancellationTokenSource.Token,
                 (progress) =>
@@ -118,7 +120,8 @@ namespace UnityBuilder.Services
             catch (Exception e)
             {
                 node.State = NodeState.Error;
-                node.CancellationTokenSource.Cancel();
+                if (!node.CancellationTokenSource.IsCancellationRequested)
+                    node.CancellationTokenSource.Cancel();
             }
             finally
             {
@@ -130,7 +133,8 @@ namespace UnityBuilder.Services
                     if (nodeResult != 0)
                     {
                         node.State = NodeState.Error;
-                        node.CancellationTokenSource.Cancel();
+                        if (!node.CancellationTokenSource.IsCancellationRequested)
+                            node.CancellationTokenSource.Cancel();
                     }
                 });
 
