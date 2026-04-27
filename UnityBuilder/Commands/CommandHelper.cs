@@ -20,6 +20,11 @@ namespace UnityBuilder.Commands
     {
         async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                outputDataChanged?.Invoke($"Cancelled\n");
+                return -1;
+            }
             ComputerService computerService = new ComputerService();
             outputDataChanged?.Invoke($"Computing hashes in {parameters.TargetPath}\n");
             var result = await computerService.ComputeHash(
@@ -41,6 +46,11 @@ namespace UnityBuilder.Commands
 
         async public static Task<int> UploadFiles(FtpParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                outputDataChanged?.Invoke($"Cancelled\n");
+                return -1;
+            }
             try
             {
                 outputDataChanged?.Invoke("Trying to create session...\n");
@@ -70,6 +80,12 @@ namespace UnityBuilder.Commands
                         Progress = (int)(i / (float)files.Length * 100),
                     });
 
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        outputDataChanged?.Invoke($"Cancelled\n");
+                        return -1;
+                    }
+
                     var file = files[i];
                     var relative = file.ExcludePathPart(parameters.LocalPath);
                     var target = parameters.TargetPath.TrimEnd('/');
@@ -86,7 +102,7 @@ namespace UnityBuilder.Commands
                 }
                 return 0;
             }
-            catch (SshAuthenticationException e)
+            catch (Exception e)
             {
                 outputDataChanged?.Invoke($"Exception {e}\n");
                 return -1;
