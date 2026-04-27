@@ -119,6 +119,8 @@ namespace UnityBuilder.Services
             }
             finally
             {
+                if(node.Type == NodeType.Build)
+                    node.IsInfinityProgress = false;
                 semaphore.Release();
             }
         }
