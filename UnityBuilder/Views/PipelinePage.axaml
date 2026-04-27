@@ -12,29 +12,39 @@
         <conv:AndBoolConverter x:Key="AndBoolConverter"/>
     </UserControl.Resources>
     <Grid RowDefinitions="*, Auto">
-        <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="16,16,16,8">
+        <Grid Grid.Row="0" Margin="16,16,16,8">
+            <Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" MinWidth="200"/>
+				<ColumnDefinition Width="8"/>
+				<ColumnDefinition Width="*" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
             <Border Background="{DynamicResource SurfaceBackground}"
                     BorderBrush="{DynamicResource BorderColor}"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="14">
                 <ScrollViewer VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Auto">
-                    <Canvas Width="1000"
-                            Height="700"
-                            Background="Transparent"
+                              HorizontalScrollBarVisibility="Visible">
+                    <Canvas Background="Transparent"
                             Name="pipelineCanvas">
 
                     </Canvas>
                 </ScrollViewer>
             </Border>
 
+            <GridSplitter Grid.Column="1"
+                          Width="8"
+                          ResizeDirection="Columns"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Background="Transparent"
+                          Cursor="SizeWestEast"/>
+
             <Border Background="{DynamicResource SurfaceBackground}"
                     BorderBrush="{DynamicResource BorderColor}"
                     BorderThickness="1"
                     CornerRadius="12"
-                    Grid.Column="1"
-                    Margin="8,0,0,0"
+                    Grid.Column="2"
                     Padding="14">
                 <Grid RowDefinitions="Auto,*">
                     <TextBlock Text="{Binding SelectedNodeId}"
@@ -51,7 +61,6 @@
             </Border>
         </Grid>
 
-        <!-- ACTION BAR -->
         <Border Grid.Row="1"
                 Background="{DynamicResource SurfaceBackground}"
                 BorderBrush="{DynamicResource BorderColor}"
