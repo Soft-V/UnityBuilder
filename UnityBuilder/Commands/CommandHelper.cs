@@ -21,7 +21,7 @@ namespace UnityBuilder.Commands
         async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             ComputerService computerService = new ComputerService();
-            outputDataChanged?.Invoke($"Computing hashes in {parameters.TargetPath}");
+            outputDataChanged?.Invoke($"Computing hashes in {parameters.TargetPath}\n");
             var result = await computerService.ComputeHash(
                 new ComputeParameters()
                 {
@@ -34,7 +34,7 @@ namespace UnityBuilder.Commands
                 progressChanged,
                 cancellationToken
             );
-            string res = string.IsNullOrWhiteSpace(result.Item2) ? "Done" : result.Item2;
+            string res = string.IsNullOrWhiteSpace(result.Item2) ? "Done\n" : result.Item2 + "\n";
             outputDataChanged?.Invoke(res);
             return result.Item1 ? 0 : -1;
         }
@@ -43,7 +43,7 @@ namespace UnityBuilder.Commands
         {
             try
             {
-                outputDataChanged?.Invoke("Trying to create session...");
+                outputDataChanged?.Invoke("Trying to create session...\n");
                 using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
                 await clientSsh.ConnectAsync(cancellationToken);
                 using var clientFtp = new SftpClient(parameters.Server, parameters.Username, parameters.Password);
@@ -51,7 +51,7 @@ namespace UnityBuilder.Commands
 
                 if (parameters.DeleteOnUpload)
                 {
-                    outputDataChanged?.Invoke("Removing files...");
+                    outputDataChanged?.Invoke("Removing files...\n");
                     using SshCommand cmd = clientSsh.CreateCommand($"sudo rm -rf {parameters.TargetPath}");
                     await cmd.ExecuteAsync(cancellationToken);
                     outputDataChanged?.Invoke(cmd.Result);
@@ -61,7 +61,7 @@ namespace UnityBuilder.Commands
                 }
 
                 // upload all files
-                outputDataChanged?.Invoke("Starting upload...");
+                outputDataChanged?.Invoke("Starting upload...\n");
                 var files = Directory.GetFiles(parameters.LocalPath, "*.*", SearchOption.AllDirectories);
                 for (int i = 0; i < files.Length; ++i)
                 {
@@ -82,13 +82,13 @@ namespace UnityBuilder.Commands
 
                     using var fs = File.OpenRead(file);
                     await clientFtp.UploadAsync(fs, $"{target}/{relative}");
-                    outputDataChanged?.Invoke($"Uploaded {target}/{relative}");
+                    outputDataChanged?.Invoke($"Uploaded {target}/{relative}\n");
                 }
                 return 0;
             }
             catch (SshAuthenticationException e)
             {
-                outputDataChanged?.Invoke($"Exception {e}");
+                outputDataChanged?.Invoke($"Exception {e}\n");
                 return -1;
             }
         }

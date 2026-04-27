@@ -1,4 +1,4 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
@@ -126,6 +126,7 @@ public partial class PipelinePage : UserControl, IPageView
         vm.SelectedNodeId = _selectedNode.Id;
 
         avaloniaTextEditor.Text = _selectedNode.ProcessOutput;
+        avaloniaTextEditor.ScrollToEnd();
     }
 
     private void Node_ProcessOutputChanged(object sender, string data)
