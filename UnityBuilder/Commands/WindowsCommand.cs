@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Models;
@@ -11,16 +12,15 @@ namespace UnityBuilder.Commands
 {
     public class WindowsCommand : IPlatformCommand
     {
+        private Process _unityBuildProcess;
+
         async public Task<int> Build(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             if (pars is not BuildParameters parameters)
                 throw new ArgumentException(nameof(parameters));
 
-            string logFile = $"{parameters.TargetPlatform}_log.txt";
-            File.WriteAllText(logFile, "");
-
             // build path
-            string buildPath = Path.Combine(parameters.OutputPath, $"{parameters.BuildVersion}{CommandHelper.GetPlatformExtension()}");
+            string buildPath = Path.Combine(parameters.OutputPath, $"{parameters.BuildVersion}{PlatformSpecificHelper.GetPlatformExtension(parameters.TargetPlatform)}");
 
             progressChanged?.Invoke(new ProgressChangedArgs() { Progress = -1 });
             ProcessStartInfo startInfo = new ProcessStartInfo()
@@ -53,19 +53,19 @@ namespace UnityBuilder.Commands
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
             };
-            var proc = Process.Start(startInfo);
+            _unityBuildProcess = Process.Start(startInfo);
 
             using DelayedActionCaller outputDelayer = new DelayedActionCaller(outputDataChanged, 1000);
-            proc.OutputDataReceived += (s, a) => outputDelayer.Handle(a.Data);
-            proc.ErrorDataReceived += (s, a) => outputDelayer.Handle(a.Data);
+            _unityBuildProcess.OutputDataReceived += (s, a) => outputDelayer.Handle(a.Data);
+            _unityBuildProcess.ErrorDataReceived += (s, a) => outputDelayer.Handle(a.Data);
             outputDelayer.Handle($"Building {parameters.ProjectPath}");
 
-            proc.BeginOutputReadLine(); 
-            proc.BeginErrorReadLine();
+            _unityBuildProcess.BeginOutputReadLine();
+            _unityBuildProcess.BeginErrorReadLine();
 
-            await proc.WaitForExitAsync();
+            await _unityBuildProcess?.WaitForExitAsync(cancellationToken);
             outputDelayer.Handle($"Done");
-            return proc.ExitCode;
+            return _unityBuildProcess?.ExitCode ?? -1;
         }
 
         async public Task<int> ComputeHash(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
@@ -80,6 +80,29 @@ namespace UnityBuilder.Commands
             if (pars is not FtpParameters parameters)
                 throw new ArgumentException(nameof(parameters));
             return await CommandHelper.UploadFiles(parameters, cancellationToken, progressChanged, outputDataChanged);
+        }
+
+        private bool isDisposed;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (isDisposed) return;
+
+            _unityBuildProcess?.Kill();
+            _unityBuildProcess?.Dispose();
+
+            isDisposed = true;
+        }
+
+        ~WindowsCommand()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
         }
     }
 }
