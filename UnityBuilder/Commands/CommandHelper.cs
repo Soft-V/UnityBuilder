@@ -102,6 +102,10 @@ namespace UnityBuilder.Commands
                 }
                 return 0;
             }
+            catch (TaskCanceledException)
+            {
+                throw;
+            }
             catch (Exception e)
             {
                 outputDataChanged?.Invoke($"Exception {e}\n");

@@ -74,6 +74,8 @@ namespace UnityBuilder.Commands
                         _unityBuildProcess.Kill(entireProcessTree: true);
                 }
                 catch (InvalidOperationException) { /* процесс уже завершился */ }
+
+                throw new TaskCanceledException();
             }
             finally
             {
