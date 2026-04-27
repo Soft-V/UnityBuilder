@@ -14,6 +14,11 @@ namespace UnityBuilder.Desktop
         public static void Main(string[] args)
         {
             _mutex = new Mutex(true, "UnityBuilder.Desktop", out var isNewInstance);
+            if (!isNewInstance)
+            {
+                _mutex.Dispose();
+                return;
+            }
             try
             {
                 BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
