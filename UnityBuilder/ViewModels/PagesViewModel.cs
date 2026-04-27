@@ -78,6 +78,7 @@ namespace UnityBuilder.ViewModels
             UnityPath = savedParameters.UnityPath;
             ProjectPath = savedParameters.ProjectPath;
             BuildVersion = savedParameters.BuildVersion;
+            BuildName = savedParameters.BuildName;
             OutputDirectory = savedParameters.OutputDirectory;
             ComputeHashes = savedParameters.ComputeHashes;
             UploadOnFtp = savedParameters.UploadOnFtp;

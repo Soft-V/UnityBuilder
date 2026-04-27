@@ -40,6 +40,7 @@ namespace UnityBuilder.Services
             {
                 foreach (var s in _data)
                     sb.Append($"{s}\n");
+                _data.Clear();
             }
             if (sb.Length > 0)
                 _action?.Invoke(sb.ToString());

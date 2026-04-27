@@ -6,6 +6,7 @@ using Renci.SshNet;
 using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Extensions;
@@ -32,12 +33,14 @@ namespace UnityBuilder.Commands
                 progressChanged,
                 cancellationToken
             );
-            outputDataChanged?.Invoke(result.Item2);
+            string res = string.IsNullOrWhiteSpace(result.Item2) ? "Done" : result.Item2;
+            outputDataChanged?.Invoke(res);
             return result.Item1 ? 0 : -1;
         }
 
         async public static Task<int> UploadFiles(FtpParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
+            outputDataChanged?.Invoke("Trying to create session...");
             using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
             await clientSsh.ConnectAsync(cancellationToken);
             using var clientFtp = new SftpClient(parameters.Server, parameters.Username, parameters.Password);
@@ -45,6 +48,7 @@ namespace UnityBuilder.Commands
 
             if (parameters.DeleteOnUpload)
             {
+                outputDataChanged?.Invoke("Removing files...");
                 using SshCommand cmd = clientSsh.CreateCommand($"sudo rm -rf {parameters.TargetPath}");
                 await cmd.ExecuteAsync(cancellationToken);
                 outputDataChanged?.Invoke(cmd.Result);
@@ -54,6 +58,7 @@ namespace UnityBuilder.Commands
             }
 
             // upload all files
+            outputDataChanged?.Invoke("Starting upload...");
             var files = Directory.GetFiles(parameters.LocalPath, "*.*", SearchOption.AllDirectories);
             for (int i = 0; i < files.Length; ++i)
             {
@@ -92,6 +97,15 @@ namespace UnityBuilder.Commands
                 return null;
             var content = JsonConvert.DeserializeObject<PagesViewModel>(json);
             return content; 
+        }
+
+        public static string GetPlatformExtension()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return ".exe";
+            }
+            return "";
         }
     }
 }

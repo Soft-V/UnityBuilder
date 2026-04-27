@@ -37,6 +37,7 @@ namespace UnityBuilder.Commands
                         ProjectPath = viewModel.ProjectPath,
                         TargetPlatform = platform.PlatformName,
                         UnityPath = viewModel.UnityPath,
+                        BuildName = viewModel.BuildName,
                     },
                     Type = Models.Enums.NodeType.Build,
                     DependsOn = previousBuildNode == null ? [] : [previousBuildNode.Id],
