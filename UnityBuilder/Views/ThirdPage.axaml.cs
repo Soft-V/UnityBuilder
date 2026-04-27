@@ -11,7 +11,6 @@ public partial class ThirdPage : UserControl, IPageView
 {
     public event EventHandler OnNextPage;
     public event EventHandler OnPreviousPage;
-
     public ThirdPage()
     {
         DataContext = App.Current.Container.Resolve<PagesViewModel>();

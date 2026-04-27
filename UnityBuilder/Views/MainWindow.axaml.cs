@@ -53,7 +53,7 @@ namespace UnityBuilder.Views
 
             _currentPage.OnNextPage += OnNextPage;
             _currentPage.OnPreviousPage += OnPreviousPage;
-
+            UpdateStepIndicators();
             CommandHelper.SaveParameters(App.Current.Container.Resolve<PagesViewModel>());
         }
 
@@ -69,6 +69,7 @@ namespace UnityBuilder.Views
 
             _currentPage.OnNextPage += OnNextPage;
             _currentPage.OnPreviousPage += OnPreviousPage;
+            UpdateStepIndicators();
             CommandHelper.SaveParameters(App.Current.Container.Resolve<PagesViewModel>());
         }
 
@@ -82,6 +83,14 @@ namespace UnityBuilder.Views
                 case 3: return App.Current.Container.Resolve<PipelinePage>();
                 default: throw new NotImplementedException();
             }
+        }
+
+        private void UpdateStepIndicators()
+        {
+            this.FindControl<Border>("StepOne")?.Classes.Set("done", _currentPageIndex > 0);
+            this.FindControl<Border>("StepTwo")?.Classes.Set("done", _currentPageIndex > 1);
+            this.FindControl<Border>("StepThree")?.Classes.Set("done", _currentPageIndex > 2);
+            this.FindControl<Border>("StepPipline")?.Classes.Set("done", _currentPageIndex > 3);
         }
 
         #region Theme

@@ -8,6 +8,7 @@ namespace UnityBuilder.Views;
 
 public partial class SecondPage : UserControl, IPageView
 {
+
     public event EventHandler OnNextPage;
     public event EventHandler OnPreviousPage;
 

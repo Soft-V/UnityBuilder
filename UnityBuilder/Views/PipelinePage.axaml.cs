@@ -15,6 +15,7 @@ public partial class PipelinePage : UserControl, IPageView
     public event EventHandler OnNextPage;
     public event EventHandler OnPreviousPage;
 
+    private NodeControl? _selectedControl;
     private Node _selectedNode;
 
     public PipelinePage()
@@ -34,7 +35,7 @@ public partial class PipelinePage : UserControl, IPageView
 
     private void CancelButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        
+
     }
 
     async public void CreateNodes()
@@ -90,14 +91,22 @@ public partial class PipelinePage : UserControl, IPageView
     private void OnNodeControlPressed(object sender, Node node)
     {
         if (sender is not NodeControl control)
+        {
+            _selectedControl.IsSelected = false;
             return;
+        }
 
         if (_selectedNode != null)
         {
             _selectedNode.ProcessOutputChanged -= Node_ProcessOutputChanged;
         }
 
+        if (_selectedControl != null)
+            _selectedControl.IsSelected = false;
+
         _selectedNode = node;
+        _selectedControl = control;
+        _selectedControl.IsSelected = true;
         _selectedNode.ProcessOutputChanged += Node_ProcessOutputChanged;
 
         // set current output id name

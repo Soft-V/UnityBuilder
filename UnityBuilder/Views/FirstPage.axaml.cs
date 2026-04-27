@@ -10,7 +10,6 @@ public partial class FirstPage : UserControl, IPageView
 {
     public event EventHandler OnNextPage;
     public event EventHandler OnPreviousPage;
-
     public FirstPage()
     {
         DataContext = App.Current.Container.Resolve<PagesViewModel>();

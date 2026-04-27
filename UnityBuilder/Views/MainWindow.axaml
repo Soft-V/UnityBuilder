@@ -11,15 +11,38 @@
         MinWidth="600"
         Icon="/Assets/avalonia-logo.ico"
         Title="UnityBuilder">
+
+	<Window.Styles>
+		<Style Selector="Border.steps">
+			<Setter Property="Height" Value="25"/>
+			<Setter Property="Width" Value="25"/>
+			<Setter Property="Background" Value="Gray"/>
+		</Style>
+		<Style Selector="Border.steps.done">
+			<Setter Property="Background" Value="{DynamicResource AccentPrimary}"/>
+		</Style>
+	</Window.Styles>
     <!-- ROOT GRID -->
-	<Grid RowDefinitions="Auto,*">
+	<Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto, *">
+
+		<StackPanel Spacing="10" Grid.Row="1">
+			<Border x:Name="StepOne"
+					Classes="steps"/>
+			<Border x:Name="StepTwo"
+					Classes="steps"/>
+			<Border x:Name="StepThree"
+					Classes="steps"/>
+			<Border x:Name="StepPipline"
+					Classes="steps"/>
+		</StackPanel>
 
 		<!-- HEADER (fixed) -->
 		<Grid Grid.Row="0"
 			  Margin="32,20,32,0"
+			  Grid.ColumnSpan="2"
 			  ColumnDefinitions="*,Auto">
 
-			<TextBlock Text="UN&#92;TY BU&#92;LDER"
+			<TextBlock Text="UN\TY BU\LDER"
 					   FontSize="32"
 					   FontWeight="SemiBold"
 					   Foreground="{DynamicResource TextPrimary}"/>
@@ -35,6 +58,6 @@
 			</Button>
 
 		</Grid>
-		<TransitioningContentControl Name="ContentControl" Grid.Row="1"/>
+		<TransitioningContentControl Name="ContentControl" Grid.Row="1" Grid.Column="1"/>
 	</Grid>
 </Window>

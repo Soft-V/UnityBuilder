@@ -1,66 +1,66 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:m="using:UnityBuilder.Models"
-             xmlns:converters="using:UnityBuilder.Converters"
-             x:DataType="m:Node"
-             x:Class="UnityBuilder.Views.NodeControl">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:m="using:UnityBuilder.Models"
+			 xmlns:converters="using:UnityBuilder.Converters"
+			 x:DataType="m:Node"
+			 x:Class="UnityBuilder.Views.NodeControl">
 
-    <UserControl.Resources>
-        <converters:NodeStateToBrushConverter x:Key="StateToBrush" />
-    </UserControl.Resources>
+	<UserControl.Resources>
+		<converters:NodeStateToBrushConverter x:Key="StateToBrush" />
+	</UserControl.Resources>
 
-    <UserControl.Styles>
-        <Style Selector="Button#CardButton">
-            <Setter Property="Background" Value="{DynamicResource SurfaceBackground}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="10" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Width" Value="200" />
-        </Style>
-        <Style Selector="Button#CardButton:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource SurfaceBackground}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource AccentPrimary}" />
-        </Style>
-        <Style Selector="Button#CardButton:pressed /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource SurfaceBackground}" />
-        </Style>
-        <Style Selector="Button#CardButton.selected /template/ ContentPresenter">
-            <Setter Property="BorderBrush" Value="{DynamicResource AccentPressed}" />
-            <Setter Property="BorderThickness" Value="2" />
-        </Style>
-    </UserControl.Styles>
+	<UserControl.Styles>
+		<Style Selector="Button#CardButton">
+			<Setter Property="Background" Value="{DynamicResource SurfaceBackground}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource BorderColor}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="CornerRadius" Value="10" />
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="Cursor" Value="Hand" />
+			<Setter Property="Width" Value="200" />
+		</Style>
+		<Style Selector="Button#CardButton:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource SurfaceBackground}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource AccentPrimary}" />
+		</Style>
+		<Style Selector="Button#CardButton:pressed /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource SurfaceBackground}" />
+		</Style>
+		<Style Selector="Button#CardButton.selected /template/ ContentPresenter">
+			<Setter Property="BorderBrush" Value="{DynamicResource AccentPressed}" />
+			<Setter Property="BorderThickness" Value="2" />
+		</Style>
+	</UserControl.Styles>
 
-    <Button x:Name="CardButton"
-            ClipToBounds="True">
-        <Grid RowDefinitions="*,5">
+	<Button x:Name="CardButton"
+			ClipToBounds="True">
+		<Grid RowDefinitions="*,5">
 
-            <Grid ColumnDefinitions="5,*">
-                <Grid Grid.Column="1" RowDefinitions="Auto,Auto" Margin="10">
-                    <TextBlock Text="{Binding Id}"
-                               FontSize="11"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextPrimary}"
-                               TextTrimming="CharacterEllipsis"
-                               VerticalAlignment="Center" />
-                    <TextBlock Grid.Row="1"
-                               Text="{Binding State}"
-                               FontSize="11"
-                               Margin="0,5,0,0"
-                               Foreground="{Binding State, Converter={StaticResource StateToBrush}}" />
-                </Grid>
-            </Grid>
+			<Grid ColumnDefinitions="5,*">
+				<Grid Grid.Column="1" RowDefinitions="Auto,Auto" Margin="10">
+					<TextBlock Text="{Binding Id}"
+							   FontSize="11"
+							   FontWeight="SemiBold"
+							   Foreground="{DynamicResource TextPrimary}"
+							   TextTrimming="CharacterEllipsis"
+							   VerticalAlignment="Center" />
+					<TextBlock Grid.Row="1"
+							   Text="{Binding State}"
+							   FontSize="11"
+							   Margin="0,5,0,0"
+							   Foreground="{Binding State, Converter={StaticResource StateToBrush}}" />
+				</Grid>
+			</Grid>
 
-            <ProgressBar Grid.Row="1"
-                         Minimum="0"
-                         Maximum="100"
-                         Value="{Binding Progress}"
-                         IsIndeterminate="{Binding IsInfinityProgress}"
-                         Height="5"
-                         CornerRadius="0,0,10,10"
-                         Foreground="{Binding State, Converter={StaticResource StateToBrush}}"
-                         Background="{DynamicResource BorderColor}"/>
-        </Grid>
-    </Button>
+			<ProgressBar Grid.Row="1"
+						 Minimum="0"
+						 Maximum="100"
+						 Value="{Binding Progress}"
+						 IsIndeterminate="{Binding IsInfinityProgress}"
+						 Height="5"
+						 CornerRadius="0,0,10,10"
+						 Foreground="{Binding State, Converter={StaticResource StateToBrush}}"
+						 Background="{DynamicResource BorderColor}"/>
+		</Grid>
+	</Button>
 </UserControl>

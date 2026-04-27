@@ -24,6 +24,8 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty]
         private string _buildVersion;
         [ObservableProperty]
+        private string _buildName;
+        [ObservableProperty]
         private string _outputDirectory;
 
         [ObservableProperty]

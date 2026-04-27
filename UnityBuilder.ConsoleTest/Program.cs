@@ -59,7 +59,7 @@ namespace UnityBuilder.ConsoleTest
                 }
             };
 
-            await PipelineRunner.Run(nodes, cts.Token);
+            // await PipelineRunner.Run(nodes, cts.Token);
         }
     }
 }
