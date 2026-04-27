@@ -18,7 +18,7 @@ namespace UnityBuilder.Commands
             HashSet<Node> nodes = new HashSet<Node>();
             Node previousBuildNode = null;
 
-            IPlatformCommand platformCommand = new WindowsCommand();
+            IPlatformCommand platformCommand = PlatformSpecificHelper.GetPlatformCommand();
 
             foreach (var platform in viewModel.GetBuildPlatforms)
             {

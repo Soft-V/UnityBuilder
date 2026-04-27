@@ -3,6 +3,7 @@ using HashComputer.Backend.Entities;
 using HashComputer.Backend.Services;
 using Newtonsoft.Json;
 using Renci.SshNet;
+using Renci.SshNet.Common;
 using System;
 using System.IO;
 using System.Linq;
@@ -40,48 +41,56 @@ namespace UnityBuilder.Commands
 
         async public static Task<int> UploadFiles(FtpParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
-            outputDataChanged?.Invoke("Trying to create session...");
-            using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
-            await clientSsh.ConnectAsync(cancellationToken);
-            using var clientFtp = new SftpClient(parameters.Server, parameters.Username, parameters.Password);
-            await clientFtp.ConnectAsync(cancellationToken);
-
-            if (parameters.DeleteOnUpload)
+            try
             {
-                outputDataChanged?.Invoke("Removing files...");
-                using SshCommand cmd = clientSsh.CreateCommand($"sudo rm -rf {parameters.TargetPath}");
-                await cmd.ExecuteAsync(cancellationToken);
-                outputDataChanged?.Invoke(cmd.Result);
-                using SshCommand cmd2 = clientSsh.CreateCommand($"mkdir -p {parameters.TargetPath}");
-                await cmd2.ExecuteAsync(cancellationToken);
-                outputDataChanged?.Invoke(cmd2.Result);
-            }
+                outputDataChanged?.Invoke("Trying to create session...");
+                using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
+                await clientSsh.ConnectAsync(cancellationToken);
+                using var clientFtp = new SftpClient(parameters.Server, parameters.Username, parameters.Password);
+                await clientFtp.ConnectAsync(cancellationToken);
 
-            // upload all files
-            outputDataChanged?.Invoke("Starting upload...");
-            var files = Directory.GetFiles(parameters.LocalPath, "*.*", SearchOption.AllDirectories);
-            for (int i = 0; i < files.Length; ++i)
-            {
-                progressChanged?.Invoke(new ProgressChangedArgs()
+                if (parameters.DeleteOnUpload)
                 {
-                    Progress = (int)(i / (float)files.Length * 100),
-                });
+                    outputDataChanged?.Invoke("Removing files...");
+                    using SshCommand cmd = clientSsh.CreateCommand($"sudo rm -rf {parameters.TargetPath}");
+                    await cmd.ExecuteAsync(cancellationToken);
+                    outputDataChanged?.Invoke(cmd.Result);
+                    using SshCommand cmd2 = clientSsh.CreateCommand($"mkdir -p {parameters.TargetPath}");
+                    await cmd2.ExecuteAsync(cancellationToken);
+                    outputDataChanged?.Invoke(cmd2.Result);
+                }
 
-                var file = files[i];
-                var relative = file.ExcludePathPart(parameters.LocalPath);
-                var target = parameters.TargetPath.TrimEnd('/');
+                // upload all files
+                outputDataChanged?.Invoke("Starting upload...");
+                var files = Directory.GetFiles(parameters.LocalPath, "*.*", SearchOption.AllDirectories);
+                for (int i = 0; i < files.Length; ++i)
+                {
+                    progressChanged?.Invoke(new ProgressChangedArgs()
+                    {
+                        Progress = (int)(i / (float)files.Length * 100),
+                    });
 
-                // create a directory for it
-                using SshCommand cmd3 = clientSsh.CreateCommand(
-                    $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
-                await cmd3.ExecuteAsync(cancellationToken);
-                outputDataChanged?.Invoke(cmd3.Result);
+                    var file = files[i];
+                    var relative = file.ExcludePathPart(parameters.LocalPath);
+                    var target = parameters.TargetPath.TrimEnd('/');
 
-                using var fs = File.OpenRead(file);
-                await clientFtp.UploadAsync(fs, $"{target}/{relative}");
-                outputDataChanged?.Invoke($"Uploaded {target}/{relative}");
+                    // create a directory for it
+                    using SshCommand cmd3 = clientSsh.CreateCommand(
+                        $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
+                    await cmd3.ExecuteAsync(cancellationToken);
+                    outputDataChanged?.Invoke(cmd3.Result);
+
+                    using var fs = File.OpenRead(file);
+                    await clientFtp.UploadAsync(fs, $"{target}/{relative}");
+                    outputDataChanged?.Invoke($"Uploaded {target}/{relative}");
+                }
+                return 0;
             }
-            return 0;
+            catch (SshAuthenticationException e)
+            {
+                outputDataChanged?.Invoke($"Exception {e}");
+                return -1;
+            }
         }
 
         public static void SaveParameters(PagesViewModel pagesViewModel)
@@ -97,15 +106,6 @@ namespace UnityBuilder.Commands
                 return null;
             var content = JsonConvert.DeserializeObject<PagesViewModel>(json);
             return content; 
-        }
-
-        public static string GetPlatformExtension()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return ".exe";
-            }
-            return "";
         }
     }
 }
