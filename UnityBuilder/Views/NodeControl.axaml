@@ -32,35 +32,36 @@
 		</Style>
 	</UserControl.Styles>
 
-	<Button x:Name="CardButton"
-			ClipToBounds="True">
-		<Grid RowDefinitions="*,5">
+	<Button x:Name="CardButton">
+		<Border CornerRadius="10" ClipToBounds="True">
+			<Grid RowDefinitions="*,5">
 
-			<Grid ColumnDefinitions="5,*">
-				<Grid Grid.Column="1" RowDefinitions="Auto,Auto" Margin="10">
-					<TextBlock Text="{Binding Id}"
-							   FontSize="11"
-							   FontWeight="SemiBold"
-							   Foreground="{DynamicResource TextPrimary}"
-							   TextTrimming="CharacterEllipsis"
-							   VerticalAlignment="Center" />
-					<TextBlock Grid.Row="1"
-							   Text="{Binding State}"
-							   FontSize="11"
-							   Margin="0,5,0,0"
-							   Foreground="{Binding State, Converter={StaticResource StateToBrush}}" />
+				<Grid ColumnDefinitions="5,*">
+					<Grid Grid.Column="1" RowDefinitions="Auto,Auto" Margin="10">
+						<TextBlock Text="{Binding Id}"
+								   FontSize="11"
+								   FontWeight="SemiBold"
+								   Foreground="{DynamicResource TextPrimary}"
+								   TextTrimming="CharacterEllipsis"
+								   VerticalAlignment="Center" />
+						<TextBlock Grid.Row="1"
+								   Text="{Binding State}"
+								   FontSize="11"
+								   Margin="0,5,0,0"
+								   Foreground="{Binding State, Converter={StaticResource StateToBrush}}" />
+					</Grid>
 				</Grid>
-			</Grid>
 
-			<ProgressBar Grid.Row="1"
-						 Minimum="0"
-						 Maximum="100"
-						 Value="{Binding Progress}"
-						 IsIndeterminate="{Binding IsInfinityProgress}"
-						 Height="5"
-						 CornerRadius="0,0,10,10"
-						 Foreground="{Binding State, Converter={StaticResource StateToBrush}}"
-						 Background="{DynamicResource BorderColor}"/>
-		</Grid>
+				<ProgressBar Grid.Row="1"
+							 Minimum="0"
+							 Maximum="100"
+							 Value="{Binding Progress}"
+							 IsIndeterminate="{Binding IsInfinityProgress}"
+							 Height="5"
+							 CornerRadius="0,0,10,10"
+							 Foreground="{Binding State, Converter={StaticResource StateToBrush}}"
+							 Background="{DynamicResource BorderColor}"/>
+			</Grid>
+		</Border>
 	</Button>
 </UserControl>
