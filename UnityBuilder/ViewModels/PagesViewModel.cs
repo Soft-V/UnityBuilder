@@ -203,15 +203,15 @@ namespace UnityBuilder.ViewModels
             var topLevel = TopLevel.GetTopLevel(App.Current.Container.Resolve<FirstPage>());
             if (topLevel == null) return "";
 
-            var result = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            var result = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Select Folder",
+                Title = "Select File",
             });
 
             var folder = result?.FirstOrDefault();
             if (folder != null)
             {
-                return folder.Path.AbsolutePath;
+                return Uri.UnescapeDataString(folder.Path.AbsolutePath);
             }
 
             return "";
