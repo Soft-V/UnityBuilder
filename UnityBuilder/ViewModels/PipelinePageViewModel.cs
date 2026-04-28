@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityBuilder.Commands;
 using UnityBuilder.Models;
 using UnityBuilder.Models.Enums;
+using UnityBuilder.Views;
 
 namespace UnityBuilder.ViewModels
 {
@@ -19,6 +20,8 @@ namespace UnityBuilder.ViewModels
         private string _selectedNodeId;
         [ObservableProperty]
         private string _selectedNodeOutput;
+        [ObservableProperty]
+        private bool _isPipelineRun;
 
         public readonly CancellationTokenSource _cancellationToken;
 
@@ -38,7 +41,12 @@ namespace UnityBuilder.ViewModels
 
         async public void Start()
         {
+            var mainVM = App.Current.Container.Resolve<MainViewModel>();
+            mainVM.BuildIsRunning = true;
+            IsPipelineRun = true;
             StateResult = await PiplineStartCommand.Execute(Nodes, _cancellationToken.Token);
+            mainVM.BuildIsRunning = false;
+            IsPipelineRun = false;
         }
 
     }

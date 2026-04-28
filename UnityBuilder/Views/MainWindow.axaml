@@ -8,6 +8,7 @@
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:Class="UnityBuilder.Views.MainWindow"
 		MinHeight="500"
+		x:DataType="vm:MainViewModel"
 		MinWidth="600"
 		Icon="/Assets/avalonia-logo.ico"
 		Title="UnityBuilder">
@@ -88,6 +89,8 @@
 
 		<Border Classes="card"
 				Grid.Row="1"
+				x:Name="StepsBorder"
+				IsEnabled="{Binding !BuildIsRunning}"
 				Margin="16,16,0,16">
 
 			<StackPanel Spacing="0" Margin="4">

@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CraftHub.Services;
 using System;
+using System.Text.Json.Serialization;
 using UnityBuilder.Models.Enums;
 
 namespace UnityBuilder.ViewModels
@@ -11,6 +12,9 @@ namespace UnityBuilder.ViewModels
     public partial class MainViewModel : ViewModelBase
     {
         ThemeService _themeService;
+
+        [ObservableProperty]
+        private bool _buildIsRunning = false;
 
         #region Commands
 

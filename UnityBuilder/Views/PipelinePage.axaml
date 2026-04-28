@@ -81,10 +81,12 @@
                             Spacing="12">
 
                     <Button Content="← Back" Width="120"
-                            Click="Button1_Click"/>
+                            Click="Button1_Click"
+                            IsEnabled="{Binding !IsPipelineRun}"/>
                     <Button Content="Cancel"
                             Click="CancelButton_Click"
-                            Width="160"/>
+                            Width="160"
+                            IsEnabled="{Binding IsPipelineRun}"/>
 
                 </StackPanel>
 
