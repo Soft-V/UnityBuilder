@@ -1,7 +1,6 @@
 ﻿using HashComputer.Backend;
 using HashComputer.Backend.Entities;
 using HashComputer.Backend.Services;
-using Newtonsoft.Json;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 using System;
@@ -9,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Extensions;
@@ -118,7 +118,7 @@ namespace UnityBuilder.Commands
 
         public static void SaveParameters(PagesViewModel pagesViewModel)
         {
-            var json = JsonConvert.SerializeObject(pagesViewModel);
+            var json = JsonSerializer.Serialize(pagesViewModel);
             UnityBuilder.Properties.Settings.Default.ParametersJson = json;
             UnityBuilder.Properties.Settings.Default.Save();
         }
@@ -128,7 +128,7 @@ namespace UnityBuilder.Commands
             var json = UnityBuilder.Properties.Settings.Default.ParametersJson;
             if (string.IsNullOrWhiteSpace(json))
                 return null;
-            var content = JsonConvert.DeserializeObject<PagesViewModel>(json);
+            var content = JsonSerializer.Deserialize<PagesViewModel>(json);
             return content;
         }
 
