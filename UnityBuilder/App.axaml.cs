@@ -23,6 +23,9 @@ namespace UnityBuilder
 
         public override void OnFrameworkInitializationCompleted()
         {
+            //UnityBuilder.Properties.Settings.Default.ParametersJson = string.Empty;
+            //UnityBuilder.Properties.Settings.Default.Save();
+            //return;
             Container.RegisterInstance<ILightContainer>(Container);
             Container.AddCommonServices();
             Container.AddViewModels();

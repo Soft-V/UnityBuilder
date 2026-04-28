@@ -7,12 +7,15 @@ using Renci.SshNet.Common;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Extensions;
 using UnityBuilder.Models;
 using UnityBuilder.ViewModels;
+using static System.Net.WebRequestMethods;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace UnityBuilder.Commands
 {
@@ -96,7 +99,7 @@ namespace UnityBuilder.Commands
                     await cmd3.ExecuteAsync(cancellationToken);
                     outputDataChanged?.Invoke(cmd3.Result);
 
-                    using var fs = File.OpenRead(file);
+                    using var fs = System.IO.File.OpenRead(file);
                     await clientFtp.UploadAsync(fs, $"{target}/{relative}");
                     outputDataChanged?.Invoke($"Uploaded {target}/{relative}\n");
                 }
@@ -121,11 +124,31 @@ namespace UnityBuilder.Commands
         }
         public static PagesViewModel GetSavedParameters()
         {
+            
             var json = UnityBuilder.Properties.Settings.Default.ParametersJson;
             if (string.IsNullOrWhiteSpace(json))
                 return null;
             var content = JsonConvert.DeserializeObject<PagesViewModel>(json);
-            return content; 
+            return content;
         }
+
+        public async static Task<(string Log, string Color)> CheckFTPConnection(string ftpServer, string username, string password)
+        {
+            try
+            {
+                
+                CancellationToken cancellationToken = new CancellationToken();
+
+                using var clientSsh = new SshClient(ftpServer, username, password);
+                await clientSsh.ConnectAsync(cancellationToken);
+                return ("Successful connection to the ftp server", "SuccessColor");
+            }
+            catch (Exception ex)
+            {
+                string log = $"Error connecting to FTP server: {ex.Message}";
+                return (log, "DangerColor");
+            }
+        }
+
     }
 }

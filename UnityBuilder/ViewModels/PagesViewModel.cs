@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -43,6 +45,43 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty] private bool _buildAndroid;
         [ObservableProperty] private string _androidFtpPath;
 
+        private string _ftpConnectionLog;
+        [JsonIgnore]
+        public string FtpConnectionLog
+        {
+            get => _ftpConnectionLog;
+            set
+            {
+                _ftpConnectionLog = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private IBrush _logColor;
+        [JsonIgnore]
+        public IBrush LogColor
+        {
+            get => _logColor;
+            set
+            {
+                _logColor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore] private bool _isChecking;
+
+        [JsonIgnore]
+        public bool IsChecking
+        {
+            get => _isChecking;
+            set
+            {
+                _isChecking = value;
+                OnPropertyChanged();
+            }
+        }
+
         [JsonIgnore]
         public IEnumerable<(bool? NeedBuild, string Path, string PlatformName)> GetBuildPlatforms =>
         [
@@ -82,11 +121,15 @@ namespace UnityBuilder.ViewModels
             ChooseUnityPathCommand = new RelayCommand(OnChooseUnityPathAsync);
             ChooseProjectPathCommand = new RelayCommand(OnChooseProjectPath);
             ChooseOutputPathCommand = new RelayCommand(OnChooseOutputPath);
+            CheckFTPConnection = new RelayCommand(OnCheckFTPConnection);
         }
+
+
 
         [JsonIgnore] public ICommand ChooseUnityPathCommand { get; set; }
         [JsonIgnore] public ICommand ChooseProjectPathCommand { get; set; }
         [JsonIgnore] public ICommand ChooseOutputPathCommand { get; set; }
+        [JsonIgnore] public ICommand CheckFTPConnection { get; set; }
 
         async private void OnChooseUnityPathAsync()
         {
@@ -116,6 +159,23 @@ namespace UnityBuilder.ViewModels
             if (!string.IsNullOrWhiteSpace(result))
             {
                 OutputDirectory = result;
+            }
+        }
+
+        private async void OnCheckFTPConnection()
+        {
+            IsChecking = true;
+            FtpConnectionLog = string.Empty;
+
+            var result = await Task.Run(() => CommandHelper.CheckFTPConnection(FtpServer, FtpUsername, FtpPassword));
+
+            IsChecking = false;
+            FtpConnectionLog = result.Log;
+
+            if (Application.Current!.Resources.TryGetResource(result.Color, Application.Current.ActualThemeVariant, out var resource))
+            {
+                if (resource is IBrush brush)
+                    LogColor = brush;
             }
         }
 

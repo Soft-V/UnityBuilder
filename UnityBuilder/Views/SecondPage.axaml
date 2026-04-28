@@ -1,99 +1,112 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="540"
-             x:Class="UnityBuilder.Views.SecondPage"
-             xmlns:vm="using:UnityBuilder.ViewModels"
-             x:DataType="vm:PagesViewModel">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="540"
+			 x:Class="UnityBuilder.Views.SecondPage"
+			 xmlns:vm="using:UnityBuilder.ViewModels"
+			 x:DataType="vm:PagesViewModel">
 
-    <Grid RowDefinitions="*,Auto">
+	<Grid RowDefinitions="*,Auto">
 
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-            <Border Classes="card" Margin="16">
+		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+			<Border Classes="card" Margin="16">
 
-                <StackPanel Spacing="20">
+				<StackPanel Spacing="20">
 
-                    <StackPanel Spacing="4">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <TextBlock Text="Build Options" Classes="page-title"/>
-                        </StackPanel>
-                        <TextBlock Text="Configure file hashing and FTP upload"
-                                   Classes="caption"/>
-                    </StackPanel>
+					<StackPanel Spacing="4">
+						<StackPanel Orientation="Horizontal" Spacing="10">
+							<TextBlock Text="Build Options" Classes="page-title"/>
+						</StackPanel>
+						<TextBlock Text="Configure file hashing and FTP upload"
+								   Classes="caption"/>
+					</StackPanel>
 
-                    <Border Classes="divider"/>
+					<Border Classes="divider"/>
 
-                    <Border Classes="card-elevated">
-                        <StackPanel Spacing="6">
-                            <CheckBox Content="Compute file hashes"
-                                      FontWeight="Medium"
-                                      IsChecked="{Binding ComputeHashes}"/>
-                            <TextBlock Text="A checksum file will be generated after each build"
-                                       Classes="caption" Margin="26,0,0,0"/>
-                        </StackPanel>
-                    </Border>
+					<Border Classes="card-elevated">
+						<StackPanel Spacing="6">
+							<CheckBox Content="Compute file hashes"
+									  FontWeight="Medium"
+									  IsChecked="{Binding ComputeHashes}"/>
+							<TextBlock Text="A checksum file will be generated after each build"
+									   Classes="caption" Margin="26,0,0,0"/>
+						</StackPanel>
+					</Border>
 
-                    <Border Classes="card-elevated">
-                        <StackPanel Spacing="14">
+					<Border Classes="card-elevated">
+						<StackPanel Spacing="14">
 
-                            <CheckBox x:Name="CBLoadToFtp"
-                                      Content="Upload to FTP"
-                                      FontWeight="Medium"
-                                      IsChecked="{Binding UploadOnFtp}"/>
+							<CheckBox x:Name="CBLoadToFtp"
+									  Content="Upload to FTP"
+									  FontWeight="Medium"
+									  IsChecked="{Binding UploadOnFtp}"/>
 
-                            <StackPanel Spacing="12" Margin="0,4,0,0"
-                                        IsVisible="{Binding #CBLoadToFtp.IsChecked}">
+							<StackPanel Spacing="12" Margin="0,4,0,0"
+										IsVisible="{Binding #CBLoadToFtp.IsChecked}">
 
-                                <Grid ColumnDefinitions="*,160">
-                                    <StackPanel Spacing="6">
-                                        <TextBlock Text="Server" Classes="field-label"/>
-                                        <TextBox Watermark="ftp.example.com"
-                                                 Text="{Binding FtpServer}"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
-                                        <TextBlock Text="Port" Classes="field-label"/>
-                                        <TextBox Watermark="21" Text="{Binding FtpPort}"/>
-                                    </StackPanel>
-                                </Grid>
+								<Grid ColumnDefinitions="*,160">
+									<StackPanel Spacing="6">
+										<TextBlock Text="Server" Classes="field-label"/>
+										<TextBox Watermark="ftp.example.com"
+												 Text="{Binding FtpServer}"/>
+									</StackPanel>
+									<StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
+										<TextBlock Text="Port" Classes="field-label"/>
+										<TextBox Watermark="21" Text="{Binding FtpPort}"/>
+									</StackPanel>
+								</Grid>
 
-                                <Grid ColumnDefinitions="*,*">
-                                    <StackPanel Spacing="6">
-                                        <TextBlock Text="Username" Classes="field-label"/>
-                                        <TextBox Watermark="username"
-                                                 Text="{Binding FtpUsername}"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
-                                        <TextBlock Text="Password" Classes="field-label"/>
-                                        <TextBox Watermark="••••••••"
-                                                 PasswordChar="●"
-                                                 Text="{Binding FtpPassword}"/>
-                                    </StackPanel>
-                                </Grid>
+								<Grid ColumnDefinitions="*,*">
+									<StackPanel Spacing="6">
+										<TextBlock Text="Username" Classes="field-label"/>
+										<TextBox Watermark="username"
+												 Text="{Binding FtpUsername}"/>
+									</StackPanel>
+									<StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
+										<TextBlock Text="Password" Classes="field-label"/>
+										<TextBox Watermark="••••••••"
+												 PasswordChar="●"
+												 Text="{Binding FtpPassword}"/>
+									</StackPanel>
+								</Grid>
 
-                                <CheckBox Content="Delete remote files before upload"
-                                          FontWeight="Medium"
-                                          IsChecked="{Binding FtpDeleteOnUpload}"/>
+								<StackPanel Spacing="10" Orientation="Horizontal">
+									<Button Content="Check connection" Command="{Binding CheckFTPConnection}"/>
+									<TextBlock Text="{Binding FtpConnectionLog}"
+											   VerticalAlignment="Center"
+											   Foreground="{Binding LogColor}"
+											   FontWeight="Bold"/>
+								</StackPanel>
 
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
+								<ProgressBar IsIndeterminate="True"
+											 IsVisible="{Binding IsChecking}"
+											 Foreground="{DynamicResource AccentPrimary}"
+											 VerticalAlignment="Center"/>
 
-                </StackPanel>
-            </Border>
-        </ScrollViewer>
+								<CheckBox Content="Delete remote files before upload"
+										  FontWeight="Medium"
+										  IsChecked="{Binding FtpDeleteOnUpload}"/>
 
-        <Border Grid.Row="1" Classes="action-bar" Margin="16,0,16,16">
-            <Grid>
-                <StackPanel Orientation="Horizontal" 
-                            Spacing="10"
-                            HorizontalAlignment="Right">
-                    <Button Content="← Back" Width="110" Click="Button1_Click"/>
-                    <Button Content="Next →" Width="110" Classes="accent-btn" Click="Button_Click"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+							</StackPanel>
+						</StackPanel>
+					</Border>
 
-    </Grid>
+				</StackPanel>
+			</Border>
+		</ScrollViewer>
+
+		<Border Grid.Row="1" Classes="action-bar" Margin="16,0,16,16">
+			<Grid>
+				<StackPanel Orientation="Horizontal"
+							Spacing="10"
+							HorizontalAlignment="Right">
+					<Button Content="← Back" Width="110" Click="Button1_Click"/>
+					<Button Content="Next →" Width="110" Classes="accent-btn" Click="Button_Click"/>
+				</StackPanel>
+			</Grid>
+		</Border>
+
+	</Grid>
 </UserControl>
