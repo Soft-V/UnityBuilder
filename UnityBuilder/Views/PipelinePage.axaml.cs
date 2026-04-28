@@ -93,7 +93,7 @@ public partial class PipelinePage : UserControl, IPageView
             for (int j = 0; j < linedUp[i].Count; ++j)
             {
                 int x = padding + (j * 270);
-                int y = padding + (i * 100);
+                int y = padding + (i * 120);
 
                 NodeControl control = new NodeControl(linedUp[i][j]);
                 pipelineCanvas.Children.Add(control);
