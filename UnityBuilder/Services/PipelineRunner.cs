@@ -22,6 +22,7 @@ namespace UnityBuilder.Services
         public async static Task<NodeState> Run(HashSet<Node> nodes, CancellationToken token)
         {
             // completed — только успешно завершённые (разблокируют зависимости)
+            // finished  — все завершённые в любом статусе (условие выхода из цикла)
             var completed = new HashSet<string>();
             var finished  = new HashSet<string>();
             var running   = new Dictionary<string, Task>();
