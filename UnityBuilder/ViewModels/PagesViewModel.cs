@@ -90,7 +90,10 @@ namespace UnityBuilder.ViewModels
 
         async private void OnChooseUnityPathAsync()
         {
-            UnityPath = await CommonChooseFile();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                UnityPath = await ChooseUnityAppMacOs();
+            else
+                UnityPath = await CommonChooseFile();
         }
 
         async private void OnChooseProjectPath()
@@ -139,6 +142,28 @@ namespace UnityBuilder.ViewModels
             }
 
             return "";
+        }
+
+        async private Task<string> ChooseUnityAppMacOs()
+        {
+            return await Task.Run(() =>
+            {
+                using var process = new System.Diagnostics.Process();
+                process.StartInfo.FileName = "osascript";
+                process.StartInfo.ArgumentList.Add("-e");
+                process.StartInfo.ArgumentList.Add(
+                    "POSIX path of (choose file of type {\"com.apple.application-bundle\"} with prompt \"Select Unity Application\")");
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.CreateNoWindow = true;
+
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd().Trim();
+                process.WaitForExit();
+
+                return process.ExitCode == 0 ? output : "";
+            });
         }
     }
 }
