@@ -90,20 +90,33 @@ namespace UnityBuilder.ViewModels
 
         async private void OnChooseUnityPathAsync()
         {
+            var result = string.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                UnityPath = await ChooseUnityAppMacOs();
+                result = await ChooseUnityAppMacOs();
             else
-                UnityPath = await CommonChooseFile();
+                result = await CommonChooseFile();
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                UnityPath = result;
+            }
         }
 
         async private void OnChooseProjectPath()
         {
-            ProjectPath = await CommonChooseFolder();
+            var result = await CommonChooseFolder();
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                ProjectPath = result;
+            }
         }
 
         async private void OnChooseOutputPath()
         {
-            OutputDirectory = await CommonChooseFolder();
+            var result = await CommonChooseFolder();
+            if (!string.IsNullOrWhiteSpace(result))
+            {
+                OutputDirectory = result;
+            }
         }
 
         async private Task<string> CommonChooseFolder()
