@@ -15,18 +15,24 @@ namespace UnityBuilder.Commands
     public class MacOsCommand : IPlatformCommand
     {
         private Process _unityBuildProcess;
-        public async Task<int> Build(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
+
+        async public Task<int> Build(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             if (pars is not BuildParameters parameters)
                 throw new ArgumentException(nameof(parameters));
-            
+
             // build path
             string buildPath = Path.Combine(parameters.OutputPath, $"{parameters.BuildName}{PlatformSpecificHelper.GetPlatformExtension(parameters.TargetPlatform)}");
 
+            string unityExecutable = parameters.UnityPath.EndsWith(".app") 
+                ? Path.Combine(parameters.UnityPath, "Contents/MacOS/Unity")
+                : parameters.UnityPath;
+
+            progressChanged?.Invoke(new ProgressChangedArgs() { Progress = -1 });
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {
-                FileName = parameters.UnityPath,
-                Arguments = string.Join(' ',
+                FileName = unityExecutable,
+                Arguments = string.Join(' ', 
                 [
                     "-quit",
                     "-batchmode",
@@ -52,6 +58,7 @@ namespace UnityBuilder.Commands
                 RedirectStandardError = true,
             };
 
+            var g = startInfo.ToString();
             _unityBuildProcess = Process.Start(startInfo);
 
             using DelayedActionCaller outputDelayer = new DelayedActionCaller(outputDataChanged, 1000);
@@ -85,25 +92,43 @@ namespace UnityBuilder.Commands
                 try { _unityBuildProcess.CancelErrorRead(); } catch { }
             }
             outputDelayer.Handle($"Done");
-
-            progressChanged.Invoke(new ProgressChangedArgs() { Progress = -1 });
-
             return _unityBuildProcess?.ExitCode ?? -1;
         }
 
-        public Task<int> ComputeHash(IParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
+        async public Task<int> ComputeHash(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
-            throw new NotImplementedException();
+            if (pars is not HashParameters parameters)
+                throw new ArgumentException(nameof(parameters));
+            return await CommandHelper.ComputeHash(parameters, cancellationToken, progressChanged, outputDataChanged);
         }
 
+        async public Task<int> UploadFtp(IParameters pars, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
+        {
+            if (pars is not FtpParameters parameters)
+                throw new ArgumentException(nameof(parameters));
+            return await CommandHelper.UploadFiles(parameters, cancellationToken, progressChanged, outputDataChanged);
+        }
+
+        private bool isDisposed;
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public Task<int> UploadFtp(IParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
+            if (isDisposed) return;
+
+            _unityBuildProcess?.Kill();
+            _unityBuildProcess?.Dispose();
+
+            isDisposed = true;
+        }
+        
+        ~MacOsCommand()
+        {
+            Dispose(false);
         }
     }
 }

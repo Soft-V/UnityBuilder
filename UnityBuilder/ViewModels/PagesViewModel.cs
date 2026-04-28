@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,54 +18,33 @@ namespace UnityBuilder.ViewModels
 {
     public partial class PagesViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        private string _unityPath;
-        [ObservableProperty]
-        private string _projectPath;
-        [ObservableProperty]
-        private string _buildVersion;
-        [ObservableProperty]
-        private string _buildName;
-        [ObservableProperty]
-        private string _outputDirectory;
+        [ObservableProperty] private string _unityPath;
+        [ObservableProperty] private string _projectPath;
+        [ObservableProperty] private string _buildVersion;
+        [ObservableProperty] private string _buildName;
+        [ObservableProperty] private string _outputDirectory;
 
-        [ObservableProperty]
-        private bool _computeHashes;
-        [ObservableProperty]
-        private bool _uploadOnFtp;
-        [ObservableProperty]
-        private string _ftpUsername;
-        [ObservableProperty]
-        private string _ftpPassword;
-        [ObservableProperty]
-        private string _ftpServer;
-        [ObservableProperty]
-        private int _ftpPort;
-        [ObservableProperty]
-        private bool _ftpDeleteOnUpload;
+        [ObservableProperty] private bool _computeHashes;
+        [ObservableProperty] private bool _uploadOnFtp;
+        [ObservableProperty] private string _ftpUsername;
+        [ObservableProperty] private string _ftpPassword;
+        [ObservableProperty] private string _ftpServer;
+        [ObservableProperty] private int _ftpPort;
+        [ObservableProperty] private bool _ftpDeleteOnUpload;
 
-        [ObservableProperty]
-        private bool _buildWinX64;
-        [ObservableProperty]
-        private string _winX64FtpPath;
-        [ObservableProperty]
-        private bool _buildWinX86;
-        [ObservableProperty]
-        private string _winX86FtpPath;
-        [ObservableProperty]
-        private bool _buildLinuxX64;
-        [ObservableProperty]
-        private string _linuxX64FtpPath;
-        [ObservableProperty]
-        private bool _buildMacX64;
-        [ObservableProperty]
-        private string _macX64FtpPath;
-        [ObservableProperty]
-        private bool _buildAndroid;
-        [ObservableProperty]
-        private string _androidFtpPath;
+        [ObservableProperty] private bool _buildWinX64;
+        [ObservableProperty] private string _winX64FtpPath;
+        [ObservableProperty] private bool _buildWinX86;
+        [ObservableProperty] private string _winX86FtpPath;
+        [ObservableProperty] private bool _buildLinuxX64;
+        [ObservableProperty] private string _linuxX64FtpPath;
+        [ObservableProperty] private bool _buildMacX64;
+        [ObservableProperty] private string _macX64FtpPath;
+        [ObservableProperty] private bool _buildAndroid;
+        [ObservableProperty] private string _androidFtpPath;
+
         [JsonIgnore]
-        public IEnumerable<(bool? NeedBuild, string Path, string PlatformName)> GetBuildPlatforms => 
+        public IEnumerable<(bool? NeedBuild, string Path, string PlatformName)> GetBuildPlatforms =>
         [
             (BuildWinX64, WinX64FtpPath, TargetPlatforms.Windows64),
             (BuildWinX86, WinX86FtpPath, TargetPlatforms.Windows86),
@@ -104,12 +84,9 @@ namespace UnityBuilder.ViewModels
             ChooseOutputPathCommand = new RelayCommand(OnChooseOutputPath);
         }
 
-        [JsonIgnore]
-        public ICommand ChooseUnityPathCommand { get; set; }
-        [JsonIgnore]
-        public ICommand ChooseProjectPathCommand { get; set; }
-        [JsonIgnore]
-        public ICommand ChooseOutputPathCommand { get; set; }
+        [JsonIgnore] public ICommand ChooseUnityPathCommand { get; set; }
+        [JsonIgnore] public ICommand ChooseProjectPathCommand { get; set; }
+        [JsonIgnore] public ICommand ChooseOutputPathCommand { get; set; }
 
         async private void OnChooseUnityPathAsync()
         {
@@ -141,6 +118,7 @@ namespace UnityBuilder.ViewModels
             {
                 return folder.Path.AbsolutePath;
             }
+
             return "";
         }
 
@@ -149,16 +127,17 @@ namespace UnityBuilder.ViewModels
             var topLevel = TopLevel.GetTopLevel(App.Current.Container.Resolve<FirstPage>());
             if (topLevel == null) return "";
 
-            var result = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+            var result = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = "Select File",
+                Title = "Select Folder",
             });
 
             var folder = result?.FirstOrDefault();
             if (folder != null)
             {
-                return Uri.UnescapeDataString(folder.Path.AbsolutePath);
+                return folder.Path.AbsolutePath;
             }
+
             return "";
         }
     }

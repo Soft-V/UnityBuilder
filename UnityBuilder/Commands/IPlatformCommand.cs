@@ -23,6 +23,10 @@ namespace UnityBuilder.Commands
             {
                 return new WindowsCommand();
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return new MacOsCommand();
+            }
             throw new NotImplementedException();
         }
 
