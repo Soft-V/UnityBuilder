@@ -3,6 +3,7 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+		<ApplicationIcon>Assets\avalonia-logo.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -41,5 +42,13 @@
 	    <Generator>SettingsSingleFileGenerator</Generator>
 	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AvaloniaResource Remove="logo.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Assets\avalonia-logo.ico" />
 	</ItemGroup>
 </Project>

@@ -7,9 +7,9 @@
 		xmlns:views="using:UnityBuilder.Views"
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:Class="UnityBuilder.Views.MainWindow"
-		MinHeight="500"
+		MinHeight="600"
 		x:DataType="vm:MainViewModel"
-		MinWidth="600"
+		MinWidth="750"
 		Icon="/Assets/avalonia-logo.ico"
 		Title="UnityBuilder">
 
