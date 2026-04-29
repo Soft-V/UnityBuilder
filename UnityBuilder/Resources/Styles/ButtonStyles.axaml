@@ -34,6 +34,14 @@
 		<Setter Property="Background" Value="{DynamicResource BorderLight}" />
 	</Style>
 
+	<Style Selector="Button:not(.step-row):disabled">
+		<Setter Property="Opacity" Value="0.35" />
+		<Setter Property="Cursor" Value="Arrow" />
+	</Style>
+	<Style Selector="Button:not(.step-row):disabled /template/ ContentPresenter">
+		<Setter Property="Foreground" Value="{DynamicResource TextMuted}" />
+	</Style>
+
 	<Style Selector="Button.toolbar-btn">
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="BorderThickness" Value="0" />
@@ -47,6 +55,10 @@
 	<Style Selector="Button.toolbar-btn:pointerover">
 		<Setter Property="Background" Value="{DynamicResource ElevatedBackground}" />
 		<Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+	</Style>
+
+	<Style Selector="Button.toolbar-btn:disabled /template/ ContentPresenter">
+		<Setter Property="Background" Value="Transparent" />
 	</Style>
 
 	<Style Selector="Button.accent-btn">
