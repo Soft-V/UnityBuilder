@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=UnityBuilder
+Comment=UnityBuilder is an app to build Unity apps locally
+Icon=unity-builder
+Exec=/usr/share/unity-builder/UnityBuilder.Desktop %F %U
+StartupWMClass=unity-builder
+Terminal=false
+Type=Application
+Categories=Development
+GenericName=UnityBuilder
+Keywords=unity; build; cicd

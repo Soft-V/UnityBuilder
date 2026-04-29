@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleIconFile</key>
-    <string>CraftHubIcon</string>
+    <string>UnityBuilderIcon</string>
     <key>CFBundleIdentifier</key>
-    <string>com.manakov.crafthub</string>
+    <string>com.github.softv</string>
     <key>CFBundleName</key>
-    <string>CraftHub</string>
+    <string>UnityBuilder</string>
     <key>CFBundleDisplayName</key>
-    <string>CraftHub</string>
+    <string>UnityBuilder</string>
     <key>CFBundleVersion</key>
     <string>currentVersionIsPlacedHere</string>
     <key>LSMinimumSystemVersion</key>
     <string>11.0</string>
     <key>CFBundleExecutable</key>
-    <string>CraftHub</string>
+    <string>UnityBuilder.Desktop</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundlePackageType</key>
