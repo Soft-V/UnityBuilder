@@ -92,6 +92,41 @@ namespace UnityBuilder.ViewModels
             (BuildAndroid, AndroidFtpPath, TargetPlatforms.Android),
         ];
 
+        public string? ValidatePage1()
+        {
+            var missing = new List<string>();
+            if (string.IsNullOrWhiteSpace(UnityPath)) missing.Add("Unity Executable");
+            if (string.IsNullOrWhiteSpace(ProjectPath)) missing.Add("Project Path");
+            if (string.IsNullOrWhiteSpace(BuildVersion)) missing.Add("Build Version");
+            if (string.IsNullOrWhiteSpace(OutputDirectory)) missing.Add("Output Directory");
+            if (string.IsNullOrWhiteSpace(BuildName)) missing.Add("Build Name");
+            return missing.Count == 0 ? null : "Please fill in the following fields:\n• " + string.Join("\n• ", missing);
+        }
+
+        public string? ValidatePage2()
+        {
+            if (!UploadOnFtp) return null;
+            var missing = new List<string>();
+            if (string.IsNullOrWhiteSpace(FtpServer)) missing.Add("Server");
+            if (FtpPort <= 0) missing.Add("Port");
+            if (string.IsNullOrWhiteSpace(FtpUsername)) missing.Add("Username");
+            if (string.IsNullOrWhiteSpace(FtpPassword)) missing.Add("Password");
+            return missing.Count == 0 ? null : "FTP upload is enabled. Please fill in:\n• " + string.Join("\n• ", missing);
+        }
+
+        public string? ValidatePage3()
+        {
+            bool anySelected = BuildWinX64 || BuildWinX86 || BuildLinuxX64 || BuildMacX64;
+            if (!anySelected) return "Please select at least one target platform.";
+            if (!UploadOnFtp) return null;
+            var missing = new List<string>();
+            if (BuildWinX64 && string.IsNullOrWhiteSpace(WinX64FtpPath)) missing.Add("Windows x64 FTP Path");
+            if (BuildWinX86 && string.IsNullOrWhiteSpace(WinX86FtpPath)) missing.Add("Windows x86 FTP Path");
+            if (BuildLinuxX64 && string.IsNullOrWhiteSpace(LinuxX64FtpPath)) missing.Add("Linux x64 FTP Path");
+            if (BuildMacX64 && string.IsNullOrWhiteSpace(MacX64FtpPath)) missing.Add("macOS x64 FTP Path");
+            return missing.Count == 0 ? null : "FTP upload is enabled. Please fill in FTP paths:\n• " + string.Join("\n• ", missing);
+        }
+
         public void SetParameters(PagesViewModel savedParameters)
         {
             UnityPath = savedParameters.UnityPath;
