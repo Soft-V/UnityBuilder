@@ -2,6 +2,7 @@ using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Models;
@@ -21,134 +22,147 @@ namespace UnityBuilder.Services
 
         public async static Task<NodeState> Run(HashSet<Node> nodes, CancellationToken token)
         {
-            // completed — только успешно завершённые (разблокируют зависимости)
-            // finished  — все завершённые в любом статусе (условие выхода из цикла)
             var completed = new HashSet<string>();
-            var finished  = new HashSet<string>();
-            var running   = new Dictionary<string, Task>();
+            var running = new Dictionary<string, Task>();
 
-            while (finished.Count < nodes.Count)
+            while (completed.Count < nodes.Count)
             {
-                // Глобальная отмена — останавливаем все незавершённые ноды
-                if (token.IsCancellationRequested)
+                try
                 {
-                    foreach (var n in nodes.Where(n => !finished.Contains(n.Id)))
-                        if (!n.CancellationTokenSource.IsCancellationRequested)
-                            n.CancellationTokenSource.Cancel();
-                }
-
-                // Ноды, у которых хотя бы одна зависимость завершилась не успешно → Cancelled
-                var skipped = nodes
-                    .Where(n => !finished.Contains(n.Id)
-                             && !running.ContainsKey(n.Id)
-                             && n.DependsOn.Any(d => finished.Contains(d) && !completed.Contains(d)))
+                    var ready = nodes.Where(n => !completed.Contains(n.Id) && !running.ContainsKey(n.Id) && n.DependsOn.All(d => completed.Contains(d)))
                     .ToList();
 
-                foreach (var n in skipped)
-                {
-                    n.IsInfinityProgress = false;
-                    n.State = NodeState.Cancelled;
-                    finished.Add(n.Id);
+                    foreach (var node in ready)
+                    {
+                        Console.WriteLine($"START {node.Id}");
+
+                        var task = RunNode(node);
+                        running[node.Id] = task;
+                    }
+
+                    if (running.Count == 0)
+                        throw new Exception("Deadlock");
+
+                    // ждем пока вернётся выполненный таск
+                    var finished = await Task.WhenAny(running.Values);
+
+                    // ищем его среди выполненных
+                    var pair = running.First(p => p.Value == finished);
+                    running.Remove(pair.Key);
+
+                    Console.WriteLine($"DONE {pair.Key}");
+
+                    if (finished.IsCompletedSuccessfully)
+                    {
+                        completed.Add(pair.Key);
+                        if (nodes.First(x => x.Id == pair.Key).State != NodeState.Cancelled)
+                            (nodes.First(x => x.Id == pair.Key)).State = NodeState.Done;
+                    }
+                    else
+                    {
+                        CancelNodeAndChildren(pair.Key, nodes);
+                        (nodes.First(x => x.Id == pair.Key)).State = NodeState.Error;
+                    }
+
+                    // отменяем все ноды 
+                    if (token.IsCancellationRequested)
+                    {
+                        foreach (var node in nodes)
+                        {
+                            if (!node.CancellationTokenSource.IsCancellationRequested)
+                            {
+                                node.State = NodeState.Cancelled;
+                                node.CancellationTokenSource.Cancel();
+                            }
+                        }
+                    }
                 }
-
-                // Ноды, у которых все зависимости успешно завершены → запускаем
-                var ready = nodes
-                    .Where(n => !finished.Contains(n.Id)
-                             && !running.ContainsKey(n.Id)
-                             && n.DependsOn.All(d => completed.Contains(d)))
-                    .ToList();
-
-                foreach (var n in ready)
+                catch (Exception e)
                 {
-                    Console.WriteLine($"START {n.Id}");
-                    running[n.Id] = RunNode(n);
-                }
-
-                if (running.Count == 0)
-                    break; // дедлок или всё завершено
-
-                var doneTask = await Task.WhenAny(running.Values);
-                var pair = running.First(p => p.Value == doneTask);
-                running.Remove(pair.Key);
-
-                Console.WriteLine($"DONE {pair.Key}");
-
-                var nodeRef = nodes.First(n => n.Id == pair.Key);
-                nodeRef.IsInfinityProgress = false;
-
-                if (doneTask.IsCompletedSuccessfully)
-                {
-                    completed.Add(pair.Key);
-                    finished.Add(pair.Key);
-                    nodeRef.Progress = 100;
-                    nodeRef.State = NodeState.Done;
-                }
-                else
-                {
-                    finished.Add(pair.Key);
-
-                    bool wasCancelled = nodeRef.CancellationTokenSource.IsCancellationRequested
-                        || doneTask.Exception?.InnerExceptions.Any(e => e is OperationCanceledException) == true;
-
-                    nodeRef.State = wasCancelled ? NodeState.Cancelled : NodeState.Error;
+                    break;
                 }
             }
 
-            // Оставшиеся Pending ноды (нераскрытые зависимости) → Cancelled
-            foreach (var n in nodes.Where(n => n.State == NodeState.Pending))
+            foreach (var node in nodes)
             {
-                n.IsInfinityProgress = false;
-                n.State = NodeState.Cancelled;
+                if (node.State == NodeState.Error)
+                {
+                    return NodeState.Error;
+                }
+                if (node.State == NodeState.Cancelled)
+                {
+                    return NodeState.Cancelled;
+                }
             }
-
-            // Итоговый статус пайплайна
-            if (nodes.Any(n => n.State == NodeState.Error))
-                return NodeState.Error;
-            if (nodes.Any(n => n.State == NodeState.Cancelled))
-                return NodeState.Cancelled;
             return NodeState.Done;
+        }
+
+        private static void CancelNodeAndChildren(string key, HashSet<Node> nodes)
+        {
+            var cancelNode = nodes.FirstOrDefault(x => x.Id == key);
+            if (!cancelNode.CancellationTokenSource.IsCancellationRequested)
+                cancelNode.CancellationTokenSource.Cancel();
+            cancelNode.State = NodeState.Cancelled;
         }
 
         public async static Task RunNode(Node node)
         {
             var semaphore = limits[node.Type];
-            bool semaphoreAcquired = false;
-            int nodeResult = -1;
 
+            int nodeResult = -1;
             try
             {
-                // WaitAsync внутри try — если токен отменён, семафор не утечёт
                 await semaphore.WaitAsync(node.CancellationTokenSource.Token);
-                semaphoreAcquired = true;
 
                 node.State = NodeState.Running;
-
-                nodeResult = await node.Action(
-                    node.Parameters,
-                    node.CancellationTokenSource.Token,
-                    (progress) =>
+                nodeResult = await node.Action(node.Parameters, node.CancellationTokenSource.Token,
+                (progress) =>
+                {
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            node.Progress = progress.Progress;
-                            node.IsInfinityProgress = progress.Progress == -1;
-                        });
-                    },
-                    (data) =>
-                    {
-                        node.ProcessOutput += data;
-                        Dispatcher.UIThread.Post(() => node.CallProcessOutputChanged(data));
+                        node.Progress = progress.Progress;
+                        if (progress.Progress == -1)
+                            node.IsInfinityProgress = true;
                     });
-
-                // Ненулевой код выхода — пробрасываем исключение, чтобы Run() увидел IsFaulted
-                if (nodeResult != 0)
-                    throw new Exception($"Node {node.Id} exited with code {nodeResult}");
+                },
+                (data) =>
+                {
+                    node.ProcessOutput += data;
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        node.CallProcessOutputChanged(data);
+                    });
+                });
+            }
+            catch (TaskCanceledException e)
+            {
+                node.State = NodeState.Cancelled;
+                if (!node.CancellationTokenSource.IsCancellationRequested)
+                    node.CancellationTokenSource.Cancel();
+            }
+            catch (Exception e)
+            {
+                node.State = NodeState.Error;
+                if (!node.CancellationTokenSource.IsCancellationRequested)
+                    node.CancellationTokenSource.Cancel();
             }
             finally
             {
-                // Освобождаем семафор только если успели его захватить
-                if (semaphoreAcquired)
-                    semaphore.Release();
+                Dispatcher.UIThread.Post(() =>
+                {
+
+                    if (node.Type == NodeType.Build)
+                        node.IsInfinityProgress = false;
+                    node.Progress = 100;
+                    if (nodeResult != 0 && !node.CancellationTokenSource.IsCancellationRequested)
+                    {
+                        node.State = NodeState.Error;
+                        if (!node.CancellationTokenSource.IsCancellationRequested)
+                            node.CancellationTokenSource.Cancel();
+                    }
+                });
+
+                semaphore.Release();
             }
         }
     }
