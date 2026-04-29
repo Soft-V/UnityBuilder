@@ -1,6 +1,7 @@
-﻿using System;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
+using System;
+using UnityBuilder.Commands;
 using UnityBuilder.Models;
 
 namespace UnityBuilder.Views
@@ -36,8 +37,13 @@ namespace UnityBuilder.Views
             NodeClicked?.Invoke(this, _node);
         }
 
-        private void Button_Click(object? sender, RoutedEventArgs e)
+        private async void Button_Click(object? sender, RoutedEventArgs e)
         {
+            var confirmed = await CommandHelper.ShowMessageBox("Warning", "Are you sure you want to finish? All child pipelines will be cancelled.", true);
+
+            if (!confirmed)
+                return;
+
             var currentNode = DataContext as Node;
             if (!currentNode.CancellationTokenSource.IsCancellationRequested)
             {

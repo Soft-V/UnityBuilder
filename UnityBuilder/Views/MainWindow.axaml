@@ -10,6 +10,7 @@
 		MinHeight="600"
 		x:DataType="vm:MainViewModel"
 		MinWidth="750"
+		Closing="Window_Closing"
 		Icon="/Assets/avalonia-logo.ico"
 		Title="UnityBuilder">
 

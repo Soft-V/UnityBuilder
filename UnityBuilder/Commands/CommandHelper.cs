@@ -1,21 +1,20 @@
-﻿using HashComputer.Backend;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using HashComputer.Backend;
 using HashComputer.Backend.Entities;
 using HashComputer.Backend.Services;
 using Renci.SshNet;
-using Renci.SshNet.Common;
 using System;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityBuilder.Extensions;
 using UnityBuilder.Models;
 using UnityBuilder.ViewModels;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using UnityBuilder.Views;
 
 namespace UnityBuilder.Commands
 {
@@ -152,5 +151,26 @@ namespace UnityBuilder.Commands
             }
         }
 
+        public static async Task<bool> ShowMessageBox(string title, string message, bool isConfirm = false)
+        {
+            var window = GetMainWindow();
+            if (window == null) return false;
+
+            var msgDialog = new MessageBoxView
+            {
+                Title = title,
+                TitleText = title,
+                MessageText = message,
+                IsConfirm = isConfirm
+            };
+
+            return await msgDialog.ShowDialog<bool>(window);
+        }
+        private static Window? GetMainWindow()
+        {
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                return desktop.MainWindow;
+            return null;
+        }
     }
 }
