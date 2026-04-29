@@ -14,78 +14,6 @@
 		Icon="/Assets/avalonia-logo.ico"
 		Title="UnityBuilder">
 
-	<Window.Styles>
-		<Style Selector="Border.steps">
-			<Setter Property="Height" Value="40"/>
-			<Setter Property="Width" Value="40"/>
-			<Setter Property="CornerRadius" Value="20"/>
-			<Setter Property="Background" Value="{DynamicResource BorderLight}"/>
-			<Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="Transitions">
-				<Transitions>
-					<BrushTransition Property="Background" Duration="0:0:0.3"/>
-					<DoubleTransition Property="Width" Duration="0:0:0.3" Easing="CubicEaseOut"/>
-					<DoubleTransition Property="Height" Duration="0:0:0.3" Easing="CubicEaseOut"/>
-				</Transitions>
-			</Setter>
-			<Style Selector="^ TextBlock">
-				<Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-				<Setter Property="HorizontalAlignment" Value="Center"/>
-				<Setter Property="VerticalAlignment" Value="Center"/>
-			</Style>
-		</Style>
-
-		<Style Selector="Border.steps.selected">
-			<Setter Property="Background" Value="{DynamicResource AccentPrimary}"/>
-
-			<Style Selector="^ TextBlock">
-				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="HorizontalAlignment" Value="Center"/>
-				<Setter Property="VerticalAlignment" Value="Center"/>
-			</Style>
-		</Style>
-
-		<Style Selector="TextBlock.selected">
-			<Setter Property="FontWeight" Value="Bold"/>
-		</Style>
-
-		<Style Selector="Border.steps.done">
-			<Setter Property="Background" Value="{DynamicResource DoneColor}"/>
-			<Style Selector="^ TextBlock">
-				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="HorizontalAlignment" Value="Center"/>
-				<Setter Property="VerticalAlignment" Value="Center"/>
-			</Style>
-		</Style>
-		<Style Selector="Border.steps.error">
-			<Setter Property="Background" Value="{DynamicResource ErrorColor}"/>
-			<Style Selector="^ TextBlock">
-				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="HorizontalAlignment" Value="Center"/>
-				<Setter Property="VerticalAlignment" Value="Center"/>
-			</Style>
-		</Style>
-
-		<Style Selector="Button.step-row">
-			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="BorderThickness" Value="0"/>
-			<Setter Property="Padding" Value="6,4"/>
-			<Setter Property="CornerRadius" Value="8"/>
-			<Setter Property="HorizontalAlignment" Value="Stretch"/>
-			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-			<Setter Property="Cursor" Value="Hand"/>
-		</Style>
-		<Style Selector="Button.step-row:pointerover /template/ ContentPresenter">
-			<Setter Property="Background" Value="{DynamicResource ElevatedBackground}"/>
-		</Style>
-		<Style Selector="Button.step-row:disabled /template/ ContentPresenter">
-			<Setter Property="Background" Value="Transparent"/>
-		</Style>
-		<Style Selector="Button.step-row:pressed /template/ ContentPresenter">
-			<Setter Property="Background" Value="{DynamicResource BorderLight}"/>
-		</Style>
-	</Window.Styles>
 	<Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto, *">
 
 		<Border Classes="card"
@@ -178,15 +106,30 @@
 					   FontWeight="SemiBold"
 					   Foreground="{DynamicResource TextPrimary}"/>
 
-			<Button Grid.Column="1"
-					Classes="toolbar-btn"
-					Padding="12,6"
-					Click="Button_Click">
-				<materialIcons:MaterialIcon Kind="Brightness4"
-											Height="25"
-											Foreground="{DynamicResource AccentPrimary}"
-											Width="25"/>
-			</Button>
+			<StackPanel Orientation="Horizontal"
+						Spacing="10"
+						HorizontalAlignment="Right">
+				<Button Grid.Column="1"
+						Classes="toolbar-btn"
+						Padding="12,6"
+						IsEnabled="{Binding !BuildIsRunning}"
+						IsVisible="{Binding ShowUpdateButton}"
+						Command="{Binding DownloadAndStartUpdateCommand}">
+					<materialIcons:MaterialIcon Kind="Update"
+												Height="25"
+												Foreground="{DynamicResource WarningColor}"
+												Width="25"/>
+				</Button>
+				<Button Grid.Column="1"
+						Classes="toolbar-btn"
+						Padding="12,6"
+						Command="{Binding SwitchThemeCommand}">
+					<materialIcons:MaterialIcon Kind="Brightness4"
+												Height="25"
+												Foreground="{DynamicResource AccentPrimary}"
+												Width="25"/>
+				</Button>
+			</StackPanel>
 
 		</Grid>
 		<TransitioningContentControl Name="ContentControl" Grid.Row="1" Grid.Column="1"/>

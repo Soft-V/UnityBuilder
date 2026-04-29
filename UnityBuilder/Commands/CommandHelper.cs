@@ -199,6 +199,45 @@ namespace UnityBuilder.Commands
 
             return await msgDialog.ShowDialog<bool>(window);
         }
+
+        public static async Task<ProgressResult> ShowProgressDialogAsync(string title, Func<IProgress<UpdateProgress>, CancellationToken, Task> task)
+        {
+            var window = GetMainWindow();
+            if (window == null) return ProgressResult.Error("No main window found");
+
+            var dialog = new ProgressDialogView
+            {
+                TitleText = title,
+                MessageText = "Starting...",
+                IsIndeterminate = true
+            };
+
+            ProgressResult result = ProgressResult.Canceled();
+
+            var taskRun = Task.Run(async () =>
+            {
+                try
+                {
+                    await dialog.RunWithProgress(task);
+                    result = ProgressResult.Success();
+                }
+                catch (OperationCanceledException)
+                {
+                    result = ProgressResult.Canceled();
+                }
+                catch (Exception ex)
+                {
+                    result = ProgressResult.Error(ex.Message);
+                }
+            });
+
+            await dialog.ShowDialog(window);
+
+            await taskRun;
+
+            return result;
+        }
+
         private static Window? GetMainWindow()
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

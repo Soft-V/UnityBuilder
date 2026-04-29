@@ -18,11 +18,6 @@ namespace UnityBuilder.Views
         {
             InitializeComponent();
 
-            //Clear properties kakish
-            //UnityBuilder.Properties.Settings.Default.ParametersJson = string.Empty;
-            //UnityBuilder.Properties.Settings.Default.Save();
-            //return;
-
             var savedParameters = CommandHelper.GetSavedParameters();
             if (savedParameters != null)
                 App.Current.Container.Resolve<PagesViewModel>().SetParameters(savedParameters);

@@ -45,6 +45,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="../build-resources/version.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <AvaloniaResource Remove="logo.ico" />
 	</ItemGroup>
 
