@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using UnityBuilder.Commands;
 using UnityBuilder.Models;
 using UnityBuilder.Models.Enums;
 using UnityBuilder.ViewModels;
@@ -40,8 +41,13 @@ public partial class PipelinePage : UserControl, IPageView
         OnPreviousPage?.Invoke(this, e);
     }
 
-    private void CancelButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void CancelButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        var confirmed = await CommandHelper.ShowMessageBox("Warning", "Are you sure you want to finish? All pipelines will be cancelled.", true);
+
+        if(!confirmed)
+            return;
+
         (DataContext as PipelinePageViewModel)._cancellationToken.Cancel();
         foreach (var node in (DataContext as PipelinePageViewModel).Nodes)
         {

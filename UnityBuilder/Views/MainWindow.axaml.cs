@@ -17,7 +17,7 @@ namespace UnityBuilder.Views
         public MainWindow()
         {
             InitializeComponent();
-            
+
             //Clear properties kakish
             //UnityBuilder.Properties.Settings.Default.ParametersJson = string.Empty;
             //UnityBuilder.Properties.Settings.Default.Save();
@@ -163,6 +163,25 @@ namespace UnityBuilder.Views
         {
             SwitchTheme();
         }
+
         #endregion
+        private bool _isConfirmedClose = false;
+
+        private async void Window_Closing(object? sender, WindowClosingEventArgs e)
+        {
+            if (_isConfirmedClose) return;
+
+            e.Cancel = true;
+            var confirmed = await CommandHelper.ShowMessageBox("Warning", "Are you sure you want to close the app? Will all running processes be canceled?", true);
+            if (!confirmed)
+            {
+                return;
+            }
+            if (confirmed)
+            {
+                _isConfirmedClose = true;
+                Close();
+            }
+        }
     }
 }
