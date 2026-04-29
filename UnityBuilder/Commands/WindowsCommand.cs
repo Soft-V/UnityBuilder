@@ -18,6 +18,8 @@ namespace UnityBuilder.Commands
         {
             if (pars is not BuildParameters parameters)
                 throw new ArgumentException(nameof(parameters));
+            if (cancellationToken.IsCancellationRequested)
+                throw new TaskCanceledException();
 
             // build path
             string buildPath = Path.Combine(parameters.OutputPath, $"{parameters.BuildName}{PlatformSpecificHelper.GetPlatformExtension(parameters.TargetPlatform)}");

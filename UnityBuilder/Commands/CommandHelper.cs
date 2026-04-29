@@ -28,10 +28,8 @@ namespace UnityBuilder.Commands
         async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             if (cancellationToken.IsCancellationRequested)
-            {
-                outputDataChanged?.Invoke($"Cancelled\n");
-                return -1;
-            }
+                throw new TaskCanceledException();
+
             ComputerService computerService = new ComputerService();
             outputDataChanged?.Invoke($"Computing hashes in {parameters.TargetPath}\n");
             var result = await computerService.ComputeHash(
@@ -46,6 +44,9 @@ namespace UnityBuilder.Commands
                 progressChanged,
                 cancellationToken
             );
+            if (cancellationToken.IsCancellationRequested)
+                throw new TaskCanceledException();
+
             string res = string.IsNullOrWhiteSpace(result.Item2) ? "Done\n" : result.Item2 + "\n";
             outputDataChanged?.Invoke(res);
             return result.Item1 ? 0 : -1;
@@ -98,6 +99,9 @@ namespace UnityBuilder.Commands
                 }
 
                 var results = await Task.WhenAll(list);
+                if (cancellationToken.IsCancellationRequested)
+                    throw new TaskCanceledException();
+
                 return results.Any(x => x != 0) ? -1 : 0;
             }
             catch (TaskCanceledException)

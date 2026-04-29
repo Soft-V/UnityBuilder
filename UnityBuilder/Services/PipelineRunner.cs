@@ -1,4 +1,4 @@
-using Avalonia.Threading;
+﻿using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,7 +145,7 @@ namespace UnityBuilder.Services
                             node.CancellationTokenSource.Cancel();
                         CancelNodeAndChildren(node);
                     }
-                    else if(nodeResult == 0 && !node.CancellationTokenSource.IsCancellationRequested)
+                    else if (nodeResult == 0 && !node.CancellationTokenSource.IsCancellationRequested)
                     {
                         node.State = NodeState.Done;
                     }
