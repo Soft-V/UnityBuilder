@@ -91,15 +91,14 @@ namespace UnityBuilder.Commands
                 filesAmount = files.Length;
                 filesQueue = new ConcurrentQueue<string>(files);
 
-                List<Task> list = new List<Task>();
+                List<Task<int>> list = new List<Task<int>>();
                 for (int i = 0; i < UploadTaskAmount; i++)
                 {
                     list.Add(UploadParallelAsync(clientSsh, clientFtp));
                 }
 
-                await Task.WhenAll(list);
-
-                return 0;
+                var results = await Task.WhenAll(list);
+                return results.Any(x => x != 0) ? -1 : 0;
             }
             catch (TaskCanceledException)
             {
@@ -111,33 +110,41 @@ namespace UnityBuilder.Commands
                 return -1;
             }
 
-            Task UploadParallelAsync(SshClient sshClient, SftpClient sftpClient)
+            Task<int> UploadParallelAsync(SshClient sshClient, SftpClient sftpClient)
             {
                 return Task.Run(() =>
                 {
-                    while (filesQueue.TryDequeue(out var file) && !cancellationToken.IsCancellationRequested)
+                    try
                     {
-                        var relative = file.ExcludePathPart(parameters.LocalPath);
-                        var target = parameters.TargetPath.TrimEnd('/');
-
-                        // create a directory for it
-                        using SshCommand cmd3 = sshClient.CreateCommand(
-                            $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
-                        cmd3.ExecuteAsync(cancellationToken).GetAwaiter().GetResult();
-
-                        using var fs = System.IO.File.OpenRead(file);
-                        sftpClient.UploadAsync(fs, $"{target}/{relative}").GetAwaiter().GetResult();
-
-                        lock (progressChangeLock)
+                        while (filesQueue.TryDequeue(out var file) && !cancellationToken.IsCancellationRequested)
                         {
-                            outputDataChanged?.Invoke(cmd3.Result);
-                            outputDataChanged?.Invoke($"Uploaded {target}/{relative}\n");
-                            currentFileNumber++;
-                            progressChanged?.Invoke(new ProgressChangedArgs
+                            var relative = file.ExcludePathPart(parameters.LocalPath);
+                            var target = parameters.TargetPath.TrimEnd('/');
+
+                            // create a directory for it
+                            using SshCommand cmd3 = sshClient.CreateCommand(
+                                $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
+                            cmd3.ExecuteAsync(cancellationToken).GetAwaiter().GetResult();
+
+                            using var fs = System.IO.File.OpenRead(file);
+                            sftpClient.UploadAsync(fs, $"{target}/{relative}").GetAwaiter().GetResult();
+
+                            lock (progressChangeLock)
                             {
-                                Progress = (int)(currentFileNumber / (float)filesAmount * 100f),
-                            });
+                                outputDataChanged?.Invoke(cmd3.Result);
+                                outputDataChanged?.Invoke($"Uploaded {target}/{relative}\n");
+                                currentFileNumber++;
+                                progressChanged?.Invoke(new ProgressChangedArgs
+                                {
+                                    Progress = (int)(currentFileNumber / (float)filesAmount * 100f),
+                                });
+                            }
                         }
+                        return 0;
+                    }
+                    catch
+                    {
+                        return -1;
                     }
                 }, cancellationToken);
             }
