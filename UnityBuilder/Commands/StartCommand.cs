@@ -94,6 +94,30 @@ namespace UnityBuilder.Commands
                     };
 
                     nodes.Add(ftpNode);
+
+                    if (!string.IsNullOrWhiteSpace(platform.AdditionalFeildOnFtp))
+                    {
+                        ftpNode = new Node()
+                        {
+                            Id = $"ftp-{platform.PlatformName}-additional-ftp",
+                            Parameters = new FtpParameters
+                            {
+                                Server = viewModel.FtpServer,
+                                Port = viewModel.FtpPort,
+                                DeleteOnUpload = viewModel.FtpDeleteOnUpload,
+                                Username = viewModel.FtpUsername,
+                                Password = viewModel.FtpPassword,
+                                LocalPath = Path.Combine(viewModel.OutputDirectory, platform.PlatformName),
+                                TargetPath = platform.AdditionalFeildOnFtp
+                            },
+                            Type = Models.Enums.NodeType.Ftp,
+                            DependsOn = computeHashNode == null ? [buildNode.Id] : [computeHashNode.Id],
+                            Action = platformCommand.UploadFtp,
+                            CancellationTokenSource = cancellationTokenSource
+                        };
+
+                        nodes.Add(ftpNode);
+                    }
                 }
             }
             return nodes;

@@ -42,6 +42,8 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty] private string _linuxX64FtpPath;
         [ObservableProperty] private bool _buildMacX64;
         [ObservableProperty] private string _macX64FtpPath;
+        [ObservableProperty] private bool _macAdditionalFtp;
+        [ObservableProperty] private string _macAdditionalFtpPath;
         [ObservableProperty] private bool _buildAndroid;
         [ObservableProperty] private string _androidFtpPath;
 
@@ -83,13 +85,13 @@ namespace UnityBuilder.ViewModels
         }
 
         [JsonIgnore]
-        public IEnumerable<(bool? NeedBuild, string Path, string PlatformName)> GetBuildPlatforms =>
+        public IEnumerable<(bool? NeedBuild, string Path, string PlatformName, string? AdditionalFeildOnFtp)> GetBuildPlatforms =>
         [
-            (BuildWinX64, WinX64FtpPath, TargetPlatforms.Windows64),
-            (BuildWinX86, WinX86FtpPath, TargetPlatforms.Windows86),
-            (BuildLinuxX64, LinuxX64FtpPath, TargetPlatforms.Linux64),
-            (BuildMacX64, MacX64FtpPath, TargetPlatforms.OsX),
-            (BuildAndroid, AndroidFtpPath, TargetPlatforms.Android),
+            (BuildWinX64, WinX64FtpPath, TargetPlatforms.Windows64, null),
+            (BuildWinX86, WinX86FtpPath, TargetPlatforms.Windows86, null),
+            (BuildLinuxX64, LinuxX64FtpPath, TargetPlatforms.Linux64, null),
+            (BuildMacX64, MacX64FtpPath, TargetPlatforms.OsX, MacAdditionalFtpPath),
+            (BuildAndroid, AndroidFtpPath, TargetPlatforms.Android, null),
         ];
 
         public string? ValidatePage1()
@@ -123,7 +125,8 @@ namespace UnityBuilder.ViewModels
             if (BuildWinX64 && string.IsNullOrWhiteSpace(WinX64FtpPath)) missing.Add("Windows x64 FTP Path");
             if (BuildWinX86 && string.IsNullOrWhiteSpace(WinX86FtpPath)) missing.Add("Windows x86 FTP Path");
             if (BuildLinuxX64 && string.IsNullOrWhiteSpace(LinuxX64FtpPath)) missing.Add("Linux x64 FTP Path");
-            if (BuildMacX64 && string.IsNullOrWhiteSpace(MacX64FtpPath)) missing.Add("macOS x64 FTP Path");
+            if (BuildMacX64 && string.IsNullOrWhiteSpace(MacX64FtpPath)) missing.Add("Mac OS FTP Path");
+            if (BuildMacX64 && MacAdditionalFtp && string.IsNullOrWhiteSpace(MacAdditionalFtpPath)) missing.Add("Mac OS Additional FTP Path");
             return missing.Count == 0 ? null : "FTP upload is enabled. Please fill in FTP paths:\n• " + string.Join("\n• ", missing);
         }
 
@@ -145,6 +148,8 @@ namespace UnityBuilder.ViewModels
             WinX64FtpPath = savedParameters.WinX64FtpPath;
             BuildMacX64 = savedParameters.BuildMacX64;
             MacX64FtpPath = savedParameters.MacX64FtpPath;
+            MacAdditionalFtp = savedParameters.MacAdditionalFtp;
+            MacAdditionalFtpPath = savedParameters.MacAdditionalFtpPath;
             BuildLinuxX64 = savedParameters.BuildLinuxX64;
             LinuxX64FtpPath = savedParameters.LinuxX64FtpPath;
             BuildWinX86 = savedParameters.BuildWinX86;
