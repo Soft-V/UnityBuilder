@@ -84,14 +84,13 @@ On the roadmap: a **CLI version** for easier server deployment. If you want to h
 
 ## Screenshots
 
-<img width="1215" height="743" alt="Снимок экрана — 2026-04-29 в 21 20 19" src="https://github.com/user-attachments/assets/84bddc9c-283a-418c-86c7-515536b30735" />
+<img width="1215" height="743" alt="Screen1" src="https://github.com/user-attachments/assets/84bddc9c-283a-418c-86c7-515536b30735" />
 
-<img width="1215" height="743" alt="Снимок экрана — 2026-04-29 в 21 20 37" src="https://github.com/user-attachments/assets/b43cf753-d46f-4d2d-a5af-59121c35260c" />
+<img width="1215" height="743" alt="Screen2" src="https://github.com/user-attachments/assets/b43cf753-d46f-4d2d-a5af-59121c35260c" />
 
-<img width="1215" height="743" alt="Снимок экрана — 2026-04-29 в 21 20 57" src="https://github.com/user-attachments/assets/1c999058-bad0-485f-ab74-c78b1f277274" />
+<img width="1215" height="743" alt="Screen3" src="https://github.com/user-attachments/assets/629bfd6c-0e57-41a2-a80a-c04ed499161c" />
 
-<img width="1215" height="743" alt="Снимок экрана — 2026-04-29 в 21 21 17" src="https://github.com/user-attachments/assets/13a290c9-329b-415d-91ef-d39a2e202faf" />
-
+<img width="1215" height="743" alt="Screen4" src="https://github.com/user-attachments/assets/14f53265-fc15-420b-a4ae-6e146e101114" />
 
 ---
 
