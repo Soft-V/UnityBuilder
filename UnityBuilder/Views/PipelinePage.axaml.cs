@@ -33,6 +33,7 @@ public partial class PipelinePage : UserControl, IPageView
 
     private void PipelinePage_Unloaded(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        viewMessageBox = false;
         CancelButton_Click(null, null);
     }
 
@@ -41,12 +42,19 @@ public partial class PipelinePage : UserControl, IPageView
         OnPreviousPage?.Invoke(this, e);
     }
 
+    private bool viewMessageBox = true;
+
     private async void CancelButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var confirmed = await CommandHelper.ShowMessageBox("Warning", "Are you sure you want to finish? All pipelines will be cancelled.", true);
+        if (viewMessageBox)
+        {
+            var confirmed = await CommandHelper.ShowMessageBox("Warning", "Are you sure you want to finish? All pipelines will be cancelled.", true);
 
-        if(!confirmed)
-            return;
+            if (!confirmed)
+                return;
+        }
+
+        viewMessageBox = true;
 
         (DataContext as PipelinePageViewModel)._cancellationToken.Cancel();
         foreach (var node in (DataContext as PipelinePageViewModel).Nodes)

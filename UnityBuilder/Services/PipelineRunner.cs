@@ -145,6 +145,10 @@ namespace UnityBuilder.Services
                             node.CancellationTokenSource.Cancel();
                         CancelNodeAndChildren(node);
                     }
+                    else
+                    {
+                        node.State = NodeState.Done;
+                    }
                 });
 
                 semaphore.Release();
