@@ -145,7 +145,7 @@ namespace UnityBuilder.Services
                             node.CancellationTokenSource.Cancel();
                         CancelNodeAndChildren(node);
                     }
-                    else
+                    else if(nodeResult == 0 && !node.CancellationTokenSource.IsCancellationRequested)
                     {
                         node.State = NodeState.Done;
                     }
