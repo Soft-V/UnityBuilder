@@ -64,6 +64,7 @@
 						Foreground="{DynamicResource TextMuted}"
 						HorizontalAlignment="Right"
 						Classes="toolbar-btn"
+						Margin="5"
 						IsEnabled="{Binding State, Converter={StaticResource StateToBool}}"
 						Click="Button_Click"
 						VerticalAlignment="Top"/>
