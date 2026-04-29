@@ -205,34 +205,34 @@ namespace UnityBuilder.ViewModels
         }
 
 
-        private async void CheckUpdate()
+        private void CheckUpdate()
         {
             Task.Run(async () =>
             {
-            });
-            try
-            {
-                CurrentVersion = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "version.txt")).Trim();
-                var response = await NetManager.Get("https://api.github.com/repos/Soft-V/UnityBuilder/releases/latest"); 
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var release = await NetManager.ParseHttpResponseMessage<GitHubRelease>(response);
-                    string latestVersion = release?.TagName?.TrimStart('v') ?? string.Empty;
-
-                    if (!string.IsNullOrEmpty(latestVersion) && latestVersion != CurrentVersion)
+                    CurrentVersion = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "version.txt")).Trim();
+                    var response = await NetManager.Get("https://api.github.com/repos/Soft-V/UnityBuilder/releases/latest"); 
+                    if (response.IsSuccessStatusCode)
                     {
-                        _latestRelease = release;
-                        Dispatcher.UIThread.Post(() =>
+                        var release = await NetManager.ParseHttpResponseMessage<GitHubRelease>(response);
+                        string latestVersion = release?.TagName?.TrimStart('v') ?? string.Empty;
+
+                        if (!string.IsNullOrEmpty(latestVersion) && latestVersion != CurrentVersion)
                         {
-                            ShowUpdateButton = true;
-                        });
+                            _latestRelease = release;
+                            Dispatcher.UIThread.Post(() =>
+                            {
+                                ShowUpdateButton = true;
+                            });
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"CheckUpdate failed: {ex.Message}");
-            }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"CheckUpdate failed: {ex.Message}");
+                }
+            });
         }
 
         private GitHubAsset GetPlatformSpecificAsset(List<GitHubAsset> assets)
