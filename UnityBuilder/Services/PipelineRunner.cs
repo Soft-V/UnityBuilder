@@ -20,11 +20,13 @@ namespace UnityBuilder.Services
                 [NodeType.Ftp] = new SemaphoreSlim(10)
             };
 
+        private static HashSet<Node> nodesList;
+
         public async static Task<NodeState> Run(HashSet<Node> nodes, CancellationToken token)
         {
             var completed = new HashSet<string>();
             var running = new Dictionary<string, Task>();
-
+            nodesList = nodes;
             while (completed.Count < nodes.Count)
             {
                 try
@@ -34,8 +36,6 @@ namespace UnityBuilder.Services
 
                     foreach (var node in ready)
                     {
-                        Console.WriteLine($"START {node.Id}");
-
                         var task = RunNode(node);
                         running[node.Id] = task;
                     }
@@ -50,32 +50,10 @@ namespace UnityBuilder.Services
                     var pair = running.First(p => p.Value == finished);
                     running.Remove(pair.Key);
 
-                    Console.WriteLine($"DONE {pair.Key}");
+                    var nodeRef = nodes.First(x => x.Id == pair.Key);
 
-                    if (finished.IsCompletedSuccessfully)
-                    {
-                        completed.Add(pair.Key);
-                        if (nodes.First(x => x.Id == pair.Key).State != NodeState.Cancelled)
-                            (nodes.First(x => x.Id == pair.Key)).State = NodeState.Done;
-                    }
-                    else
-                    {
-                        CancelNodeAndChildren(pair.Key, nodes);
-                        (nodes.First(x => x.Id == pair.Key)).State = NodeState.Error;
-                    }
+                    completed.Add(pair.Key);
 
-                    // отменяем все ноды 
-                    if (token.IsCancellationRequested)
-                    {
-                        foreach (var node in nodes)
-                        {
-                            if (!node.CancellationTokenSource.IsCancellationRequested)
-                            {
-                                node.State = NodeState.Cancelled;
-                                node.CancellationTokenSource.Cancel();
-                            }
-                        }
-                    }
                 }
                 catch (Exception e)
                 {
@@ -97,12 +75,17 @@ namespace UnityBuilder.Services
             return NodeState.Done;
         }
 
-        private static void CancelNodeAndChildren(string key, HashSet<Node> nodes)
+        private static void CancelNodeAndChildren(Node cancelNode)
         {
-            var cancelNode = nodes.FirstOrDefault(x => x.Id == key);
-            if (!cancelNode.CancellationTokenSource.IsCancellationRequested)
-                cancelNode.CancellationTokenSource.Cancel();
-            cancelNode.State = NodeState.Cancelled;
+            var canceledNodes = nodesList.Where(x => x.DependsOn.Contains(cancelNode.Id) && x.Type != NodeType.Build).ToList();
+            if (canceledNodes.Count != 0)
+            {
+                foreach (var child in canceledNodes)
+                {
+                    child.State = NodeState.Cancelled;
+                    CancelNodeAndChildren(child);
+                }
+            }
         }
 
         public async static Task RunNode(Node node)
@@ -145,6 +128,7 @@ namespace UnityBuilder.Services
                 node.State = NodeState.Error;
                 if (!node.CancellationTokenSource.IsCancellationRequested)
                     node.CancellationTokenSource.Cancel();
+                CancelNodeAndChildren(node);
             }
             finally
             {
@@ -159,6 +143,7 @@ namespace UnityBuilder.Services
                         node.State = NodeState.Error;
                         if (!node.CancellationTokenSource.IsCancellationRequested)
                             node.CancellationTokenSource.Cancel();
+                        CancelNodeAndChildren(node);
                     }
                 });
 
