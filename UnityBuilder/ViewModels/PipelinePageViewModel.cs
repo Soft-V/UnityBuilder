@@ -37,6 +37,12 @@ namespace UnityBuilder.ViewModels
         async public Task GenerateNodes()
         {
             Nodes = await PiplineStartCommand.CreateNodes(_pagesViewModel);
+
+            // make double CTS
+            foreach (var node in Nodes)
+            {
+                node.CancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(node.CancellationTokenSource.Token, _cancellationToken.Token);
+            }
         }
 
         async public void Start()

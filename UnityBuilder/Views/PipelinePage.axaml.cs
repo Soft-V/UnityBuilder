@@ -57,14 +57,6 @@ public partial class PipelinePage : UserControl, IPageView
         viewMessageBox = true;
 
         (DataContext as PipelinePageViewModel)._cancellationToken.Cancel();
-        foreach (var node in (DataContext as PipelinePageViewModel).Nodes)
-        {
-            if (!node.CancellationTokenSource.IsCancellationRequested)
-            {
-                node.State = NodeState.Cancelled;
-                node.CancellationTokenSource.Cancel();
-            }
-        }
     }
 
     public async void CreateNodes()
