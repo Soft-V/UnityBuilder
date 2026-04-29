@@ -319,6 +319,7 @@ namespace UnityBuilder.ViewModels
 
         public MainViewModel()
         {
+            _themeService = App.Current.Container.Resolve<ThemeService>();  
             CheckUpdate();
         }
     }
