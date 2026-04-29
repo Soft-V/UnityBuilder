@@ -57,8 +57,10 @@ namespace UnityBuilder.Commands
             {
                 outputDataChanged?.Invoke("Trying to create session...\n");
                 using var clientSsh = new SshClient(parameters.Server, parameters.Username, parameters.Password);
+                clientSsh.KeepAliveInterval = TimeSpan.FromSeconds(30);
                 await clientSsh.ConnectAsync(cancellationToken);
                 using var clientFtp = new SftpClient(parameters.Server, parameters.Username, parameters.Password);
+                clientFtp.KeepAliveInterval = TimeSpan.FromSeconds(30);
                 await clientFtp.ConnectAsync(cancellationToken);
 
                 if (parameters.DeleteOnUpload)
