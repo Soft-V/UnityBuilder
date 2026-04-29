@@ -2,6 +2,7 @@
 using HashComputer.Backend.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -34,5 +35,32 @@ namespace UnityBuilder.Models
         }
         [ObservableProperty]
         private NodeState _state = NodeState.Pending;
+
+        [ObservableProperty]
+        private string _workingTime = "-";
+
+        private Timer _timer;
+        private Stopwatch _workingStopwatch;
+        partial void OnStateChanged(NodeState value)
+        {
+            if (value == NodeState.Running)
+            {
+                _workingStopwatch = new Stopwatch();
+                _workingStopwatch.Start();
+                _timer = new Timer(WorkingTimeCallback, null, 0, 100);
+            }
+            else if (_workingStopwatch != null)
+            {
+                _workingStopwatch.Stop();
+                _timer?.Dispose();
+            }
+        }
+
+        private void WorkingTimeCallback(object state)
+        {
+            if (_workingStopwatch == null)
+                return;
+            WorkingTime = _workingStopwatch.Elapsed.ToString("hh\\:mm\\:ss\\.f");
+        }
     }
 }

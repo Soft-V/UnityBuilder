@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:m="using:UnityBuilder.Models"
 			 xmlns:converters="using:UnityBuilder.Converters"
@@ -41,7 +41,7 @@
 			<Grid RowDefinitions="*,5">
 
 				<Grid ColumnDefinitions="5,*">
-					<Grid Grid.Column="1" RowDefinitions="Auto,Auto" Margin="10">
+					<Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto" Margin="10">
 						<TextBlock Text="{Binding Id}"
 								   FontSize="11"
 								   FontWeight="SemiBold"
@@ -53,6 +53,11 @@
 								   FontSize="11"
 								   Margin="0,5,0,0"
 								   Foreground="{Binding State, Converter={StaticResource StateToBrush}}" />
+						<TextBlock Grid.Row="2"
+								   Text="{Binding WorkingTime}"
+								   FontSize="11"
+								   Margin="0,5,0,0"
+								   Foreground="Gray" />
 					</Grid>
 				</Grid>
 				<Button Content="×"

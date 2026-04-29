@@ -72,9 +72,16 @@
 
             <Grid ColumnDefinitions="*,Auto">
 
-                <TextBlock Text="{Binding StateResult}"
-                           VerticalAlignment="Center"
-                           Foreground="{Binding StateResult, Converter={StaticResource NodeStateToBrushConverter}}"/>
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock Text="{Binding StateResult}"
+                               VerticalAlignment="Center"
+                               Foreground="{Binding StateResult, Converter={StaticResource NodeStateToBrushConverter}}"/>
+                    <TextBlock Text="{Binding WorkingTime}"
+								   FontSize="11"
+                                   VerticalAlignment="Center"
+								   Foreground="Gray" />
+                </StackPanel>
+                
                 
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
