@@ -1,11 +1,14 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media;
 using HashComputer.Backend;
 using HashComputer.Backend.Entities;
 using HashComputer.Backend.Services;
 using Renci.SshNet;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -20,6 +23,8 @@ namespace UnityBuilder.Commands
 {
     public static class CommandHelper
     {
+        private const int UploadTaskAmount = 4;
+
         async public static Task<int> ComputeHash(HashParameters parameters, CancellationToken cancellationToken, Action<ProgressChangedArgs> progressChanged, Action<string> outputDataChanged)
         {
             if (cancellationToken.IsCancellationRequested)
@@ -53,6 +58,12 @@ namespace UnityBuilder.Commands
                 outputDataChanged?.Invoke($"Cancelled\n");
                 return -1;
             }
+
+            ConcurrentQueue<string> filesQueue;
+            int filesAmount;
+            object progressChangeLock = new object();
+            int currentFileNumber = 0;
+
             try
             {
                 outputDataChanged?.Invoke("Trying to create session...\n");
@@ -77,33 +88,17 @@ namespace UnityBuilder.Commands
                 // upload all files
                 outputDataChanged?.Invoke("Starting upload...\n");
                 var files = Directory.GetFiles(parameters.LocalPath, "*.*", SearchOption.AllDirectories);
-                for (int i = 0; i < files.Length; ++i)
+                filesAmount = files.Length;
+                filesQueue = new ConcurrentQueue<string>(files);
+
+                List<Task> list = new List<Task>();
+                for (int i = 0; i < UploadTaskAmount; i++)
                 {
-                    progressChanged?.Invoke(new ProgressChangedArgs()
-                    {
-                        Progress = (int)(i / (float)files.Length * 100),
-                    });
-
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        outputDataChanged?.Invoke($"Cancelled\n");
-                        return -1;
-                    }
-
-                    var file = files[i];
-                    var relative = file.ExcludePathPart(parameters.LocalPath);
-                    var target = parameters.TargetPath.TrimEnd('/');
-
-                    // create a directory for it
-                    using SshCommand cmd3 = clientSsh.CreateCommand(
-                        $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
-                    await cmd3.ExecuteAsync(cancellationToken);
-                    outputDataChanged?.Invoke(cmd3.Result);
-
-                    using var fs = System.IO.File.OpenRead(file);
-                    await clientFtp.UploadAsync(fs, $"{target}/{relative}");
-                    outputDataChanged?.Invoke($"Uploaded {target}/{relative}\n");
+                    list.Add(UploadParallelAsync(clientSsh, clientFtp));
                 }
+
+                await Task.WhenAll(list);
+
                 return 0;
             }
             catch (TaskCanceledException)
@@ -114,6 +109,37 @@ namespace UnityBuilder.Commands
             {
                 outputDataChanged?.Invoke($"Exception {e}\n");
                 return -1;
+            }
+
+            Task UploadParallelAsync(SshClient sshClient, SftpClient sftpClient)
+            {
+                return Task.Run(() =>
+                {
+                    while (filesQueue.TryDequeue(out var file) && !cancellationToken.IsCancellationRequested)
+                    {
+                        var relative = file.ExcludePathPart(parameters.LocalPath);
+                        var target = parameters.TargetPath.TrimEnd('/');
+
+                        // create a directory for it
+                        using SshCommand cmd3 = sshClient.CreateCommand(
+                            $"mkdir -p {target}/{string.Join('/', relative.Split('/').SkipLast(1))}");
+                        cmd3.ExecuteAsync(cancellationToken).GetAwaiter().GetResult();
+
+                        using var fs = System.IO.File.OpenRead(file);
+                        sftpClient.UploadAsync(fs, $"{target}/{relative}").GetAwaiter().GetResult();
+
+                        lock (progressChangeLock)
+                        {
+                            outputDataChanged?.Invoke(cmd3.Result);
+                            outputDataChanged?.Invoke($"Uploaded {target}/{relative}\n");
+                            currentFileNumber++;
+                            progressChanged?.Invoke(new ProgressChangedArgs
+                            {
+                                Progress = (int)(currentFileNumber / (float)filesAmount * 100f),
+                            });
+                        }
+                    }
+                }, cancellationToken);
             }
         }
 
