@@ -1,6 +1,8 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +26,11 @@ public partial class PipelinePage : UserControl, IPageView
     {
         DataContext = App.Current.Container.Resolve<PipelinePageViewModel>();
         InitializeComponent();
+
+        pipelineCanvas.RenderTransformOrigin = RelativePoint.TopLeft;
+        pipelineCanvas.RenderTransform = new TransformGroup();
+        (pipelineCanvas.RenderTransform as TransformGroup).Children.AddRange([scaleTransform, transform]);
+
         CreateNodes();
 
         var vm = DataContext as PipelinePageViewModel;
@@ -119,6 +126,7 @@ public partial class PipelinePage : UserControl, IPageView
 
         pipelineCanvas.Width = canvasMaxRight;
         pipelineCanvas.Height = canvasMaxBottom;
+        UpdateCanvasTranslate(0, 0);
     }
 
     private void OnNodeControlPressed(object sender, Node node)
@@ -158,5 +166,51 @@ public partial class PipelinePage : UserControl, IPageView
 
         var vm = DataContext as PipelinePageViewModel;
         avaloniaTextEditor.AppendText(data);
+    }
+
+    private TranslateTransform transform = new TranslateTransform();
+    private ScaleTransform scaleTransform = new ScaleTransform();
+    Point scrollMousePoint = new Point();
+    Vector scrollOffset = new Vector();
+    bool isCaptured = false;
+    private void canvas_PointerPressed(object sender, PointerPressedEventArgs e)
+    {
+        scrollMousePoint = e.GetPosition(null);
+        scrollOffset = new Vector(transform.X, transform.Y);
+        isCaptured = true;
+    }
+
+    private void canvas_PointerReleased(object sender, PointerReleasedEventArgs e)
+    {
+        isCaptured = false;
+    }
+
+    private void canvas_PointerMoved(object sender, PointerEventArgs e)
+    {
+        if (isCaptured)
+        {
+            UpdateCanvasTranslate((scrollMousePoint.X - e.GetPosition(null).X), (scrollMousePoint.Y - e.GetPosition(null).Y));
+        }
+    }
+
+    protected override void OnSizeChanged(SizeChangedEventArgs e)
+    {
+        base.OnSizeChanged(e);
+
+        UpdateCanvasTranslate(0, 0);
+    }
+
+    private void UpdateCanvasTranslate(double deltaX, double deltaY)
+    {
+        var scaledWidth = pipelineCanvas.Bounds.Width * scaleTransform.ScaleX;
+        var scaledHeight = pipelineCanvas.Bounds.Height * scaleTransform.ScaleY;
+
+        var maxX = Math.Max(0, scaledWidth - ContentMaskBorder.Bounds.Width);
+        var maxY = Math.Max(0, scaledHeight - ContentMaskBorder.Bounds.Height);
+
+        var tmpX = scrollOffset.X - deltaX;
+        transform.X = -Math.Clamp(-tmpX, 0, maxX);
+        var tmpY = scrollOffset.Y - deltaY;
+        transform.Y = -Math.Clamp(-tmpY, 0, maxY);
     }
 }

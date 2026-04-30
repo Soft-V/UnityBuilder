@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -23,14 +23,19 @@
                     BorderBrush="{DynamicResource BorderColor}"
                     BorderThickness="1"
                     CornerRadius="12"
+                    ClipToBounds="True"
+                    x:Name="ContentMaskBorder"
                     Padding="14">
-                <ScrollViewer VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Visible">
-                    <Canvas Background="Transparent"
+                <Canvas Background="Transparent"
+                        HorizontalAlignment="Left"
+								VerticalAlignment="Top"
+                                Cursor="Hand"
+                            PointerPressed="canvas_PointerPressed"
+							PointerReleased="canvas_PointerReleased"
+							PointerMoved="canvas_PointerMoved"
                             Name="pipelineCanvas">
 
-                    </Canvas>
-                </ScrollViewer>
+                </Canvas>
             </Border>
 
             <GridSplitter Grid.Column="1"
