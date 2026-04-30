@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui"
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Navigation -->
@@ -23,6 +23,7 @@
     <x:String x:Key="FieldOutputDir">Output Directory</x:String>
     <x:String x:Key="WmOutputDir">Where to save builds</x:String>
     <x:String x:Key="FieldBuildName">Build name</x:String>
+    <x:String x:Key="CBExecuteMethod">Custom execute method</x:String>
 
     <!-- Page 2 – Build Options -->
     <x:String x:Key="PageBuildOptionsTitle">Build Options</x:String>
