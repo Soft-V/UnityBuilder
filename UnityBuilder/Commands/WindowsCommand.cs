@@ -34,7 +34,7 @@ namespace UnityBuilder.Commands
                     "-batchmode",
                     "-silent-crashes",
                     "-projectPath", $"\"{parameters.ProjectPath}\"",
-                    "-executeMethod", "UnityBuilderAction.Builder.BuildProject", // TODO: allow custom
+                    "-executeMethod", parameters.IsCustomExecuteMethod ? parameters.CustomExecuteMethod : "UnityBuilderAction.Builder.BuildProject",
                     "-buildTarget", $"\"{parameters.TargetPlatform}\"",
                     "-customBuildPath", $"\"{buildPath}\"",
                     "-buildVersion", $"\"{parameters.BuildVersion}\"",

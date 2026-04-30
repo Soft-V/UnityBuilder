@@ -39,6 +39,8 @@ namespace UnityBuilder.Commands
                         TargetPlatform = platform.PlatformName,
                         UnityPath = viewModel.UnityPath,
                         BuildName = viewModel.BuildName,
+                        IsCustomExecuteMethod = viewModel.IsCustomExecuteMethod,
+                        CustomExecuteMethod = viewModel.CustomExecuteMethod,
                     },
                     Type = Models.Enums.NodeType.Build,
                     DependsOn = previousBuildNode == null ? [] : [previousBuildNode.Id],

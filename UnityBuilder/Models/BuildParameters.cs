@@ -8,6 +8,8 @@
         public string BuildVersion { get; set; }
         public string TargetPlatform { get; set; }
         public string BuildName { get; set; }
+        public bool IsCustomExecuteMethod { get; set; }
+        public string CustomExecuteMethod { get; set; }
     }
 
     // check here https://github.com/game-ci/unity-builder/blob/main/src/model/platform.ts

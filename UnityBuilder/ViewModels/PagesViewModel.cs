@@ -140,6 +140,8 @@ namespace UnityBuilder.ViewModels
             BuildVersion = savedParameters.BuildVersion;
             BuildName = savedParameters.BuildName;
             OutputDirectory = savedParameters.OutputDirectory;
+            IsCustomExecuteMethod = savedParameters.IsCustomExecuteMethod;
+            CustomExecuteMethod = savedParameters.CustomExecuteMethod;
             ComputeHashes = savedParameters.ComputeHashes;
             UploadOnFtp = savedParameters.UploadOnFtp;
             FtpUsername = savedParameters.FtpUsername;
