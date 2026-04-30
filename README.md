@@ -37,7 +37,7 @@
  
 4. Configure FTP upload and hash indexing *(Optional)*
 
-<*img width="1215" height="743" alt="Screen2" src="https://github.com/user-attachments/assets/b43cf753-d46f-4d2d-a5af-59121c35260c" />
+<img width="1215" height="743" alt="Screen2" src="https://github.com/user-attachments/assets/b43cf753-d46f-4d2d-a5af-59121c35260c" />
 
 5. Choose target platforms
 
