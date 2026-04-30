@@ -45,7 +45,7 @@
 
 6. Hit **Start** and watch the pipeline run
    
-<img width="1215" height="743" alt="Screen4" src="https://github.com/user-attachments/assets/14f53265-fc15-420b-a4ae-6e146e101114" />  
+<img width="1215" height="743" alt="Screen4" src="https://github.com/user-attachments/assets/18bb52c2-113b-4238-a83b-7e9bc6e8c060" />  
 
 ---
 
