@@ -74,6 +74,7 @@ public partial class PipelinePage : UserControl, IPageView
 
     private void CopyDefaultBuildScripts(string projectPath)
     {
+        Directory.CreateDirectory(Path.Combine(projectPath, "Assets", "Editor"));
         CommonHelper.CopyFilesRecursively(
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "default-build-script"), 
             Path.Combine(projectPath, "Assets", "Editor"));
