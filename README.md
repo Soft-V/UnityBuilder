@@ -33,11 +33,11 @@
 2. Select your project folder  
 3. Set the Unity version, output directory and project name  
 <img width="1215" height="743" alt="Screen1" src="https://github.com/user-attachments/assets/84bddc9c-283a-418c-86c7-515536b30735" />   
-4. *(Optional)* configure FTP upload and hash indexing  
+4. Configure FTP upload and hash indexing (Optional)  
 <img width="1215" height="743" alt="Screen2" src="https://github.com/user-attachments/assets/b43cf753-d46f-4d2d-a5af-59121c35260c" />  
 5. Choose target platforms  
 <img width="1215" height="743" alt="Screen3" src="https://github.com/user-attachments/assets/629bfd6c-0e57-41a2-a80a-c04ed499161c" />  
-6. Hit **Start** and watch the pipeline run
+6. Hit Start and watch the pipeline run
 <img width="1215" height="743" alt="Screen4" src="https://github.com/user-attachments/assets/14f53265-fc15-420b-a4ae-6e146e101114" />  
 
 ---
