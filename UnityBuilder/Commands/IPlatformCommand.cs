@@ -27,6 +27,10 @@ namespace UnityBuilder.Commands
             {
                 return new MacOsCommand();
             }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return new LinuxCommand();
+            }
             throw new NotImplementedException();
         }
 
