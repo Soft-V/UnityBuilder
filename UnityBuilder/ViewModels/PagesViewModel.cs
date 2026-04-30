@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UnityBuilder.Commands;
 using UnityBuilder.Models;
+using UnityBuilder.Services;
 using UnityBuilder.Views;
 
 namespace UnityBuilder.ViewModels
@@ -99,37 +100,37 @@ namespace UnityBuilder.ViewModels
         public string? ValidatePage1()
         {
             var missing = new List<string>();
-            if (string.IsNullOrWhiteSpace(UnityPath)) missing.Add("Unity Executable");
-            if (string.IsNullOrWhiteSpace(ProjectPath)) missing.Add("Project Path");
-            if (string.IsNullOrWhiteSpace(BuildVersion)) missing.Add("Build Version");
-            if (string.IsNullOrWhiteSpace(OutputDirectory)) missing.Add("Output Directory");
-            if (string.IsNullOrWhiteSpace(BuildName)) missing.Add("Build Name");
-            return missing.Count == 0 ? null : "Please fill in the following fields:\n• " + string.Join("\n• ", missing);
+            if (string.IsNullOrWhiteSpace(UnityPath)) missing.Add(Localizer.Get("FieldUnityExe"));
+            if (string.IsNullOrWhiteSpace(ProjectPath)) missing.Add(Localizer.Get("FieldProjectPath"));
+            if (string.IsNullOrWhiteSpace(BuildVersion)) missing.Add(Localizer.Get("FieldBuildVersion"));
+            if (string.IsNullOrWhiteSpace(OutputDirectory)) missing.Add(Localizer.Get("FieldOutputDir"));
+            if (string.IsNullOrWhiteSpace(BuildName)) missing.Add(Localizer.Get("ValFieldBuildName"));
+            return missing.Count == 0 ? null : Localizer.Get("ValPleaseFilIn") + "\n• " + string.Join("\n• ", missing);
         }
 
         public string? ValidatePage2()
         {
             if (!UploadOnFtp) return null;
             var missing = new List<string>();
-            if (string.IsNullOrWhiteSpace(FtpServer)) missing.Add("Server");
-            if (FtpPort <= 0) missing.Add("Port");
-            if (string.IsNullOrWhiteSpace(FtpUsername)) missing.Add("Username");
-            if (string.IsNullOrWhiteSpace(FtpPassword)) missing.Add("Password");
-            return missing.Count == 0 ? null : "FTP upload is enabled. Please fill in:\n• " + string.Join("\n• ", missing);
+            if (string.IsNullOrWhiteSpace(FtpServer)) missing.Add(Localizer.Get("FieldServer"));
+            if (FtpPort <= 0) missing.Add(Localizer.Get("FieldPort"));
+            if (string.IsNullOrWhiteSpace(FtpUsername)) missing.Add(Localizer.Get("FieldUsername"));
+            if (string.IsNullOrWhiteSpace(FtpPassword)) missing.Add(Localizer.Get("FieldPassword"));
+            return missing.Count == 0 ? null : Localizer.Get("ValFtpRequired") + "\n• " + string.Join("\n• ", missing);
         }
 
         public string? ValidatePage3()
         {
             bool anySelected = BuildWinX64 || BuildWinX86 || BuildLinuxX64 || BuildMacX64;
-            if (!anySelected) return "Please select at least one target platform.";
+            if (!anySelected) return Localizer.Get("ValSelectPlatform");
             if (!UploadOnFtp) return null;
             var missing = new List<string>();
-            if (BuildWinX64 && string.IsNullOrWhiteSpace(WinX64FtpPath)) missing.Add("Windows x64 FTP Path");
-            if (BuildWinX86 && string.IsNullOrWhiteSpace(WinX86FtpPath)) missing.Add("Windows x86 FTP Path");
-            if (BuildLinuxX64 && string.IsNullOrWhiteSpace(LinuxX64FtpPath)) missing.Add("Linux x64 FTP Path");
-            if (BuildMacX64 && string.IsNullOrWhiteSpace(MacX64FtpPath)) missing.Add("Mac OS FTP Path");
-            if (BuildMacX64 && MacAdditionalFtp && string.IsNullOrWhiteSpace(MacAdditionalFtpPath)) missing.Add("Mac OS Additional FTP Path");
-            return missing.Count == 0 ? null : "FTP upload is enabled. Please fill in FTP paths:\n• " + string.Join("\n• ", missing);
+            if (BuildWinX64 && string.IsNullOrWhiteSpace(WinX64FtpPath)) missing.Add(Localizer.Get("ValWinX64FtpPath"));
+            if (BuildWinX86 && string.IsNullOrWhiteSpace(WinX86FtpPath)) missing.Add(Localizer.Get("ValWinX86FtpPath"));
+            if (BuildLinuxX64 && string.IsNullOrWhiteSpace(LinuxX64FtpPath)) missing.Add(Localizer.Get("ValLinuxX64FtpPath"));
+            if (BuildMacX64 && string.IsNullOrWhiteSpace(MacX64FtpPath)) missing.Add(Localizer.Get("ValMacFtpPath"));
+            if (BuildMacX64 && MacAdditionalFtp && string.IsNullOrWhiteSpace(MacAdditionalFtpPath)) missing.Add(Localizer.Get("ValMacAdditionalFtpPath"));
+            return missing.Count == 0 ? null : Localizer.Get("ValFtpPathRequired") + "\n• " + string.Join("\n• ", missing);
         }
 
         public void SetParameters(PagesViewModel savedParameters)
@@ -228,13 +229,13 @@ namespace UnityBuilder.ViewModels
 
             var result = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
-                Title = "Select Folder",
+                Title = Localizer.Get("DlgSelectFolder"),
             });
 
             var folder = result?.FirstOrDefault();
             if (folder != null)
             {
-                return folder.Path.AbsolutePath;
+                return Uri.UnescapeDataString(folder.Path.AbsolutePath);
             }
 
             return "";
@@ -247,7 +248,7 @@ namespace UnityBuilder.ViewModels
 
             var result = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Select File",
+                Title = Localizer.Get("DlgSelectFile"),
             });
 
             var folder = result?.FirstOrDefault();

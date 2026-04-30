@@ -4,6 +4,7 @@ using Avalonia.Styling;
 using CraftHub.Services;
 using System;
 using UnityBuilder.Commands;
+using UnityBuilder.Services;
 using UnityBuilder.ViewModels;
 
 namespace UnityBuilder.Views
@@ -167,7 +168,7 @@ namespace UnityBuilder.Views
             if (_isConfirmedClose) return;
 
             e.Cancel = true;
-            var confirmed = await CommandHelper.ShowMessageBox("Warning", "Are you sure you want to close the app? Will all running processes be canceled?", true);
+            var confirmed = await CommandHelper.ShowMessageBox(Localizer.Get("DlgCloseWarningTitle"), Localizer.Get("DlgCloseWarningMsg"), true);
             if (!confirmed)
             {
                 return;

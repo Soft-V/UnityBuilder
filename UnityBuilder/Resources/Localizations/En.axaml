@@ -1,7 +1,7 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Navigation -->
+    <!-- ===== Navigation ===== -->
     <x:String x:Key="NavSteps">Steps</x:String>
     <x:String x:Key="NavProject">Project</x:String>
     <x:String x:Key="NavProjectSub">Unity &amp; paths</x:String>
@@ -12,7 +12,7 @@
     <x:String x:Key="NavPipeline">Pipeline</x:String>
     <x:String x:Key="NavPipelineSub">Build &amp; deploy</x:String>
 
-    <!-- Page 1 – Project Settings -->
+    <!-- ===== Page 1 – Project Settings ===== -->
     <x:String x:Key="PageProjectTitle">Project Settings</x:String>
     <x:String x:Key="PageProjectCaption">Configure Unity executable and output directories</x:String>
     <x:String x:Key="FieldUnityExe">Unity Executable</x:String>
@@ -25,7 +25,7 @@
     <x:String x:Key="FieldBuildName">Build name</x:String>
     <x:String x:Key="CBExecuteMethod">Custom execute method</x:String>
 
-    <!-- Page 2 – Build Options -->
+    <!-- ===== Page 2 – Build Options ===== -->
     <x:String x:Key="PageBuildOptionsTitle">Build Options</x:String>
     <x:String x:Key="PageBuildOptionsCaption">Configure file hashing and FTP upload</x:String>
     <x:String x:Key="CBComputeHashes">Compute file hashes</x:String>
@@ -38,18 +38,61 @@
     <x:String x:Key="BtnCheckConnection">Check connection</x:String>
     <x:String x:Key="CBDeleteRemote">Delete remote files before upload</x:String>
 
-    <!-- Page 3 – Platforms -->
+    <!-- ===== Page 3 – Platforms ===== -->
     <x:String x:Key="PagePlatformsTitle">Target Platforms</x:String>
     <x:String x:Key="PagePlatformsCaption">Select which platforms to build for</x:String>
     <x:String x:Key="FieldFtpPath">Path on the remote server</x:String>
     <x:String x:Key="CaptionMacUniversal">Unity builds a universal binary that supports Apple Silicon and Intel.</x:String>
     <x:String x:Key="CBMacAdditional">Upload to additional FTP path</x:String>
 
-    <!-- Common -->
+    <!-- ===== Common buttons ===== -->
     <x:String x:Key="BtnBrowse">Browse</x:String>
     <x:String x:Key="BtnBack">← Back</x:String>
     <x:String x:Key="BtnNext">Next →</x:String>
     <x:String x:Key="BtnStartBuild">▶ Start Build</x:String>
     <x:String x:Key="BtnCancel">Cancel</x:String>
+    <x:String x:Key="BtnOk">OK</x:String>
+
+    <!-- ===== Validation messages ===== -->
+    <x:String x:Key="ValPleaseFilIn">Please fill in the following fields:</x:String>
+    <x:String x:Key="ValFtpRequired">FTP upload is enabled. Please fill in:</x:String>
+    <x:String x:Key="ValSelectPlatform">Please select at least one target platform.</x:String>
+    <x:String x:Key="ValFtpPathRequired">FTP upload is enabled. Please fill in FTP paths:</x:String>
+    <x:String x:Key="ValWinX64FtpPath">Windows x64 FTP Path</x:String>
+    <x:String x:Key="ValWinX86FtpPath">Windows x86 FTP Path</x:String>
+    <x:String x:Key="ValLinuxX64FtpPath">Linux x64 FTP Path</x:String>
+    <x:String x:Key="ValMacFtpPath">Mac OS FTP Path</x:String>
+    <x:String x:Key="ValMacAdditionalFtpPath">Mac OS Additional FTP Path</x:String>
+    <x:String x:Key="ValFieldBuildName">Build Name</x:String>
+
+    <!-- ===== File / folder picker dialogs ===== -->
+    <x:String x:Key="DlgSelectFolder">Select Folder</x:String>
+    <x:String x:Key="DlgSelectFile">Select File</x:String>
+
+    <!-- ===== Close confirmation ===== -->
+    <x:String x:Key="DlgCloseWarningTitle">Warning</x:String>
+    <x:String x:Key="DlgCloseWarningMsg">Are you sure you want to close the app? All running processes will be cancelled.</x:String>
+
+    <!-- ===== Update dialogs ===== -->
+    <x:String x:Key="DlgNewVersionTitle">New version</x:String>
+    <x:String x:Key="DlgNewVersionMsg">Do you want to download the new version?</x:String>
+    <x:String x:Key="DlgErrorTitle">Error</x:String>
+    <x:String x:Key="DlgNoReleaseInfo">No release information available</x:String>
+    <x:String x:Key="DlgNoInstallerFound">No installer found for your platform ({0} {1})</x:String>
+    <x:String x:Key="DlgUpdatingTitle">Updating UnityBuilder</x:String>
+    <x:String x:Key="DlgDownloadingFile">Downloading {0}...</x:String>
+    <x:String x:Key="DlgDownloadingUpdate">Downloading update...</x:String>
+    <x:String x:Key="DlgDownloadingPercent">Downloading... {0}%</x:String>
+    <x:String x:Key="DlgDownloadingSize">Downloading... {0}</x:String>
+    <x:String x:Key="DlgVerifyingChecksum">Verifying checksum...</x:String>
+    <x:String x:Key="DlgCheckingIntegrity">Checking file integrity</x:String>
+    <x:String x:Key="DlgStartingInstaller">Starting installer...</x:String>
+    <x:String x:Key="DlgLaunchingInstaller">Launching installer</x:String>
+    <x:String x:Key="DlgChecksumFailed">Checksum verification failed. The file may be corrupted.</x:String>
+    <x:String x:Key="DlgLinkReplaced">The link has been replaced, and the GitHub version cannot be installed.</x:String>
+    <x:String x:Key="DlgCancelledTitle">Cancelled</x:String>
+    <x:String x:Key="DlgUpdateCancelled">Update was cancelled by user</x:String>
+    <x:String x:Key="DlgUpdateFailedTitle">Update Failed</x:String>
+    <x:String x:Key="DlgUpdateFailedMsg">Update Failed: {0}</x:String>
 
 </ResourceDictionary>

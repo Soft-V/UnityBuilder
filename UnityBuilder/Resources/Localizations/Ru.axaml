@@ -1,7 +1,7 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Навигация -->
+    <!-- ===== Навигация ===== -->
     <x:String x:Key="NavSteps">Шаги</x:String>
     <x:String x:Key="NavProject">Проект</x:String>
     <x:String x:Key="NavProjectSub">Unity и пути</x:String>
@@ -12,7 +12,7 @@
     <x:String x:Key="NavPipeline">Пайплайн</x:String>
     <x:String x:Key="NavPipelineSub">Сборка и деплой</x:String>
 
-    <!-- Страница 1 – Настройки проекта -->
+    <!-- ===== Страница 1 – Настройки проекта ===== -->
     <x:String x:Key="PageProjectTitle">Настройки проекта</x:String>
     <x:String x:Key="PageProjectCaption">Настройте путь к Unity и выходные директории</x:String>
     <x:String x:Key="FieldUnityExe">Исполняемый файл Unity</x:String>
@@ -25,7 +25,7 @@
     <x:String x:Key="FieldBuildName">Имя сборки</x:String>
     <x:String x:Key="CBExecuteMethod">Свой метод сборки</x:String>
 
-    <!-- Страница 2 – Настройки сборки -->
+    <!-- ===== Страница 2 – Настройки сборки ===== -->
     <x:String x:Key="PageBuildOptionsTitle">Настройки сборки</x:String>
     <x:String x:Key="PageBuildOptionsCaption">Настройте хэширование файлов и загрузку на FTP</x:String>
     <x:String x:Key="CBComputeHashes">Вычислять хэши файлов</x:String>
@@ -38,18 +38,61 @@
     <x:String x:Key="BtnCheckConnection">Проверить соединение</x:String>
     <x:String x:Key="CBDeleteRemote">Удалять файлы на сервере перед загрузкой</x:String>
 
-    <!-- Страница 3 – Платформы -->
+    <!-- ===== Страница 3 – Платформы ===== -->
     <x:String x:Key="PagePlatformsTitle">Целевые платформы</x:String>
     <x:String x:Key="PagePlatformsCaption">Выберите платформы для сборки</x:String>
     <x:String x:Key="FieldFtpPath">Путь на удалённом сервере</x:String>
     <x:String x:Key="CaptionMacUniversal">Unity создаёт универсальный бинарный файл с поддержкой Apple Silicon и Intel.</x:String>
     <x:String x:Key="CBMacAdditional">Загрузить на дополнительный FTP путь</x:String>
 
-    <!-- Общее -->
+    <!-- ===== Общие кнопки ===== -->
     <x:String x:Key="BtnBrowse">Обзор</x:String>
     <x:String x:Key="BtnBack">← Назад</x:String>
     <x:String x:Key="BtnNext">Далее →</x:String>
     <x:String x:Key="BtnStartBuild">▶ Начать сборку</x:String>
     <x:String x:Key="BtnCancel">Отмена</x:String>
+    <x:String x:Key="BtnOk">ОК</x:String>
+
+    <!-- ===== Сообщения валидации ===== -->
+    <x:String x:Key="ValPleaseFilIn">Заполните следующие поля:</x:String>
+    <x:String x:Key="ValFtpRequired">Загрузка на FTP включена. Заполните:</x:String>
+    <x:String x:Key="ValSelectPlatform">Выберите хотя бы одну целевую платформу.</x:String>
+    <x:String x:Key="ValFtpPathRequired">Загрузка на FTP включена. Укажите FTP пути:</x:String>
+    <x:String x:Key="ValWinX64FtpPath">FTP путь для Windows x64</x:String>
+    <x:String x:Key="ValWinX86FtpPath">FTP путь для Windows x86</x:String>
+    <x:String x:Key="ValLinuxX64FtpPath">FTP путь для Linux x64</x:String>
+    <x:String x:Key="ValMacFtpPath">FTP путь для Mac OS</x:String>
+    <x:String x:Key="ValMacAdditionalFtpPath">Дополнительный FTP путь для Mac OS</x:String>
+    <x:String x:Key="ValFieldBuildName">Имя сборки</x:String>
+
+    <!-- ===== Диалоги выбора файлов ===== -->
+    <x:String x:Key="DlgSelectFolder">Выберите папку</x:String>
+    <x:String x:Key="DlgSelectFile">Выберите файл</x:String>
+
+    <!-- ===== Подтверждение закрытия ===== -->
+    <x:String x:Key="DlgCloseWarningTitle">Предупреждение</x:String>
+    <x:String x:Key="DlgCloseWarningMsg">Вы уверены, что хотите закрыть приложение? Все запущенные процессы будут отменены.</x:String>
+
+    <!-- ===== Диалоги обновления ===== -->
+    <x:String x:Key="DlgNewVersionTitle">Новая версия</x:String>
+    <x:String x:Key="DlgNewVersionMsg">Хотите скачать новую версию?</x:String>
+    <x:String x:Key="DlgErrorTitle">Ошибка</x:String>
+    <x:String x:Key="DlgNoReleaseInfo">Информация о релизе недоступна</x:String>
+    <x:String x:Key="DlgNoInstallerFound">Установщик для вашей платформы не найден ({0} {1})</x:String>
+    <x:String x:Key="DlgUpdatingTitle">Обновление UnityBuilder</x:String>
+    <x:String x:Key="DlgDownloadingFile">Загрузка {0}...</x:String>
+    <x:String x:Key="DlgDownloadingUpdate">Загрузка обновления...</x:String>
+    <x:String x:Key="DlgDownloadingPercent">Загрузка... {0}%</x:String>
+    <x:String x:Key="DlgDownloadingSize">Загрузка... {0}</x:String>
+    <x:String x:Key="DlgVerifyingChecksum">Проверка контрольной суммы...</x:String>
+    <x:String x:Key="DlgCheckingIntegrity">Проверка целостности файла</x:String>
+    <x:String x:Key="DlgStartingInstaller">Запуск установщика...</x:String>
+    <x:String x:Key="DlgLaunchingInstaller">Запуск установщика</x:String>
+    <x:String x:Key="DlgChecksumFailed">Проверка контрольной суммы не пройдена. Файл может быть повреждён.</x:String>
+    <x:String x:Key="DlgLinkReplaced">Ссылка была изменена, установить версию с GitHub невозможно.</x:String>
+    <x:String x:Key="DlgCancelledTitle">Отменено</x:String>
+    <x:String x:Key="DlgUpdateCancelled">Обновление отменено пользователем</x:String>
+    <x:String x:Key="DlgUpdateFailedTitle">Ошибка обновления</x:String>
+    <x:String x:Key="DlgUpdateFailedMsg">Ошибка обновления: {0}</x:String>
 
 </ResourceDictionary>

@@ -77,8 +77,8 @@ namespace UnityBuilder.ViewModels
         private async Task DownloadAndStartUpdate()
         {
             var confirmed = await CommandHelper.ShowMessageBox(
-                "New version",
-                "Do you want to download the new version?");
+                Localizer.Get("DlgNewVersionTitle"),
+                Localizer.Get("DlgNewVersionMsg"), true);
             if (!confirmed)
             {
                 return;
@@ -88,7 +88,7 @@ namespace UnityBuilder.ViewModels
             {
                 if (_latestRelease?.Assets == null)
                 {
-                    await CommandHelper.ShowMessageBox("Error", $"No release information available");
+                    await CommandHelper.ShowMessageBox(Localizer.Get("DlgErrorTitle"), Localizer.Get("DlgNoReleaseInfo"));
                     return;
                 }
 
@@ -96,11 +96,11 @@ namespace UnityBuilder.ViewModels
 
                 if (asset == null)
                 {
-                    await CommandHelper.ShowMessageBox("Error", $"No installer found for your platform ({RuntimeInformation.OSDescription} {RuntimeInformation.ProcessArchitecture})");
+                    await CommandHelper.ShowMessageBox(Localizer.Get("DlgErrorTitle"), Localizer.Get("DlgNoInstallerFound", RuntimeInformation.OSDescription, RuntimeInformation.ProcessArchitecture));
                     return;
                 }
 
-                var result = await CommandHelper.ShowProgressDialogAsync("Updating UnityBuilder", async (progress, cancellationToken) =>
+                var result = await CommandHelper.ShowProgressDialogAsync(Localizer.Get("DlgUpdatingTitle"), async (progress, cancellationToken) =>
                 {
                     var sanitizedName = Path.GetFileName(asset.Name);
                     if (string.IsNullOrEmpty(sanitizedName))
@@ -112,8 +112,8 @@ namespace UnityBuilder.ViewModels
 
                     progress.Report(new UpdateProgress
                     {
-                        Status = $"Downloading {asset.Name}...",
-                        Message = "Downloading update...",
+                        Status = Localizer.Get("DlgDownloadingFile", asset.Name),
+                        Message = Localizer.Get("DlgDownloadingUpdate"),
                         IsIndeterminate = true
                     });
 
@@ -124,7 +124,7 @@ namespace UnityBuilder.ViewModels
 
                         var uri = new Uri(asset.BrowserDownloadUrl);
                         if (!uri.Host.EndsWith(".github.com") && uri.Host != "github.com")
-                            throw new Exception("The link has been replaced, and the github version cannot be installed.");
+                            throw new Exception(Localizer.Get("DlgLinkReplaced"));
 
                         using (var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
                         {
@@ -150,7 +150,7 @@ namespace UnityBuilder.ViewModels
                                         progress.Report(new UpdateProgress
                                         {
                                             PercentComplete = percent,
-                                            Status = $"Downloading... {percent}%",
+                                            Status = Localizer.Get("DlgDownloadingPercent", percent),
                                             BytesReceived = totalRead,
                                             TotalBytes = totalBytes
                                         });
@@ -159,7 +159,7 @@ namespace UnityBuilder.ViewModels
                                     {
                                         var updateProgress = new UpdateProgress();
                                         updateProgress.BytesReceived = totalRead;
-                                        updateProgress.Status = $"Downloading... {FileSizeHelper.FormatFileSize(updateProgress.BytesReceived)}";
+                                        updateProgress.Status = Localizer.Get("DlgDownloadingSize", FileSizeHelper.FormatFileSize(updateProgress.BytesReceived));
                                         progress.Report(updateProgress);
                                     }
                                 }
@@ -169,20 +169,20 @@ namespace UnityBuilder.ViewModels
 
                     progress.Report(new UpdateProgress
                     {
-                        Status = "Verifying checksum...",
-                        Message = "Checking file integrity",
+                        Status = Localizer.Get("DlgVerifyingChecksum"),
+                        Message = Localizer.Get("DlgCheckingIntegrity"),
                         IsIndeterminate = true
                     });
 
                     if (!await VerifyChecksum(downloadPath, asset.Sha256))
                     {
-                        throw new Exception("Checksum verification failed. The file may be corrupted.");
+                        throw new Exception(Localizer.Get("DlgChecksumFailed"));
                     }
 
                     progress.Report(new UpdateProgress
                     {
-                        Status = "Starting installer...",
-                        Message = "Launching installer",
+                        Status = Localizer.Get("DlgStartingInstaller"),
+                        Message = Localizer.Get("DlgLaunchingInstaller"),
                         PercentComplete = 100
                     });
 
@@ -193,17 +193,16 @@ namespace UnityBuilder.ViewModels
 
                 if (result.IsCanceled)
                 {
-                    await CommandHelper.ShowMessageBox("Cancelled", "Update was cancelled by user");
-
+                    await CommandHelper.ShowMessageBox(Localizer.Get("DlgCancelledTitle"), Localizer.Get("DlgUpdateCancelled"));
                 }
                 else if (!result.IsSuccess && !string.IsNullOrEmpty(result.ErrorMessage))
                 {
-                    await CommandHelper.ShowMessageBox("Update Failed", result.ErrorMessage);
+                    await CommandHelper.ShowMessageBox(Localizer.Get("DlgUpdateFailedTitle"), result.ErrorMessage);
                 }
             }
             catch (Exception ex)
             {
-                await CommandHelper.ShowMessageBox("Error", $"Update Failed {ex.Message}");
+                await CommandHelper.ShowMessageBox(Localizer.Get("DlgErrorTitle"), Localizer.Get("DlgUpdateFailedMsg", ex.Message));
             }
         }
 
