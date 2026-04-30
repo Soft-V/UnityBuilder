@@ -17,9 +17,9 @@
 
 					<StackPanel Spacing="4">
 						<StackPanel Orientation="Horizontal" Spacing="10">
-							<TextBlock Text="Build Options" Classes="page-title"/>
+							<TextBlock Text="{DynamicResource PageBuildOptionsTitle}" Classes="page-title"/>
 						</StackPanel>
-						<TextBlock Text="Configure file hashing and FTP upload"
+						<TextBlock Text="{DynamicResource PageBuildOptionsCaption}"
 								   Classes="caption"/>
 					</StackPanel>
 
@@ -27,10 +27,10 @@
 
 					<Border Classes="card-elevated">
 						<StackPanel Spacing="6">
-							<CheckBox Content="Compute file hashes"
+							<CheckBox Content="{DynamicResource CBComputeHashes}"
 									  FontWeight="Medium"
 									  IsChecked="{Binding ComputeHashes}"/>
-							<TextBlock Text="A checksum file will be generated after each build"
+							<TextBlock Text="{DynamicResource CaptionHashInfo}"
 									   Classes="caption" Margin="26,0,0,0"/>
 						</StackPanel>
 					</Border>
@@ -39,7 +39,7 @@
 						<StackPanel Spacing="14">
 
 							<CheckBox x:Name="CBLoadToFtp"
-									  Content="Upload to FTP"
+									  Content="{DynamicResource CBUploadFtp}"
 									  FontWeight="Medium"
 									  IsChecked="{Binding UploadOnFtp}"/>
 
@@ -48,24 +48,24 @@
 
 								<Grid ColumnDefinitions="*,160">
 									<StackPanel Spacing="6">
-										<TextBlock Text="Server" Classes="field-label"/>
+										<TextBlock Text="{DynamicResource FieldServer}" Classes="field-label"/>
 										<TextBox Watermark="ftp.example.com"
 												 Text="{Binding FtpServer}"/>
 									</StackPanel>
 									<StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
-										<TextBlock Text="Port" Classes="field-label"/>
+										<TextBlock Text="{DynamicResource FieldPort}" Classes="field-label"/>
 										<TextBox Watermark="21" Text="{Binding FtpPort}"/>
 									</StackPanel>
 								</Grid>
 
 								<Grid ColumnDefinitions="*,*">
 									<StackPanel Spacing="6">
-										<TextBlock Text="Username" Classes="field-label"/>
+										<TextBlock Text="{DynamicResource FieldUsername}" Classes="field-label"/>
 										<TextBox Watermark="username"
 												 Text="{Binding FtpUsername}"/>
 									</StackPanel>
 									<StackPanel Grid.Column="1" Spacing="6" Margin="10,0,0,0">
-										<TextBlock Text="Password" Classes="field-label"/>
+										<TextBlock Text="{DynamicResource FieldPassword}" Classes="field-label"/>
 										<TextBox Watermark="••••••••"
 												 PasswordChar="●"
 												 Text="{Binding FtpPassword}"/>
@@ -73,7 +73,7 @@
 								</Grid>
 
 								<StackPanel Spacing="10" Orientation="Horizontal">
-									<Button Content="Check connection" Command="{Binding CheckFTPConnection}"/>
+									<Button Content="{DynamicResource BtnCheckConnection}" Command="{Binding CheckFTPConnection}"/>
 									<TextBlock Text="{Binding FtpConnectionLog}"
 											   VerticalAlignment="Center"
 											   Foreground="{Binding LogColor}"
@@ -85,7 +85,7 @@
 											 Foreground="{DynamicResource AccentPrimary}"
 											 VerticalAlignment="Center"/>
 
-								<CheckBox Content="Delete remote files before upload"
+								<CheckBox Content="{DynamicResource CBDeleteRemote}"
 										  FontWeight="Medium"
 										  IsChecked="{Binding FtpDeleteOnUpload}"/>
 
@@ -102,8 +102,8 @@
 				<StackPanel Orientation="Horizontal"
 							Spacing="10"
 							HorizontalAlignment="Right">
-					<Button Content="← Back" Width="110" Click="Button1_Click"/>
-					<Button Content="Next →" Width="110" Classes="accent-btn" Click="Button_Click"/>
+					<Button Content="{DynamicResource BtnBack}" Width="110" Click="Button1_Click"/>
+					<Button Content="{DynamicResource BtnNext}" Width="110" Classes="accent-btn" Click="Button_Click"/>
 				</StackPanel>
 			</Grid>
 		</Border>

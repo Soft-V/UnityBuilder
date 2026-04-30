@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -77,20 +77,20 @@
                                VerticalAlignment="Center"
                                Foreground="{Binding StateResult, Converter={StaticResource NodeStateToBrushConverter}}"/>
                     <TextBlock Text="{Binding WorkingTime}"
-								   FontSize="11"
+                                   FontSize="11"
                                    VerticalAlignment="Center"
-								   Foreground="Gray" />
+                                   Foreground="Gray" />
                 </StackPanel>
-                
-                
+
+
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             Spacing="12">
 
-                    <Button Content="← Back" Width="120"
+                    <Button Content="{DynamicResource BtnBack}" Width="120"
                             Click="Button1_Click"
                             IsEnabled="{Binding !IsPipelineRun}"/>
-                    <Button Content="Cancel"
+                    <Button Content="{DynamicResource BtnCancel}"
                             Click="CancelButton_Click"
                             Width="160"
                             IsEnabled="{Binding IsPipelineRun}"/>

@@ -30,6 +30,9 @@ namespace UnityBuilder.ViewModels
         private bool _buildIsRunning = false;
 
         [ObservableProperty]
+        private string _currentLanguage = LanguageService.Instance.CurrentLang;
+
+        [ObservableProperty]
         private string _currentVersion = string.Empty;
         [ObservableProperty]
         private bool _showUpdateButton = false;
@@ -39,6 +42,13 @@ namespace UnityBuilder.ViewModels
         private double _downloadProgress = 0;
 
         #region Commands
+
+        [RelayCommand]
+        private void SwitchLanguage()
+        {
+            LanguageService.Instance.Toggle();
+            CurrentLanguage = LanguageService.Instance.CurrentLang;
+        }
 
         [RelayCommand]
         private void SwitchTheme()

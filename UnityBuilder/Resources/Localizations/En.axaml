@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Navigation -->
+    <x:String x:Key="NavSteps">Steps</x:String>
+    <x:String x:Key="NavProject">Project</x:String>
+    <x:String x:Key="NavProjectSub">Unity &amp; paths</x:String>
+    <x:String x:Key="NavBuildOptions">Build options</x:String>
+    <x:String x:Key="NavBuildOptionsSub">Hashes &amp; FTP</x:String>
+    <x:String x:Key="NavPlatforms">Platforms</x:String>
+    <x:String x:Key="NavPlatformsSub">Target systems</x:String>
+    <x:String x:Key="NavPipeline">Pipeline</x:String>
+    <x:String x:Key="NavPipelineSub">Build &amp; deploy</x:String>
+
+    <!-- Page 1 – Project Settings -->
+    <x:String x:Key="PageProjectTitle">Project Settings</x:String>
+    <x:String x:Key="PageProjectCaption">Configure Unity executable and output directories</x:String>
+    <x:String x:Key="FieldUnityExe">Unity Executable</x:String>
+    <x:String x:Key="WmUnityPath">Path to Unity.exe / Unity.app</x:String>
+    <x:String x:Key="FieldProjectPath">Project Path</x:String>
+    <x:String x:Key="WmProjectPath">Folder containing Assets/, ProjectSettings/, etc.</x:String>
+    <x:String x:Key="FieldBuildVersion">Build Version</x:String>
+    <x:String x:Key="FieldOutputDir">Output Directory</x:String>
+    <x:String x:Key="WmOutputDir">Where to save builds</x:String>
+    <x:String x:Key="FieldBuildName">Build name</x:String>
+
+    <!-- Page 2 – Build Options -->
+    <x:String x:Key="PageBuildOptionsTitle">Build Options</x:String>
+    <x:String x:Key="PageBuildOptionsCaption">Configure file hashing and FTP upload</x:String>
+    <x:String x:Key="CBComputeHashes">Compute file hashes</x:String>
+    <x:String x:Key="CaptionHashInfo">A checksum file will be generated after each build</x:String>
+    <x:String x:Key="CBUploadFtp">Upload to FTP</x:String>
+    <x:String x:Key="FieldServer">Server</x:String>
+    <x:String x:Key="FieldPort">Port</x:String>
+    <x:String x:Key="FieldUsername">Username</x:String>
+    <x:String x:Key="FieldPassword">Password</x:String>
+    <x:String x:Key="BtnCheckConnection">Check connection</x:String>
+    <x:String x:Key="CBDeleteRemote">Delete remote files before upload</x:String>
+
+    <!-- Page 3 – Platforms -->
+    <x:String x:Key="PagePlatformsTitle">Target Platforms</x:String>
+    <x:String x:Key="PagePlatformsCaption">Select which platforms to build for</x:String>
+    <x:String x:Key="FieldFtpPath">Path on the remote server</x:String>
+    <x:String x:Key="CaptionMacUniversal">Unity builds a universal binary that supports Apple Silicon and Intel.</x:String>
+    <x:String x:Key="CBMacAdditional">Upload to additional FTP path</x:String>
+
+    <!-- Common -->
+    <x:String x:Key="BtnBrowse">Browse</x:String>
+    <x:String x:Key="BtnBack">← Back</x:String>
+    <x:String x:Key="BtnNext">Next →</x:String>
+    <x:String x:Key="BtnStartBuild">▶ Start Build</x:String>
+    <x:String x:Key="BtnCancel">Cancel</x:String>
+
+</ResourceDictionary>

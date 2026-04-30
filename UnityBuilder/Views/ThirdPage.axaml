@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -21,8 +21,8 @@
 				<StackPanel Spacing="20">
 
 					<StackPanel Spacing="4">
-						<TextBlock Text="Target Platforms" Classes="page-title" />
-						<TextBlock Text="Select which platforms to build for"
+						<TextBlock Text="{DynamicResource PagePlatformsTitle}" Classes="page-title" />
+						<TextBlock Text="{DynamicResource PagePlatformsCaption}"
 								   Classes="caption" />
 					</StackPanel>
 
@@ -33,7 +33,7 @@
 							<CheckBox Content="Windows x64"
 									  x:Name="WinX64"
 									  IsChecked="{Binding BuildWinX64}" />
-							<TextBlock Text="Path on the remote server" Classes="field-label">
+							<TextBlock Text="{DynamicResource FieldFtpPath}" Classes="field-label">
 								<TextBlock.IsVisible>
 									<MultiBinding Converter="{StaticResource AndBoolConverter}">
 										<Binding ElementName="WinX64" Path="IsChecked" />
@@ -58,7 +58,7 @@
 							<CheckBox Content="Windows x86"
 									  x:Name="WinX86"
 									  IsChecked="{Binding BuildWinX86}" />
-							<TextBlock Text="Path on the remote server" Classes="field-label">
+							<TextBlock Text="{DynamicResource FieldFtpPath}" Classes="field-label">
 								<TextBlock.IsVisible>
 									<MultiBinding Converter="{StaticResource AndBoolConverter}">
 										<Binding ElementName="WinX86" Path="IsChecked" />
@@ -83,7 +83,7 @@
 							<CheckBox Content="Linux x64"
 									  x:Name="LinuxX64"
 									  IsChecked="{Binding BuildLinuxX64}" />
-							<TextBlock Text="Path on the remote server" Classes="field-label">
+							<TextBlock Text="{DynamicResource FieldFtpPath}" Classes="field-label">
 								<TextBlock.IsVisible>
 									<MultiBinding Converter="{StaticResource AndBoolConverter}">
 										<Binding ElementName="LinuxX64" Path="IsChecked" />
@@ -109,7 +109,7 @@
 								<CheckBox Content="Mac OS"
 										  x:Name="MacX64"
 										  IsChecked="{Binding BuildMacX64}" />
-								<TextBlock Text="Unity builds a universal binary that supports Apple Silicon and Intel."
+								<TextBlock Text="{DynamicResource CaptionMacUniversal}"
 										   Classes="caption"
 										   VerticalAlignment="Center"/>
 							</StackPanel>
@@ -117,7 +117,7 @@
 							<StackPanel Spacing="8" IsVisible="{Binding #MacX64.IsChecked}">
 
 								<StackPanel Spacing="8">
-									<TextBlock Text="Path on the remote server" Classes="field-label">
+									<TextBlock Text="{DynamicResource FieldFtpPath}" Classes="field-label">
 										<TextBlock.IsVisible>
 											<MultiBinding Converter="{StaticResource AndBoolConverter}">
 												<Binding ElementName="MacX64" Path="IsChecked" />
@@ -137,7 +137,7 @@
 								</StackPanel>
 
 								<StackPanel Spacing="8">
-									<CheckBox Content="Upload to additional FTP path"
+									<CheckBox Content="{DynamicResource CBMacAdditional}"
 											  x:Name="MacAdditional"
 											  IsChecked="{Binding MacAdditionalFtp}">
 										<CheckBox.IsVisible>
@@ -168,7 +168,7 @@
 									  x:Name="Android"
 									  IsEnabled="False"
 									  IsChecked="{Binding BuildAndroid}" />
-							<TextBlock Text="Path on the remote server" Classes="field-label">
+							<TextBlock Text="{DynamicResource FieldFtpPath}" Classes="field-label">
 								<TextBlock.IsVisible>
 									<MultiBinding Converter="{StaticResource AndBoolConverter}">
 										<Binding ElementName="Android" Path="IsChecked" />
@@ -197,8 +197,8 @@
 				<StackPanel HorizontalAlignment="Right"
 							Orientation="Horizontal"
 							Spacing="10">
-					<Button Content="← Back" Width="110" Click="Button1_Click" />
-					<Button Content="▶ Start Build" Width="130" Classes="accent-btn" Click="Button_Click" />
+					<Button Content="{DynamicResource BtnBack}" Width="110" Click="Button1_Click" />
+					<Button Content="{DynamicResource BtnStartBuild}" Width="150" Classes="accent-btn" Click="Button_Click" />
 				</StackPanel>
 			</Grid>
 		</Border>

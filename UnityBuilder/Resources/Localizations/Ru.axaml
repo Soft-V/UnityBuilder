@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Навигация -->
+    <x:String x:Key="NavSteps">Шаги</x:String>
+    <x:String x:Key="NavProject">Проект</x:String>
+    <x:String x:Key="NavProjectSub">Unity и пути</x:String>
+    <x:String x:Key="NavBuildOptions">Настройки сборки</x:String>
+    <x:String x:Key="NavBuildOptionsSub">Хэши и FTP</x:String>
+    <x:String x:Key="NavPlatforms">Платформы</x:String>
+    <x:String x:Key="NavPlatformsSub">Целевые системы</x:String>
+    <x:String x:Key="NavPipeline">Пайплайн</x:String>
+    <x:String x:Key="NavPipelineSub">Сборка и деплой</x:String>
+
+    <!-- Страница 1 – Настройки проекта -->
+    <x:String x:Key="PageProjectTitle">Настройки проекта</x:String>
+    <x:String x:Key="PageProjectCaption">Настройте путь к Unity и выходные директории</x:String>
+    <x:String x:Key="FieldUnityExe">Исполняемый файл Unity</x:String>
+    <x:String x:Key="WmUnityPath">Путь к Unity.exe / Unity.app</x:String>
+    <x:String x:Key="FieldProjectPath">Путь к проекту</x:String>
+    <x:String x:Key="WmProjectPath">Папка с Assets/, ProjectSettings/ и т.д.</x:String>
+    <x:String x:Key="FieldBuildVersion">Версия сборки</x:String>
+    <x:String x:Key="FieldOutputDir">Выходная директория</x:String>
+    <x:String x:Key="WmOutputDir">Куда сохранять сборки</x:String>
+    <x:String x:Key="FieldBuildName">Имя сборки</x:String>
+
+    <!-- Страница 2 – Настройки сборки -->
+    <x:String x:Key="PageBuildOptionsTitle">Настройки сборки</x:String>
+    <x:String x:Key="PageBuildOptionsCaption">Настройте хэширование файлов и загрузку на FTP</x:String>
+    <x:String x:Key="CBComputeHashes">Вычислять хэши файлов</x:String>
+    <x:String x:Key="CaptionHashInfo">Файл контрольных сумм будет создан после каждой сборки</x:String>
+    <x:String x:Key="CBUploadFtp">Загружать на FTP</x:String>
+    <x:String x:Key="FieldServer">Сервер</x:String>
+    <x:String x:Key="FieldPort">Порт</x:String>
+    <x:String x:Key="FieldUsername">Имя пользователя</x:String>
+    <x:String x:Key="FieldPassword">Пароль</x:String>
+    <x:String x:Key="BtnCheckConnection">Проверить соединение</x:String>
+    <x:String x:Key="CBDeleteRemote">Удалять файлы на сервере перед загрузкой</x:String>
+
+    <!-- Страница 3 – Платформы -->
+    <x:String x:Key="PagePlatformsTitle">Целевые платформы</x:String>
+    <x:String x:Key="PagePlatformsCaption">Выберите платформы для сборки</x:String>
+    <x:String x:Key="FieldFtpPath">Путь на удалённом сервере</x:String>
+    <x:String x:Key="CaptionMacUniversal">Unity создаёт универсальный бинарный файл с поддержкой Apple Silicon и Intel.</x:String>
+    <x:String x:Key="CBMacAdditional">Загрузить на дополнительный FTP путь</x:String>
+
+    <!-- Общее -->
+    <x:String x:Key="BtnBrowse">Обзор</x:String>
+    <x:String x:Key="BtnBack">← Назад</x:String>
+    <x:String x:Key="BtnNext">Далее →</x:String>
+    <x:String x:Key="BtnStartBuild">▶ Начать сборку</x:String>
+    <x:String x:Key="BtnCancel">Отмена</x:String>
+
+</ResourceDictionary>

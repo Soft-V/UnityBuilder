@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Hypocrite.Container;
 using Hypocrite.Container.Interfaces;
 using System.Linq;
+using UnityBuilder.Services;
 using UnityBuilder.Services.ServiceCollectionExtensions;
 using UnityBuilder.ViewModels;
 using UnityBuilder.Views;
@@ -30,6 +31,7 @@ namespace UnityBuilder
             Container.AddCommonServices();
             Container.AddViewModels();
             Container.AddViews();
+            LanguageService.Instance.Initialize();
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {

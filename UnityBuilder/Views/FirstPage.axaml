@@ -17,20 +17,20 @@
 
 					<StackPanel Spacing="4">
 						<StackPanel Orientation="Horizontal" Spacing="10">
-							<TextBlock Text="Project Settings" Classes="page-title"/>
+							<TextBlock Text="{DynamicResource PageProjectTitle}" Classes="page-title"/>
 						</StackPanel>
-						<TextBlock Text="Configure Unity executable and output directories"
+						<TextBlock Text="{DynamicResource PageProjectCaption}"
 								   Classes="caption"/>
 					</StackPanel>
 
 					<Border Classes="divider"/>
 
 					<StackPanel Spacing="6">
-						<TextBlock Text="Unity Executable" Classes="field-label"/>
+						<TextBlock Text="{DynamicResource FieldUnityExe}" Classes="field-label"/>
 						<Grid ColumnDefinitions="*,Auto">
-							<TextBox Watermark="Path to Unity.exe / Unity.app"
+							<TextBox Watermark="{DynamicResource WmUnityPath}"
 									 Text="{Binding UnityPath}"/>
-							<Button Content="Browse"
+							<Button Content="{DynamicResource BtnBrowse}"
 									Grid.Column="1" Width="90" Margin="8,0,0,0"
 									Classes="accent-btn"
 									Command="{Binding ChooseUnityPathCommand}"/>
@@ -38,11 +38,11 @@
 					</StackPanel>
 
 					<StackPanel Spacing="6">
-						<TextBlock Text="Project Path" Classes="field-label"/>
+						<TextBlock Text="{DynamicResource FieldProjectPath}" Classes="field-label"/>
 						<Grid ColumnDefinitions="*,Auto">
-							<TextBox Watermark="Folder containing Assets/, ProjectSettings/, etc."
+							<TextBox Watermark="{DynamicResource WmProjectPath}"
 									 Text="{Binding ProjectPath}"/>
-							<Button Content="Browse"
+							<Button Content="{DynamicResource BtnBrowse}"
 									Grid.Column="1" Width="90" Margin="8,0,0,0"
 									Classes="accent-btn"
 									Command="{Binding ChooseProjectPathCommand}"/>
@@ -51,16 +51,16 @@
 
 					<Grid ColumnDefinitions="200,*">
 						<StackPanel Spacing="6">
-							<TextBlock Text="Build Version" Classes="field-label"/>
+							<TextBlock Text="{DynamicResource FieldBuildVersion}" Classes="field-label"/>
 							<TextBox Watermark="1.0.0" Text="{Binding BuildVersion}"/>
 						</StackPanel>
 
 						<StackPanel Grid.Column="1" Spacing="6" Margin="12,0,0,0">
-							<TextBlock Text="Output Directory" Classes="field-label"/>
+							<TextBlock Text="{DynamicResource FieldOutputDir}" Classes="field-label"/>
 							<Grid ColumnDefinitions="*,Auto">
-								<TextBox Watermark="Where to save builds"
+								<TextBox Watermark="{DynamicResource WmOutputDir}"
 										 Text="{Binding OutputDirectory}"/>
-								<Button Content="Browse"
+								<Button Content="{DynamicResource BtnBrowse}"
 										Grid.Column="1" Width="90" Margin="8,0,0,0"
 										Classes="accent-btn"
 										Command="{Binding ChooseOutputPathCommand}"/>
@@ -69,7 +69,7 @@
 					</Grid>
 
 					<StackPanel Spacing="6">
-						<TextBlock Text="Build name" Classes="field-label"/>
+						<TextBlock Text="{DynamicResource FieldBuildName}" Classes="field-label"/>
 						<TextBox Watermark="Robocad V"
 								 Text="{Binding BuildName}"/>
 					</StackPanel>
@@ -80,7 +80,7 @@
 
 		<Border Grid.Row="1" Classes="action-bar" Margin="16,0,16,16">
 			<Grid>
-				<Button Content="Next →" Width="130"
+				<Button Content="{DynamicResource BtnNext}" Width="130"
 						Classes="accent-btn"
 						HorizontalAlignment="Right"
 						Click="Button_Click"/>
