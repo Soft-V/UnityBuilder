@@ -6,10 +6,12 @@ using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using UnityBuilder.Commands;
 using UnityBuilder.Models;
 using UnityBuilder.Models.Enums;
+using UnityBuilder.Services;
 using UnityBuilder.ViewModels;
 
 namespace UnityBuilder.Views;
@@ -30,6 +32,10 @@ public partial class PipelinePage : UserControl, IPageView
         pipelineCanvas.RenderTransformOrigin = RelativePoint.TopLeft;
         pipelineCanvas.RenderTransform = new TransformGroup();
         (pipelineCanvas.RenderTransform as TransformGroup).Children.AddRange([scaleTransform, transform]);
+
+        var pagesViewModel = App.Current.Container.Resolve<PagesViewModel>();
+        if (!pagesViewModel.IsCustomExecuteMethod)
+            CopyDefaultBuildScripts(pagesViewModel.ProjectPath);
 
         CreateNodes();
 
@@ -64,6 +70,13 @@ public partial class PipelinePage : UserControl, IPageView
         viewMessageBox = true;
 
         (DataContext as PipelinePageViewModel)._cancellationToken.Cancel();
+    }
+
+    private void CopyDefaultBuildScripts(string projectPath)
+    {
+        CommonHelper.CopyFilesRecursively(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "default-build-script"), 
+            Path.Combine(projectPath, "Assets", "Editor"));
     }
 
     public async void CreateNodes()
