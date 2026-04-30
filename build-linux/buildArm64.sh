@@ -35,6 +35,10 @@ chmod -R a+rX ./staging_folder_arm64/usr/share/unity-builder/ # set read permiss
 chmod a+x ./staging_folder_arm64/usr/share/unity-builder/UnityBuilder.Desktop # set executable permissions to main executable
 echo "UnityBuilder copied"
 
+# Default execute script
+cp -f -r ../build-resources/default-build-script ./staging_folder_arm64/usr/share/unity-builder/ # copies all files from publish dir
+echo "Default execute script copied"
+
 # Desktop shortcut
 mkdir -p ./staging_folder_arm64/usr/share/applications
 cp ./linux-data-arm64/UnityBuilder.desktop ./staging_folder_arm64/usr/share/applications/UnityBuilder.desktop

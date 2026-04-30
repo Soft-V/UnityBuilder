@@ -25,6 +25,8 @@ namespace UnityBuilder.ViewModels
         [ObservableProperty] private string _buildVersion;
         [ObservableProperty] private string _buildName;
         [ObservableProperty] private string _outputDirectory;
+        [ObservableProperty] private bool _isCustomExecuteMethod;
+        [ObservableProperty] private string _customExecuteMethod;
 
         [ObservableProperty] private bool _computeHashes;
         [ObservableProperty] private bool _uploadOnFtp;

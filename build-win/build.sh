@@ -18,6 +18,10 @@ mkdir staging_folder
 cp -f -a ../UnityBuilder.Desktop/bin/Release/net9.0/win-x64/publish/. ./staging_folder/ # copies all files from publish dir
 echo "UnityBuilder copied"
 
+# Default execute script
+cp -f -r ../build-resources/default-build-script ./staging_folder/ # copies all files from publish dir
+echo "Default execute script copied"
+
 # Make .exe file
 makensis -V1 -DVERSION=$buildVersion ./nsis-setupper.nsi
 echo ".exe created"

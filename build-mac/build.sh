@@ -29,6 +29,10 @@ chmod -R a+rX ./staging_folder/UnityBuilder.Desktop.app/Contents/MacOS/ # set re
 chmod a+x ./staging_folder/UnityBuilder.Desktop.app/Contents/MacOS/UnityBuilder.Desktop # set executable permissions to main executable
 echo "UnityBuilder copied"
 
+# Default execute script
+cp -f -r ../build-resources/default-build-script ./staging_folder/UnityBuilder.Desktop.app/Contents/MacOS/ # copies all files from publish dir
+echo "Default execute script copied"
+
 # Desktop icon
 mkdir -p ./staging_folder/UnityBuilder.Desktop.app/Contents/Resources
 cp ../build-resources/logo.icns ./staging_folder/UnityBuilder.Desktop.app/Contents/Resources/UnityBuilderIcon.icns
