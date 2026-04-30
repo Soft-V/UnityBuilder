@@ -29,12 +29,16 @@
 
 ### Usage
 
-1. Set the path to your Unity executable
-2. Select your project folder
-3. Set the Unity version, output directory and project name
-4. Choose target platforms
-5. *(Optional)* configure FTP upload and hash indexing
+1. Set the path to your Unity executable  
+2. Select your project folder  
+3. Set the Unity version, output directory and project name  
+<img width="1215" height="743" alt="Screen1" src="https://github.com/user-attachments/assets/84bddc9c-283a-418c-86c7-515536b30735" />   
+4. *(Optional)* configure FTP upload and hash indexing  
+<img width="1215" height="743" alt="Screen2" src="https://github.com/user-attachments/assets/b43cf753-d46f-4d2d-a5af-59121c35260c" />  
+5. Choose target platforms  
+<img width="1215" height="743" alt="Screen3" src="https://github.com/user-attachments/assets/629bfd6c-0e57-41a2-a80a-c04ed499161c" />  
 6. Hit **Start** and watch the pipeline run
+<img width="1215" height="743" alt="Screen4" src="https://github.com/user-attachments/assets/14f53265-fc15-420b-a4ae-6e146e101114" />  
 
 ---
 
@@ -42,7 +46,7 @@
 
 | Platform | Architectures | Note |
 |---|---|---|
-| Windows | x64, x86, ARM64 | |
+| Windows | x64, x86 | |
 | Linux | x64 | ARM64 not supported in Unity Community |
 | macOS | Universal | Single build for both Silicon and Intel |
 | Android | — | Planned — PRs welcome |
@@ -79,18 +83,6 @@ The project was built for our own needs, but we'd love any contribution!
 - Just drop a star — it matters too
 
 On the roadmap: a **CLI version** for easier server deployment. If you want to help — you know what to do.
-
----
-
-## Screenshots
-
-<img width="1215" height="743" alt="Screen1" src="https://github.com/user-attachments/assets/84bddc9c-283a-418c-86c7-515536b30735" />
-
-<img width="1215" height="743" alt="Screen2" src="https://github.com/user-attachments/assets/b43cf753-d46f-4d2d-a5af-59121c35260c" />
-
-<img width="1215" height="743" alt="Screen3" src="https://github.com/user-attachments/assets/629bfd6c-0e57-41a2-a80a-c04ed499161c" />
-
-<img width="1215" height="743" alt="Screen4" src="https://github.com/user-attachments/assets/14f53265-fc15-420b-a4ae-6e146e101114" />
 
 ---
 
